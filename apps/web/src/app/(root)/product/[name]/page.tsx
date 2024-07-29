@@ -1,8 +1,8 @@
 import { Product } from "@/models/product.model";
 import { SearchParams } from "@/models/search.params";
-import { fetchProductDetailsByStoreID } from "@/utils/fetch/server/products.fetch";
+import { fetchProductDetailsByCityID } from "@/utils/fetch/server/products.fetch";
 import ProductDetailsForm from "../_components/product.details.form";
-import { formatDate, formatQueryString } from "@/utils/formatter";
+import { formatQueryString } from "@/utils/formatter";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { fetchCategories } from "@/utils/fetch/server/categories.fetch";
@@ -14,7 +14,7 @@ import { ChevronRight } from "lucide-react";
 type Props = { params: { name: string }; searchParams: SearchParams };
 export default async function ProductDetailsPage({ params, searchParams }: Props) {
   const { name } = params;
-  const details: Product = await fetchProductDetailsByStoreID(searchParams.store_id || "", name);
+  const details: Product = await fetchProductDetailsByCityID(Number(searchParams.city_id), name);
   const categories = await fetchCategories();
   return (
     <div className="container flex flex-col gap-5 p-5 md:flex-row">
@@ -37,7 +37,7 @@ export default async function ProductDetailsPage({ params, searchParams }: Props
           <ChevronRight className="w-5" />
           <Link
             className="text-sm hover:underline"
-            href={`/categories/${details.category.name.toLowerCase().split(" ").join("-")}?store_id=${searchParams.store_id}&sub_category=${formatQueryString(details.sub_category.name)}`}
+            href={`/categories/${details.category.name.toLowerCase().split(" ").join("-")}?city_id=${searchParams.city_id}&sub_category=${formatQueryString(details.sub_category.name)}`}
           >
             {details.sub_category.name}
           </Link>

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Bell, CircleUser, Home, LineChart, Menu, Package, Package2, Search, ShoppingCart, TagIcon, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { fetchProductsByStoreID } from "@/utils/fetch/server/products.fetch";
+import { fetchProductsByCityID } from "@/utils/fetch/server/products.fetch";
 import { SearchParams } from "@/models/search.params";
 import { Product } from "@/models/product.model";
 import ProductCard from "../../_components/products/product.card";
@@ -21,9 +21,9 @@ export default async function ProductsByCategoryListPage({ params, searchParams 
   const { search, page } = searchParams;
   const categories = await fetchCategories();
   const subCategories = await fetchSubCategoriesWithCatName(category_name.split("-").join(" ").replaceAll("%26", "&"));
-  const { products, totalPage } = await fetchProductsByStoreID(
+  const { products, totalPage } = await fetchProductsByCityID(
     searchParams.sub_category?.replaceAll("%26", " & ") || category_name || "",
-    searchParams.store_id || "",
+    Number(searchParams.city_id),
     search,
     page,
   );
@@ -37,7 +37,7 @@ export default async function ProductsByCategoryListPage({ params, searchParams 
         {categories.map((category: TCategory) => (
           <Link
             key={category.id}
-            href={`/categories/${category.name.toLowerCase().split(" ").join("-")}?store_id=${searchParams.store_id}`}
+            href={`/categories/${category.name.toLowerCase().split(" ").join("-")}?city_id=${searchParams.city_id}`}
             className="flex flex-col items-center gap-4 rounded-lg border p-2 md:flex-row"
           >
             <Image

@@ -13,7 +13,7 @@ export default function AdminMainNav({}: Props) {
   const { user } = useAuthStore((s) => s);
   return (
     <header className={cn(user.id ? "flex" : "hidden", "sticky top-0 z-50 items-center gap-4 border-b bg-background p-4 md:p-6")}>
-      <nav className="hidden w-full md:flex md:flex-wrap md:items-center md:justify-between md:gap-5 md:text-sm lg:gap-6">
+      <nav className="container hidden w-full md:flex md:flex-wrap md:items-center md:justify-between md:gap-5 md:text-sm lg:gap-6">
         <div className="flex items-center gap-6">
           <AdminNavLinks />
         </div>

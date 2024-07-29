@@ -112,7 +112,6 @@ export const stocksColumns: ColumnDef<TStoreStock>[] = [
     id: "action",
     cell: ({ row }) => {
       const stock = row.original;
-      const admin: AuthStore = useAuthStore((s) => s);
       return (
         <Dialog>
           <DropdownMenu>
@@ -124,8 +123,8 @@ export const stocksColumns: ColumnDef<TStoreStock>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator className={cn(admin.user.role !== Role.super_admin && "hidden")} />
-              <DialogTrigger asChild className={cn(admin.user.role !== Role.super_admin ? "hidden" : "flex cursor-pointer")}>
+              <DropdownMenuSeparator />
+              <DialogTrigger asChild className={cn("cursor-pointer")}>
                 <DropdownMenuItem>
                   <Edit className="mr-2 size-4" />
                   Edit

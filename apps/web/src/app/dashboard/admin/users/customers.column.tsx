@@ -30,6 +30,7 @@ export const customersColumns: ColumnDef<TUser>[] = [
     id: "address",
     accessorFn: (user) => (user.addresses?.length ? user.addresses[0]?.address : "-"),
     header: "Address",
+    cell: ({ row }) => <div className="min-w-48">{row.getValue("address")}</div>,
   },
   {
     accessorKey: "addresses",
@@ -45,12 +46,11 @@ export const customersColumns: ColumnDef<TUser>[] = [
   },
   {
     accessorKey: "is_verified",
-
     id: "verification",
     header: () => <HeaderServerSortBtn name="Verification Status" sortBy="is_verified" />,
     cell: ({ row }) => {
       const isActive = row.getValue("verification");
-      return <Badge variant={isActive ? "destructive" : "default"}>{isActive ? "Unverified" : "Verified"}</Badge>;
+      return <Badge variant={!isActive ? "destructive" : "default"}>{!isActive ? "Unverified" : "Verified"}</Badge>;
     },
   },
   {

@@ -6,7 +6,7 @@ import { TUser } from "@/models/user.model";
 import { deleteStoreAdmin } from "@/utils/fetch/client/admin.client-fetch";
 import { tableDateFormat } from "@/utils/formatter";
 import { ColumnDef } from "@tanstack/react-table";
-import { ChevronsUpDown, Delete, Edit, MoreHorizontal, X } from "lucide-react";
+import { Delete, Edit, MoreHorizontal, X } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -46,6 +46,7 @@ export const storeAdminColumns: ColumnDef<TUser>[] = [
     id: "address",
     accessorFn: (user) => (user.addresses?.length ? user.addresses[0]?.address : "-"),
     header: "Address",
+    cell: ({ row }) => <div className="min-w-48">{row.getValue("address")}</div>,
   },
   {
     accessorKey: "addresses",

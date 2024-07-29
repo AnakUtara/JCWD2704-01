@@ -1,3 +1,4 @@
+import { stockHistoryMonthly } from '@/libs/prisma/report.queries';
 import { stockChangeHandlerSchema } from '@/libs/zod-schemas/stockHistory.schema';
 import prisma from '@/prisma';
 import { BadRequestError, InternalServerError, NotFoundError } from '@/utils/error';
@@ -81,6 +82,11 @@ export class StockHistoryService {
     if (!data) throw new NotFoundError('Stock history not found.');
     const count = await prisma.stockHistory.count({ where });
     return { data, totalPages: countTotalPage(count, show) };
+  }
+  async getStockHistoryReport(req: Request) {
+    const { page_tab2, search_tab2, store_id, start_date, end_date, sort_by_tab2, sort_dir_tab2 } = req.query;
+    const show = 10;
+    const data = await prisma.$queryRaw`${stockHistoryMonthly()}`;
   }
 }
 export default new StockHistoryService();

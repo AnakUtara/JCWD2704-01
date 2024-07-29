@@ -22,6 +22,7 @@ export const ButtonSubmit = ({ label, isSubmitting, className, type = "submit", 
       disabled={disable || isSubmitting}
       variant={variants}
       onClick={onClick}
+      onClick={onClick}
     >
       {isSubmitting ? (
         <span className="flex items-center justify-center gap-2">

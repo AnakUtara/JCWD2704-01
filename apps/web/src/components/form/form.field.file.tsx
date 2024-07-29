@@ -4,8 +4,8 @@ import { Input } from "../ui/input";
 import Image from "next/image";
 import { NEXT_PUBLIC_BASE_API_URL } from "@/config/config";
 
-type Props = { control: UseFormReturn<any>; name: string; placeholder?: string; label: string; data?: any };
-export default function FormFile({ control, name, placeholder = "Input file here...", label, data }: Props) {
+type Props = { control: UseFormReturn<any>; name: string; placeholder?: string; label: string; data?: any; aspect?: "square" | "video" };
+export default function FormFile({ control, name, placeholder = "Input file here...", label, data, aspect = "square" }: Props) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     control.setValue(name, file);
@@ -30,7 +30,7 @@ export default function FormFile({ control, name, placeholder = "Input file here
             alt={`${name} placeholder`}
             height={100}
             width={100}
-            className="aspect-square w-full rounded-md border object-cover"
+            className={`aspect-${aspect} w-full rounded-md border object-cover`}
           />
           <FormControl>
             <Input

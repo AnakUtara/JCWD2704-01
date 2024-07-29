@@ -18,7 +18,7 @@ export default async function DashboarCategoriesPage({ searchParams }: Props) {
   const subCats = await fetchSubCategories(searchParams);
   const categories = await fetchCategoryNames(searchParams);
   return (
-    <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+    <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:px-0 md:py-8">
       <Tabs defaultValue="categories">
         <TabsList className="mb-5 grid w-full grid-cols-2">
           <TabsTrigger value="categories">Categories</TabsTrigger>

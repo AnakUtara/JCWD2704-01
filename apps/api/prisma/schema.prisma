@@ -10,11 +10,13 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["omitApi", "fullTextSearch"]
+  previewFeatures = ["omitApi", "fullTextSearch"]
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+  // shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 enum Role {
@@ -52,7 +54,31 @@ model User {
   avatar Image? @relation(fields: [avatar_id], references: [id])
   store  Store? @relation(fields: [store_id], references: [address_id])
 
+  id        String  @id @default(cuid())
+  avatar_id String? @unique
+  store_id  String?
+
+  email          String    @unique @db.VarChar(85)
+  phone_no       String?   @unique @db.VarChar(25)
+  password       String?
+  reset_token    String?   @db.Text
+  referral_code  String?   @unique
+  reference_code String?   @db.VarChar(100)
+  is_verified    Boolean   @default(false)
+  is_banned      Boolean   @default(false)
+  full_name      String?   @db.VarChar(100)
+  dob            DateTime?
+
+  role       Role     @default(customer)
+  gender     Gender?  @default(male)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  avatar Image? @relation(fields: [avatar_id], references: [id])
+  store  Store? @relation(fields: [store_id], references: [address_id])
+
   addresses       Address[]
+  cart            Cart[]
   cart            Cart[]
   promotions      Promotion[]
   customer_orders CustomerOrders[]
@@ -314,6 +340,7 @@ model SubCategory {
 enum PromoType {
   discount
   voucher
+  cashback
   cashback
   referral_voucher
   free_shipping

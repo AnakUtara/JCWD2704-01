@@ -5,7 +5,7 @@ export default function AdminDashboardTemplate({ children }: Props) {
   return (
     <div className="flex min-h-screen w-full flex-col">
       <AdminMainNav />
-      <main>{children}</main>
+      <main className="container">{children}</main>
     </div>
   );
 }

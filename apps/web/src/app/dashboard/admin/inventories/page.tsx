@@ -1,5 +1,4 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import AdminTabDialog from "../_component/admin.tab.dialog";
 import AdminCRUDDialog from "../_component/admin.crud.dialog";
 import { Suspense } from "react";
 import Spinner from "@/components/ui/spinner";
@@ -25,7 +24,7 @@ export default async function InventoryDashboardPage({ searchParams }: Props) {
   const variants = await fetchVariantsNamesIds(searchParams);
   const histories = await fetchStockHistories(searchParams, activeUser.store_id && activeUser.store_id);
   return (
-    <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+    <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:px-0 md:py-8">
       <Tabs defaultValue="stocks">
         <TabsList className="mb-5 grid w-full grid-cols-2">
           <TabsTrigger value="stocks">Stocks</TabsTrigger>

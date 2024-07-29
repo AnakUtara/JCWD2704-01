@@ -11,6 +11,7 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/comp
 import { CalendarIcon } from "lucide-react";
 import { PopoverContent } from "@radix-ui/react-popover";
 import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 export const RegisterDobInput = ({ form }: { form: UseFormReturn<RegisterType> }) => {
   const ref = useRef<HTMLButtonElement>(null);

@@ -9,7 +9,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 export default function Pagination({ getPage = "page", totalPages,className }: { totalPages: number; getPage?: string, className?:string }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const currentPage = Number(searchParams.get("page") || 1);
+  const currentPage = Number(searchParams.get(getPage) || 1);
   const allPages = generatePagination(currentPage, totalPages);
   const createPageURL = (pageNumber: number | string) => {
     const params = new URLSearchParams(searchParams);

@@ -57,32 +57,21 @@ export class StoreStockService {
   }
 
   async getProductByStoreId(req: Request) {
-    const { filter, search, store_id, page } = req.query;
+    const { filter, search, city_id, page } = req.query;
     const show = 20;
     const where: Prisma.ProductWhereInput = {
       is_deleted: false,
-      AND: {
-        variants: {
-          some: {
-            store_stock: {
-              some: {
-                store: { address: { city_id: Number(store_id) } },
-                // store_id: String(store_id),
-              },
-            },
-          },
-        },
-      },
+      AND: { variants: { some: { store_stock: { some: { store: { address: { city_id: Number(city_id) } } } } } } },
+    };
+    let queries: Prisma.ProductFindManyArgs = {
+      where,
+      include: { variants: { include: { store_stock: true, images: { select: { name: true } } } } },
     };
     if (filter)
       where.AND = { ...where, OR: [{ category: { name: { equals: String(filter) } } }, { sub_category: { name: { equals: String(filter) } } }] };
     if (search) where.AND = { ...where, OR: [{ name: { contains: String(search) } }] };
-    const products = await prisma.product.findMany({
-      where,
-      include: { variants: { include: { store_stock: true, images: { select: { name: true } } } } },
-      ...paginate(show, Number(page)),
-    });
-
+    if (page) queries = { ...queries, ...paginate(show, Number(page)) };
+    const products = await prisma.product.findMany(queries);
     const count = await prisma.product.count({ where });
     if (!products) throw new NotFoundError('Products not found.');
     return { products, totalPage: countTotalPage(count, show) };
@@ -90,12 +79,12 @@ export class StoreStockService {
 
   async getProductDetailsByStoreId(req: Request) {
     const { name } = req.params;
-    const { store_id } = req.query;
+    const { city_id } = req.query;
     const where: Prisma.ProductWhereInput = {
       is_deleted: false,
       AND: [
         { name: { equals: name?.replaceAll('-', ' ') } },
-        { variants: { some: { store_stock: { some: { store_id: { equals: String(store_id) } } } } } },
+        { variants: { some: { store_stock: { some: { store: { address: { city_id: Number(city_id) } } } } } } },
       ],
     };
     const data = await prisma.product.findFirst({

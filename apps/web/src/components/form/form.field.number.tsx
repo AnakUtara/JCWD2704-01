@@ -50,7 +50,12 @@ export default function FormNumber({ form, name, label, placeholder = "", useSwi
                 />
               </FormControl>
               <div className="flex items-center space-x-2">
-                <Button type="button" size={"icon"} onClick={() => form.setValue(name, form.getValues(name) - 1)}>
+                <Button
+                  type="button"
+                  size={"icon"}
+                  onClick={() => form.setValue(name, form.getValues(name) - 1)}
+                  disabled={form.watch(name) === 0}
+                >
                   <Minus />
                 </Button>
                 <Button type="button" size={"icon"} onClick={() => form.setValue(name, form.getValues(name) + 1)}>

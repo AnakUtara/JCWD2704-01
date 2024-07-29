@@ -2,6 +2,8 @@ import { EntityController } from './entity.controller';
 import addressService from '@/services/address.service';
 import { Controller } from './index.types';
 import { messageResponse } from '@/utils/message';
+import { Controller } from './index.types';
+import { messageResponse } from '@/utils/message';
 
 class AddressController extends EntityController {
   getUserAddresses = this.sendResponse({

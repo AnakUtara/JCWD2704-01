@@ -13,7 +13,7 @@ export interface SearchParams {
   category_id?: string;
   category_name?: string;
   sub_category?: string;
-  store_id?: string;
+  city_id?: number;
 }
 
 export const searchParams: string = "?page_tab1=1&page_tab2=1";

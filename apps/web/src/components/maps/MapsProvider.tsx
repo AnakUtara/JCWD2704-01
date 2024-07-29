@@ -7,17 +7,19 @@ import { toast } from "sonner";
 
 import { googleMapsApiKey } from "./maps.config";
 
-import Spinner from "../ui/spinner";
+import useAuthStore from "@/stores/auth.store";
 import { useMediaQueries } from "@/hooks/use-media-queries";
 import { cn } from "@/lib/utils";
 
 export const MapsProvider = ({ children, className }: { children: ReactNode; className?: string }) => {
   const libraries = useMemo<Libraries>(() => ["places"], []);
   const { setLocation } = useLocation();
+  const { user } = useAuthStore();
   const { matches } = useMediaQueries("(min-width: 640px)"); // isDesktop
   const { isLoaded } = useJsApiLoader({ googleMapsApiKey, libraries });
 
   useEffect(() => {
+    if (navigator.geolocation) {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
