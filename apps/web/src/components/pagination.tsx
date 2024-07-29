@@ -1,11 +1,12 @@
 "use client";
+import { cn } from "@/lib/utils";
 import { generatePagination } from "@/utils/pagination";
 import clsx from "clsx";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 
-export default function Pagination({ getPage = "page", totalPages }: { totalPages: number; getPage?: string }) {
+export default function Pagination({ getPage = "page", totalPages,className }: { totalPages: number; getPage?: string, className?:string }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get("page") || 1);
@@ -18,7 +19,7 @@ export default function Pagination({ getPage = "page", totalPages }: { totalPage
 
   return (
     <>
-      <div className="mt-5 inline-flex">
+      <div className={cn("mt-5 inline-flex",className)}>
         <PaginationArrow direction="left" href={createPageURL(currentPage - 1)} isDisabled={currentPage <= 1} />
         <div className="flex -space-x-px">
           {allPages.map((page, index) => {

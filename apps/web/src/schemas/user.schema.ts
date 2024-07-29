@@ -33,10 +33,6 @@ export const registerSchema = z
       .string()
       .refine((value) => value.length === 9, { message: "Invalid Referral Code" })
       .optional(),
-    referrence_code: z
-      .string()
-      .refine((value) => value.length === 9, { message: "Invalid Referral Code" })
-      .optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Confirm password must be equal to your password",

@@ -3,17 +3,17 @@
 import { useLocation } from "@/stores/latLng.store";
 import { Libraries, useJsApiLoader } from "@react-google-maps/api";
 import { ReactNode, useEffect, useMemo } from "react";
-import { googleMapsApiKey } from "./maps.config";
-
-import useAuthStore from "@/stores/auth.store";
-import { useMediaQueries } from "@/hooks/use-media-queries";
-import Spinner from "../ui/spinner";
 import { toast } from "sonner";
 
-export const MapsProvider = ({ children }: { children: ReactNode }) => {
+import { googleMapsApiKey } from "./maps.config";
+
+import Spinner from "../ui/spinner";
+import { useMediaQueries } from "@/hooks/use-media-queries";
+import { cn } from "@/lib/utils";
+
+export const MapsProvider = ({ children, className }: { children: ReactNode; className?: string }) => {
   const libraries = useMemo<Libraries>(() => ["places"], []);
   const { setLocation } = useLocation();
-  const { user } = useAuthStore();
   const { matches } = useMediaQueries("(min-width: 640px)"); // isDesktop
   const { isLoaded } = useJsApiLoader({ googleMapsApiKey, libraries });
 
@@ -34,12 +34,12 @@ export const MapsProvider = ({ children }: { children: ReactNode }) => {
 
   if (!isLoaded)
     return (
-      <div className="flex h-screen w-full items-center justify-center p-20 sm:p-52">
+      <div className={cn("flex h-screen w-full items-center justify-center p-20 sm:p-52", className)}>
         <Spinner className="size-14" />
       </div>
     );
 
-  if (matches) return <div className="flex flex-col">{children}</div>;
+  if (matches) return <div className={cn("flex flex-col", className)}>{children}</div>;
 
-  return <div className="flex flex-col">{children}</div>;
+  return <div className={cn("flex flex-col", className)}>{children}</div>;
 };

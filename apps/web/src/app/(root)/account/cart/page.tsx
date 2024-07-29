@@ -16,13 +16,15 @@ export default function Page({ searchParams }: Prop) {
     <main className="min-h-dvh w-full bg-secondary">
       <div className="container space-y-4 p-4">
         <ButtonBack>Cart</ButtonBack>
-        <section className="flex flex-wrap justify-center gap-4 p-2">
+        <section className="flex flex-col gap-4">
           <FillterInput queryKey="s" placeholder="Search" />
-          <CheckoutAddressOption />
-          <Label htmlFor="store_id">
-            <p>All Store</p>
-            <FillterToggle name="store_id" queryKey="store_id" trueValue="all" className="h-5" />
-          </Label>
+          <div className="flex w-full items-start justify-between px-2">
+            <CheckoutAddressOption />
+            <Label htmlFor="store_id" className="text-sm font-normal space-y-2">
+              <p className="text-sm">Show all store</p>
+              <FillterToggle name="store_id" queryKey="store_id" trueValue="all" className="h-5" />
+            </Label>
+          </div>
         </section>
         <section className="flex min-h-screen w-full flex-col gap-y-2 px-4 py-2">
           <ul className="flex flex-col gap-y-4">

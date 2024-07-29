@@ -14,6 +14,9 @@ import { NEXT_PUBLIC_BASE_API_URL } from "@/config/config";
 import { cn } from "@/lib/utils";
 import useAuthStore from "@/stores/auth.store";
 import { axiosInstanceCSR } from "@/lib/axios.client-config";
+import { imageUrl } from "@/utils/imageUrl";
+import { Checkbox } from "@/components/ui/checkbox";
+import { CheckedState } from "@radix-ui/react-checkbox";
 
 export function CartProduct({ cartProduct }: { cartProduct: TCart }) {
   const store_id = cartProduct.store_stock.store_id;
@@ -21,9 +24,8 @@ export function CartProduct({ cartProduct }: { cartProduct: TCart }) {
   const sp = useSearchParams();
   const [add, remove, list, nearestStore, setOrigin] = useCheckout((s) => [s.add, s.remove, s.list, s.origin, s.setOrigin]);
   const hide = sp.get("store_id") != "all" ? cartProduct.store_stock.store_id !== nearestStore : false;
-  console.log(cartProduct.store_stock.store_id);
-  console.log(nearestStore);
   const ref = useRef<HTMLInputElement>(null);
+  const [isChecked, setIsChecked] = useState(false);
   const checkHandler = () => {
     if (store_id !== nearestStore) return;
     if (!ref.current) return;
@@ -39,6 +41,24 @@ export function CartProduct({ cartProduct }: { cartProduct: TCart }) {
       });
     }
   };
+  const handlerCheck = (e: CheckedState) => {
+    setIsChecked(Boolean(e));
+  };
+
+  useEffect(() => {
+    if (!isChecked) {
+      remove(cartProduct.store_stock_id);
+    } else {
+      add({
+        store_stock_id: cartProduct.store_stock_id,
+        quantity: cartProduct.quantity,
+        unit_price: cartProduct.store_stock.unit_price,
+        weight: cartProduct.store_stock.product.weight,
+        discount: cartProduct.store_stock.discount,
+      });
+    }
+  }, [isChecked]);
+
   const checked = useMemo(() => Boolean(list.find((e) => e.store_stock_id == cartProduct.store_stock_id)), [list]);
 
   useEffect(() => {
@@ -50,7 +70,6 @@ export function CartProduct({ cartProduct }: { cartProduct: TCart }) {
           console.log(e);
           return "";
         });
-      console.log(store_id);
       setOrigin(store_id);
     };
     fetchStore();
@@ -58,8 +77,8 @@ export function CartProduct({ cartProduct }: { cartProduct: TCart }) {
 
   return (
     <Card
-      className={cn("relative flex w-full flex-col text-ellipsis border-2 bg-white p-2 shadow-lg sm:h-48 sm:flex-row", hide && "hidden")}
-      onClick={checkHandler}
+      className={cn("relative flex w-full flex-col text-ellipsis border-2 bg-white px-4 py-6 shadow-lg sm:flex-row", hide && "hidden")}
+      // onClick={checkHandler}
     >
       {cartProduct.store_stock.quantity < cartProduct.quantity && (
         <div
@@ -69,17 +88,22 @@ export function CartProduct({ cartProduct }: { cartProduct: TCart }) {
           <h1 className="text-center font-bold text-white">Out of Stock</h1>
         </div>
       )}
-      <CardContent id="OHIO" className="flex flex-col-reverse gap-2 p-2 sm:h-full sm:flex-row">
-        <div className="flex items-center justify-center px-2">
-          <input type="checkbox" ref={ref} onClick={checkHandler} disabled={store_id !== nearestStore} checked={checked} />
-        </div>
-        <div className="relative m-auto aspect-square w-full overflow-hidden rounded-md sm:h-full sm:w-auto">
-          <Image
-            src={`${NEXT_PUBLIC_BASE_API_URL}/images/${cartProduct.store_stock.product.images?.name || ""}`}
-            alt=""
-            fill
-            sizes="auto full"
-          />
+      <CardContent
+        id={cartProduct.store_stock.product.product.name.toLowerCase().replaceAll(" ", "-") + "-" + cartProduct.store_stock_id}
+        className="p-0"
+      >
+        <div className="flex gap-4">
+          {/* <input type="checkbox" ref={ref} onClick={checkHandler} disabled={store_id !== nearestStore} checked={checked} /> */}
+          <Checkbox checked={isChecked} onCheckedChange={handlerCheck} className="size-6" />
+          <div className="relative overflow-hidden rounded-md sm:h-36 sm:w-36">
+            <Image
+              src={imageUrl.render(cartProduct.store_stock.product.images?.name)}
+              alt={cartProduct.store_stock.product.name}
+              fill
+              sizes="25vw"
+              className="size-auto object-contain"
+            />
+          </div>
         </div>
       </CardContent>
       <CardContent className="flex w-full flex-col justify-between gap-2 p-2">

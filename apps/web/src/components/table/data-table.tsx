@@ -7,10 +7,11 @@ import {
   getCoreRowModel,
   getSortedRowModel,
   useReactTable,
+  Row,
 } from "@tanstack/react-table";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ColumnToggle from "./column.toggle";
 import SearchParamsInput from "./input.search";
 import { SearchParamsDatepicker } from "./search.params.datepicker";
@@ -24,6 +25,7 @@ interface DataTableProps<TData, TValue> {
   setSearch?: string;
   useDate?: boolean;
   useStoreFilter?: TStore[];
+  selectedData?: (data: TData[]) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -33,6 +35,7 @@ export function DataTable<TData, TValue>({
   setSearch = "search",
   useDate = false,
   useStoreFilter,
+  selectedData,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -48,6 +51,10 @@ export function DataTable<TData, TValue>({
       columnVisibility,
     },
   });
+
+  useEffect(() => {
+    if (selectedData) selectedData(table.getSelectedRowModel().rows.map((data) => data.original));
+  }, [table.getSelectedRowModel()]);
 
   return (
     <div>
@@ -97,9 +104,9 @@ export function DataTable<TData, TValue>({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-                  ))}
+                  {row.getVisibleCells().map((cell) => {
+                    return <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>;
+                  })}
                 </TableRow>
               ))
             ) : (

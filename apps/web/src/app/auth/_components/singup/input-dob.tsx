@@ -46,6 +46,7 @@ export const RegisterDobInput = ({ form }: { form: UseFormReturn<RegisterType> }
                 mode="single"
                 captionLayout="dropdown-buttons"
                 className="rounded border bg-background"
+                fixedWeeks
                 fromYear={1950}
                 toYear={new Date().getFullYear()}
                 selected={field.value}

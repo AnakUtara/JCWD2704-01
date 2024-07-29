@@ -7,9 +7,10 @@ import { AddressDetailForm } from "./address-form";
 import { CityType } from "@/types/cities.type";
 
 export const AccountAddressDetail = ({ cities }: { cities: CityType[] }) => {
-  const { results, latLng } = useLocation();
+  const { results } = useLocation();
   const label = results?.address_components?.find((address) => address.types.find((type) => type === "administrative_area_level_2"));
 
+  
   return (
     <>
       <div className="h-[60%] w-full">
@@ -23,7 +24,7 @@ export const AccountAddressDetail = ({ cities }: { cities: CityType[] }) => {
           <div className="flex flex-col gap-4 p-4">
             <p className="flex items-center gap-1">
               <MapPin className="size-5 stroke-primary" />
-              <span className="block truncate font-bold">{label?.short_name}</span>
+              <span className="block truncate font-bold">{label?.long_name}</span>
             </p>
             <p className="text-sm text-muted-foreground">{results?.formatted_address}</p>
           </div>

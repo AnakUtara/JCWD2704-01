@@ -108,9 +108,9 @@ model Address {
   updated_at DateTime    @updatedAt
 
   user        User?           @relation(fields: [user_id], references: [id])
+  city        City            @relation(fields: [city_id], references: [city_id])
   origin      CustomerOrders? @relation("origin")
   destination CustomerOrders? @relation("destination")
-  city        City            @relation(fields: [city_id], references: [city_id])
 
   store Store[]
 
@@ -140,16 +140,18 @@ model City {
 }
 
 model Store {
-  address_id      String           @id @default(cuid())
-  address         Address          @relation(fields: [address_id], references: [id])
+  address_id  String   @id @default(cuid())
+  schedule_id String?
+  is_deleted  Boolean  @default(false)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  schedule StoreSchedule? @relation(fields: [schedule_id], references: [id])
+  address  Address        @relation(fields: [address_id], references: [id])
+
   store_admin     User[]
   product_stock   StoreStock[]
-  schedule_id     String?
-  schedule        StoreSchedule?   @relation(fields: [schedule_id], references: [id])
   customer_orders CustomerOrders[]
-  is_deleted      Boolean          @default(false)
-  created_at      DateTime         @default(now())
-  updated_at      DateTime         @updatedAt
 
   @@index([address_id])
   @@map("stores")

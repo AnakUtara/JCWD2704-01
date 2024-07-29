@@ -32,21 +32,21 @@ export default function ProductDetailsForm({ product }: Props) {
   });
   async function onSubmit(data: z.infer<typeof cartSchema>) {
     await updateCart(data);
+    window.location.reload();
   }
   const findStock =
     product.variants.find((variant) => variant.store_stock[0].id === form.watch("store_stock_id"))?.store_stock[0] ||
     product.variants[0].store_stock[0];
   const discCalc = findStock?.discount && findStock?.unit_price - (findStock?.unit_price * findStock?.discount) / 100;
 
-  useEffect(() => {
-    console.log(form.formState.isSubmitting);
-  }, [form.formState.isSubmitting]);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="order-1 md:order-2">
         <Card className="min-w-96 p-5">
-          <h2 className="text-2xl font-extrabold md:hidden">{product.name}</h2>
-          <ProductCarouselForm form={form} product={product} />
+          <div className="flex flex-col-reverse gap-4 md:flex-col">
+            <h2 className="text-2xl font-extrabold md:hidden">{product.name}</h2>
+            <ProductCarouselForm form={form} product={product} />
+          </div>
           <div className="mt-3 flex flex-col gap-4 px-1">
             <Separator />
             <CardTitle>{toIDR(!findStock?.discount ? findStock?.unit_price : discCalc || 0)}</CardTitle>

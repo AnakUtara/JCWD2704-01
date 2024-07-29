@@ -10,8 +10,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { NEXT_PUBLIC_BASE_API_URL } from "@/config/config";
 import { ChevronRight } from "lucide-react";
-import { getAccTokenServer } from "@/utils/ssr.jwtdecode";
-import { ButtonBack } from "../../account/_components/ButtonBack";
 
 type Props = { params: { name: string }; searchParams: SearchParams };
 export default async function ProductDetailsPage({ params, searchParams }: Props) {
@@ -20,13 +18,12 @@ export default async function ProductDetailsPage({ params, searchParams }: Props
   const categories = await fetchCategories();
   return (
     <div className="container flex flex-col gap-5 p-5 md:flex-row">
-      <ButtonBack className="font-medium">Back</ButtonBack>
       <article className="order-2 flex flex-col gap-2 md:order-1">
         <h2 className="hidden text-4xl font-extrabold md:block">{details.name}</h2>
         <div className="flex items-center gap-2">
           <Link
             href={`/categories/${details.category.name.toLowerCase().split(" ").join("-")}?store_id=${searchParams.store_id}`}
-            className="flex w-fit items-center gap-4 rounded-lg border p-2"
+            className="flex w-fit items-center gap-4 rounded-lg border p-2 "
           >
             <Image
               src={`${NEXT_PUBLIC_BASE_API_URL}/images/${details.category.image?.name}`}

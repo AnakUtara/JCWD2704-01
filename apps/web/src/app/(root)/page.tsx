@@ -7,24 +7,26 @@ import { Footer } from "@/components/footer";
 import { dummyPromotion } from "@/constants/promotion";
 import { axiosInstanceSSR } from "@/lib/axios.server-config";
 import { TCategory } from "@/models/category.model";
+import { Suspense } from "react";
+import Spinner from "@/components/ui/spinner";
 
 export const revalidate: Revalidate = 900;
 
 export default async function Home() {
-  const response = await axiosInstanceSSR().get("/categories/category-list");
-  const categories = response.data.categories as TCategory[];
-
   return (
     <>
       <Header />
-      <main className="size-full min-h-screen">
+      <main className="size-full min-h-screen space-y-6 pb-6">
         <section className="container">
           <Promotion datas={dummyPromotion} />
         </section>
 
-        <div className="size-full px-4">
-          <Section className="h-screen w-full">
-            <Category categories={categories} />
+        <div className="size-full px-4 md:px-0">
+          <Section className="w-full space-y-4 py-4">
+            <h1 className="mx-auto max-w-screen-md text-3xl font-bold leading-tight md:text-4xl lg:leading-[1.1]">Category</h1>
+            <Suspense fallback={<Spinner />}>
+              <Category  />
+            </Suspense>
           </Section>
         </div>
       </main>

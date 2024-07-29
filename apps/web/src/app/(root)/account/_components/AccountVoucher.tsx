@@ -23,7 +23,7 @@ export const AccountVoucher = () => {
             <span className="inline-block font-medium">
               Farm2Door <span className="text-primary">Voucher</span>
             </span>
-            <span className="inline-block text-muted-foreground">{user.promotions.length} Voucher</span>
+            <span className="inline-block text-muted-foreground">{user.promotions?.length} Voucher</span>
           </p>
         </Link>
 

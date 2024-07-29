@@ -15,9 +15,11 @@ export async function middleware(request: NextRequest) {
     const isRequiredLogin = requiredLogin.includes(pathname);
 
     if (isRequiredLogin && !user) return NextResponse.redirect(new URL("/", request.url));
-    if (!user && pathname.includes("login")) return response;
+    if (!user && pathname.includes("/login")) return response;
+    if (!user?.addresses.length && pathname.includes("/cart")) return NextResponse.redirect(new URL("/account/address", request.url));
 
     if (!user || (user?.role === "customer" && pathname.startsWith("/dashboard"))) return NextResponse.redirect(new URL("/", request.url));
+    if (!user || (user?.role !== "customer" && pathname.startsWith("/account"))) return NextResponse.redirect(new URL("/", request.url));
 
     return response;
   } catch (error) {

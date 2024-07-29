@@ -1,13 +1,18 @@
 import usePlacesAutocomplete, { getGeocode } from "use-places-autocomplete";
 import { Input } from "../ui/input";
 import { ChangeEvent, useState } from "react";
+import { cn } from "@/lib/utils";
 
 export const PlacesAutoComplete = ({
   location,
   onAddressSelect,
+  className,
+  label,
 }: {
   location: google.maps.GeocoderResult | null;
   onAddressSelect: (address: string) => void;
+  label?: string;
+  className?:string
 }) => {
   const placeholder = location?.address_components.find((loc) => loc.types[0] === "route")?.short_name;
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -50,7 +55,8 @@ export const PlacesAutoComplete = ({
   };
 
   return (
-    <div className="relative space-y-4">
+    <div className={cn("relative", className)}>
+      {label && <label>{label}</label>}
       <Input value={value} disabled={!ready} onChange={handleChange} placeholder={placeholder} />
 
       {status === "OK" && <ul className="absolute z-10 w-full rounded-md border bg-background p-1 shadow-lg">{renderSuggestions()}</ul>}

@@ -1,5 +1,6 @@
 import { StockHistoryController } from '@/controllers/stockHistory.controller';
 import storeController from '@/controllers/store.controller';
+import storeManagementController from '@/controllers/storeManagement.controller';
 import { StoreStockController } from '@/controllers/storeStock.controller';
 import { getNearestStoreSchema } from '@/libs/zod-schemas/store.schema';
 import { checkIsStockAssigned, checkIsStockExist, validateInitStock, validateUpdateStock } from '@/middlewares/store.middleware';
@@ -26,6 +27,11 @@ export class StoreRouter {
     this.router.get('/stocks/histories', this.stockHistoryController.getStockHistories);
     this.router.post('/stocks', checkIsStockAssigned, validateInitStock, this.storeStockController.initStock);
     this.router.patch('/stocks/:id', checkIsStockExist, validateUpdateStock, this.storeStockController.updateStock);
+
+    // TODO: CRUD Store
+    this.router.post('/v1', userMiddleware.accessToken, storeManagementController.create);
+    this.router.patch('/v1', userMiddleware.accessToken, storeManagementController.update);
+    this.router.delete('/v1', userMiddleware.accessToken, storeManagementController.delete);
   }
   getRouter(): Router {
     return this.router;

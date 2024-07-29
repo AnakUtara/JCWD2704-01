@@ -15,8 +15,9 @@ export const updateCart = async ({ store_stock_id, quantity = 0 }: UpdateCartPar
         store_stock_id,
         quantity,
       });
+  
   } catch (error) {
     throw error;
   }
-  revalidatePath("/[userId]/cart", "page");
+  revalidatePath("/[userId]/cart", "layout");
 };

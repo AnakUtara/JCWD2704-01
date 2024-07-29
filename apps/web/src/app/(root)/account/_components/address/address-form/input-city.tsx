@@ -58,6 +58,7 @@ export const AddressCityInput = ({
                       <CommandItem
                         value={city.city_name}
                         key={city.city_id}
+                        className="gap-2 px-0"
                         onSelect={() => {
                           form.setValue("city_id", city.city_id.toString());
                           ref.current?.click();

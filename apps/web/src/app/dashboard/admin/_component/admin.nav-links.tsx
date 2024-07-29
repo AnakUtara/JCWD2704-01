@@ -30,6 +30,7 @@ export default function AdminNavLinks({}: Props) {
       </Link>
       {links.map(({ name, href }) => (
         <Link
+          key={name}
           href={`${href}${searchParams}`}
           className={cn(
             pathname === href ? "border-b-2 border-primary font-bold text-foreground" : "text-muted-foreground",
