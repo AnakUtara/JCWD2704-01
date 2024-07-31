@@ -22,7 +22,7 @@ export class StoreService {
         sin(radians(latitude))
       )
     ) AS distance
-    FROM Addresses
+    FROM addresses
     WHERE type = "store"
     ORDER BY distance
     LIMIT 1;

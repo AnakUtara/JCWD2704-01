@@ -1,11 +1,11 @@
-import { defineConfig } from 'cypress';
-
-export default defineConfig({
-  component: {
-    devServer: {
-      framework: 'next',
-      bundler: 'webpack',
-    },
-    specPattern: '**/*.{spec,test}.{js,ts,jsx,tsx}',
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  images: {
+    remotePatterns: [{ hostname: "th.bing.com" }, { protocol: "http", hostname: process.env.NEXT_PUBLIC_IMAGES_HOSTNAME }],
   },
-});
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
+  },
+};
+
+module.exports = nextConfig;

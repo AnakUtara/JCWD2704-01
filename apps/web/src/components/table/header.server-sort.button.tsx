@@ -2,7 +2,7 @@
 import { ChevronsUpDown } from "lucide-react";
 import { Button } from "../ui/button";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type Props = {
   name: string;

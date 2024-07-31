@@ -23,7 +23,7 @@ export default async function Home() {
           <Section className="w-full space-y-4 py-4">
             <h1 className="mx-auto max-w-screen-md text-3xl font-bold leading-tight md:text-4xl lg:leading-[1.1]">Category</h1>
             <Suspense fallback={<Spinner />}>
-              <Category  />
+              <Category />
             </Suspense>
           </Section>
         </div>

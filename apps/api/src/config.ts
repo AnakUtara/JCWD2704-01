@@ -25,7 +25,6 @@ export const RAJAONGKIR_API_KEY = process.env.RAJAONGKIR_API_KEY || '';
 
 export const MIDTRANS_API = process.env.MIDTRANS_SANDBOX_API_URL || '';
 export const MIDTRANS_SERVER_KEY = process.env.MIDTRANS_DEV_SERVER_KEY || '';
-
 export const corsOptions: CorsOptions = {
   origin: [`${process.env.CORS}`],
   credentials: true,

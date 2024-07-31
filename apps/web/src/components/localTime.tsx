@@ -16,5 +16,5 @@ export default function LocalTime({ time, option }: { time: Date; option?: Intl.
     hourCycle: "h23",
     timeZoneName: "shortOffset",
   };
-  return <>{time.toLocaleDateString(a, option)}</>;
+  return <>{new Date(time).toLocaleDateString(a, option)}</>;
 }

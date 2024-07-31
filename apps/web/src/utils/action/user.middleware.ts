@@ -1,6 +1,5 @@
 import { NEXT_PUBLIC_BASE_API_URL } from "@/config/config";
 import { TUser } from "@/models/user.model";
-import { UserType } from "@/types/user.type";
 import { jwtDecode } from "jwt-decode";
 import type { NextResponse } from "next/server";
 
@@ -22,7 +21,7 @@ export const getUserSession = async (res: NextResponse<unknown>, refresh_token: 
       return null;
     }
     res.cookies.set("access_token", data.accessToken);
-    const user = jwtDecode(data.accessToken) as UserType;
+    const user = jwtDecode(data.accessToken) as TUser;
 
     return user;
   } catch (error) {

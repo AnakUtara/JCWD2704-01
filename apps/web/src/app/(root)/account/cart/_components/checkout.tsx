@@ -4,19 +4,16 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { useCheckout } from "@/stores/checkout";
 import { toIDR } from "@/utils/toIDR";
 import dynamic from "next/dynamic";
-import { useState } from "react";
 
 export function Checkout() {
   const { total, list } = useCheckout((s) => {
     const list = s.list;
     return { total: s.listTotal(list), list };
   });
-  const [modal, setModal] = useState(false);
   const CheckoutModal = dynamic(() => import("./checkoutModal"));
-  const Modal = dynamic(() => import("@/components/Modal"));
   return (
     <Dialog>
-      <div className="container sticky bottom-0 z-20 w-full md:rounded-t-md border bg-white md:fixed md:bottom-10 md:left-1/2 md:-translate-x-1/2">
+      <div className="container sticky bottom-0 z-20 w-full border bg-white md:fixed md:bottom-10 md:left-1/2 md:-translate-x-1/2 md:rounded-t-md">
         <div className="flex w-full items-center justify-between px-6 py-6">
           <p className="flex gap-1">
             <span className="block text-muted-foreground">Total:</span>
@@ -29,11 +26,6 @@ export function Checkout() {
           </DialogTrigger>
         </div>
       </div>
-      {/* {modal && (
-        <Modal isOpen={modal} onClose={() => setModal(false)}>
-          <CheckoutModal />
-        </Modal>
-      )} */}
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Checkout</DialogTitle>

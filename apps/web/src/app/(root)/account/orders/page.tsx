@@ -15,29 +15,27 @@ export default function Page({ searchParams }: Props) {
     <main className="flex h-screen flex-col bg-secondary">
       {/* Fillter */}
 
-      <section className="container flex flex-col md:flex-row gap-4">
-        <div className="flex w-full flex-col">
+      <section className="container flex flex-col md:flex-row">
+        <div className="my-2 flex w-full items-center justify-center gap-x-2 px-2">
           <Label htmlFor="inv" className="hidden sm:block">
             Search by Invoice:
           </Label>
-          <FillterInput name="inv" queryKey="inv" className="w-full" placeholder="Invoice" />
+          <FillterInput name="inv" queryKey="inv" className="w-full max-w-[360px]" placeholder="Search by invoice" />
         </div>
         <div className="flex w-full flex-col">
           <div>
             <Label htmlFor="product" className="hidden sm:block">
               Product
             </Label>
-            <FillterInput name="product" queryKey="pn" placeholder="Product Name" />
+            <FillterInput name="product" queryKey="pn" placeholder="Search by Product Name" />
           </div>
-          <div className="flex">
-            <div>
-              <Label htmlFor="before">Before</Label>
-              <FillterDateTime queryKey="before" />
-            </div>
-            <div>
-              <Label htmlFor="after">After</Label>
-              <FillterDateTime name="after" queryKey="after" />
-            </div>
+          <div>
+            <Label htmlFor="before">Before</Label>
+            <FillterDateTime defaultV={new Date().getTime() - 3600000 * 24 * 365} queryKey="before" />
+          </div>
+          <div>
+            <Label htmlFor="after">After</Label>
+            <FillterDateTime name="after" queryKey="after" />
           </div>
         </div>
       </section>

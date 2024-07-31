@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 
 export const AddressDetailForm = ({ cities }: { cities: CityType[] }) => {
   const { user } = useAuthStore();
-  const router = useRouter()
+  const router = useRouter();
   const { results, latLng } = useLocation();
   const form = useForm<UserCreateAddressType>({
     resolver: zodResolver(userCreateAddress),

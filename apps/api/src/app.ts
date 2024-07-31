@@ -18,6 +18,7 @@ import addressRouter from './routers/address.router';
 import promotionRouter from './routers/promotion.router';
 import { AxiosError } from 'axios';
 import userRouter from './routers/user.router';
+import { JsonWebTokenError } from 'jsonwebtoken';
 import { checkVoucherExpiryScheduler } from './libs/cron/schedulers';
 
 export default class App {
@@ -48,6 +49,9 @@ export default class App {
     // error
     this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
       console.error('Error : ', err.stack);
+      if(err instanceof JsonWebTokenError){
+        res.status(400).send(err.message)
+      }
       if (err instanceof ZodError) {
         const errorMessage = err.errors.map((err) => ({
           message: `${err.path.join('.')} is ${err.message}`,

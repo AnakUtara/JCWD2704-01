@@ -32,12 +32,13 @@ export const rajaOngkirCostParamSchema = z.object({
 });
 
 export const getOrderQuerySchema = z.object({
-  before: z.coerce.date().optional(),
-  after: z.coerce.date().optional(),
+  before: z.coerce.number().optional(),
+  after: z.coerce.number().optional(),
   asc: z.enum(['asc', 'desc']).optional(),
   store_id: z.coerce.string().optional(),
   pn: z.coerce.string().optional(),
   inv: z.coerce.string().optional(),
+  page_tab1: z.coerce.number().optional(),
 });
 
 export const getSalesReportSchema = z.object({

@@ -9,13 +9,14 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableFooter, TableRow } from "@/components/ui/table";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { createOrderSchema } from "@/schemas/order.scema";
-import { z } from "zod";
+import { promise, z } from "zod";
 import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
 import { TVoucher } from "../_model/props";
 import LocalTime from "@/components/localTime";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PopoverClose } from "@radix-ui/react-popover";
+import { updateCart } from "@/actions/updateCart";
 
 export default function CheckoutModal() {
   const { list, listTotal, weight, origin, removeAllList } = useCheckout((s) => {
@@ -78,6 +79,7 @@ export default function CheckoutModal() {
     if (!selectedService) return;
     const data: z.infer<typeof createOrderSchema> = {
       store_id: origin,
+      promotion_id: selectedVoucher?.promotion_id,
       destination_id: `${user.addresses[0].id}`,
       courier: courier as "jne" | "pos" | "tiki",
       courier_service: selectedService.name,
@@ -90,6 +92,11 @@ export default function CheckoutModal() {
       removeAllList();
       const order = await axiosInstanceCSR().post("/order", createOrderSchema.parse(data));
       alert("transaction success");
+      try {
+        await Promise.all(data.req_products.map(async ({ id }) => updateCart({ store_stock_id: id, quantity: 0 })));
+      } catch (error) {
+        alert("update cart fail");
+      }
       router.push("/account/orders/" + order.data.data.inv_no);
     } catch (error) {
       alert("checkout failed");
@@ -100,6 +107,17 @@ export default function CheckoutModal() {
     setSelectedService(null);
   }, [courier]);
 
+  useEffect(() => {
+    setSelectedVoucher(null);
+  }, [selectedService]);
+
+  useEffect(() => {
+    if (!selectedVoucher) return;
+    fetchApplyCoucher(selectedVoucher.promotion_id);
+  }, [selectedVoucher?.promotion_id]);
+
+  const deliveryCost = selectedService?.cost || 0;
+  const promotionDiscount = selectedVoucher?.result?.discount || 0;
   return (
     <div className="flex w-full max-w-md flex-col items-center">
       <Table className="my-4">
@@ -112,13 +130,6 @@ export default function CheckoutModal() {
           <TableRow>
             <TableCell>Courier</TableCell>
             <TableCell>
-              {/* <select defaultValue={courier} onChange={(e) => setCourier(e.target.value)} className="w-full">
-                {["jne", "tiki", "pos"].map((e, i) => (
-                  <option key={i} value={e}>
-                    {e.toUpperCase()}
-                  </option>
-                ))}
-              </select> */}
               <Select defaultValue={courier} onValueChange={(val) => setCourier(val)}>
                 <SelectTrigger>
                   <SelectValue placeholder="JNE" />
@@ -180,37 +191,44 @@ export default function CheckoutModal() {
             <TableCell>Select Voucher</TableCell>
             <TableCell>
               <Popover>
-                <PopoverTrigger asChild onClick={fetchVouchers}>
-                  <Button disabled={!Boolean(selectedService)}>Select Voucher</Button>
+                <PopoverTrigger asChild onClick={fetchVouchers} className="w-full">
+                  <Button variant="outline" className={selectedService?.name && "text-left"} disabled={!selectedService}>
+                    {!selectedVoucher?.promotion_id ? (
+                      <>Select Voucher</>
+                    ) : (
+                      <span>
+                        <span>{selectedVoucher.promotion_id}</span>
+                      </span>
+                    )}
+                  </Button>
                 </PopoverTrigger>
                 <PopoverContent>
-                  {voucherList == null ? (
-                    <h1>Loading...</h1>
-                  ) : (
-                    <ul className="max h-[25vh] overflow-auto">
-                      {voucherList.length < 1 ? (
-                        <h1>You dont have any vouchers</h1>
-                      ) : (
-                        voucherList?.map((e, i) => (
-                          <li key={i} className="my-2">
-                            <div
-                              // disabled={selectedVoucher?.promotion_id == e.id}
-                              className="size-full"
-                              onClick={() => fetchApplyCoucher(e.id)}
-                            >
-                              <span className="flex flex-col">
-                                <span className="block">{e.title}</span>
-                                <span className="block">{e.min_transaction}</span>
-                                <span className="block">
-                                  <LocalTime time={e.expiry_date} />
-                                </span>
-                              </span>
-                            </div>
-                          </li>
-                        ))
-                      )}
-                    </ul>
-                  )}
+                  {services == null && <h1>Loading...</h1>}
+                  <ul>
+                    {voucherList?.map((e, i) => (
+                      <li key={i} className="my-2">
+                        <PopoverClose asChild>
+                          <Button
+                            disabled={selectedVoucher?.promotion_id == e.id}
+                            variant="ghost"
+                            className="flex h-max w-full flex-col items-start gap-2 text-sm text-muted-foreground"
+                            onClick={() => setSelectedVoucher({ promotion_id: e.id })}
+                          >
+                            <span className="flex w-full items-center justify-between">
+                              <span className="block">{e.description}</span>
+                              {e.type == "discount" || e.type == "referral_voucher" ? (
+                                <span className="block">{e.amount + "%"}</span>
+                              ) : undefined}
+                            </span>
+                            {e.type == "buy_get" ? "" : <span>toIDR(e.amount)</span>}
+                            <span className="block self-end text-secondary-foreground">
+                              <LocalTime time={e.expiry_date} />
+                            </span>
+                          </Button>
+                        </PopoverClose>
+                      </li>
+                    ))}
+                  </ul>
                 </PopoverContent>
               </Popover>
             </TableCell>
@@ -218,7 +236,7 @@ export default function CheckoutModal() {
 
           <TableRow>
             <TableCell>Shipping Cost</TableCell>
-            <TableCell>{toIDR(selectedService?.cost)}</TableCell>
+            <TableCell>{toIDR(deliveryCost)}</TableCell>
           </TableRow>
 
           <TableRow>
@@ -228,13 +246,13 @@ export default function CheckoutModal() {
 
           <TableRow>
             <TableCell>Discount</TableCell>
-            <TableCell>{toIDR(0)}</TableCell>
+            <TableCell>{toIDR(promotionDiscount)}</TableCell>
           </TableRow>
         </TableBody>
         <TableFooter>
           <TableRow>
             <TableCell>Total Price</TableCell>
-            <TableCell>{toIDR((selectedService?.cost || 0) + listTotal)}</TableCell>
+            <TableCell>{toIDR(deliveryCost + listTotal - promotionDiscount)}</TableCell>
           </TableRow>
         </TableFooter>
       </Table>

@@ -1,5 +1,6 @@
 import { TMidtransPaymenLink } from '@/models/midtrans.model';
 import prisma from '@/prisma';
+import { calculateDiscount } from '@/utils/calculateDiscount';
 import { AuthError, NotFoundError } from '@/utils/error';
 import { createMidtransPaymenLink } from '@/utils/other-api/midtrans';
 import { Request } from 'express';
@@ -23,11 +24,11 @@ export class OrderMidtransService {
     const { email, full_name, phone_no } = order.user;
     if (!full_name || !phone_no) throw new AuthError('Need to fill phone number and fullname in profile to gain access midtrans transaction');
 
-    const total = order.order_details.reduce((p, s) => p + s.quantity * (s.unit_price - s.discount), order.shipping_cost) - order.discount;
-    console.log(total);
+    const total =
+      order.order_details.reduce((p, s) => p + s.quantity * calculateDiscount(s.unit_price, s.discount), order.shipping_cost) - order.discount;
     const allProducts = order.order_details.map((e) => ({
       id: e.store_stock_id,
-      price: e.unit_price - e.discount,
+      price: calculateDiscount(e.unit_price, e.discount),
       quantity: e.quantity,
       name: e.store_stock.product.product.name,
       category: e.store_stock.product.product.category.name,

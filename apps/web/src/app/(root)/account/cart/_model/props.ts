@@ -13,5 +13,6 @@ export type TVoucher = {
   description?: string;
   amount: number;
   min_transaction: number;
+  type: string;
   expiry_date: Date;
 };

@@ -16,6 +16,7 @@ export async function middleware(request: NextRequest) {
     const isRequiredAdminLogin = adminRoutes.includes(pathname);
 
     // TODO: User protection routes
+    if (!user?.addresses.length && pathname.startsWith("/account/cart")) return NextResponse.redirect(new URL("/account/address"));
     if (!user && isRequiredLogin) return NextResponse.redirect(new URL("/auth", request.url));
     if (user && pathname.startsWith("/auth")) return NextResponse.redirect(new URL("/", request.url));
     if (!user?.addresses.length && pathname.includes("/categories")) return NextResponse.redirect(new URL("/account/address", request.url));
@@ -23,15 +24,11 @@ export async function middleware(request: NextRequest) {
     // Super & Store admin protection routes
     if ((!user || user.role === Role.customer) && isRequiredAdminLogin) return NextResponse.redirect(new URL("/", request.url));
 
-    // if (!user?.addresses.length && pathname.startsWith("/account/cart"))
-    //   return NextResponse.redirect(new URL("/account/address", request.url));
-    // if (user && pathname === "/auth") return NextResponse.redirect(new URL("/", request.url));
-
-    // if (!user || (user?.role === "customer" && pathname.startsWith("/dashboard"))) return NextResponse.redirect(new URL("/", request.url));
+    if (!user || (user?.role === "customer" && pathname.startsWith("/dashboard"))) return NextResponse.redirect(new URL("/", request.url));
     return response;
   } catch (error) {
-    // console.log(error);
-    // return NextResponse.redirect(new URL("/", request.url));
+    console.log(error);
+    return NextResponse.redirect(new URL("/", request.url));
   }
 }
 

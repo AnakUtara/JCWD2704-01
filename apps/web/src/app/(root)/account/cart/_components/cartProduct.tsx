@@ -22,7 +22,7 @@ export function CartProduct({ cartProduct }: { cartProduct: TCart }) {
   const store_id = cartProduct.store_stock.store_id;
   const { user } = useAuthStore();
   const sp = useSearchParams();
-  const [add, remove, list, nearestStore, setOrigin] = useCheckout((s) => [s.add, s.remove, s.list, s.origin, s.setOrigin]);
+  const [add, remove, list, nearestStore] = useCheckout((s) => [s.add, s.remove, s.list, s.origin]);
   const hide = sp.get("store_id") != "all" ? cartProduct.store_stock.store_id !== nearestStore : false;
   const ref = useRef<HTMLInputElement>(null);
   const [isChecked, setIsChecked] = useState(false);
@@ -60,20 +60,6 @@ export function CartProduct({ cartProduct }: { cartProduct: TCart }) {
   }, [isChecked]);
 
   const checked = useMemo(() => Boolean(list.find((e) => e.store_stock_id == cartProduct.store_stock_id)), [list]);
-
-  useEffect(() => {
-    const fetchStore = async () => {
-      const store_id = await axiosInstanceCSR()
-        .get("/store/nearest", { params: { address_id: user.addresses[0].id } })
-        .then((r) => r.data.data.id)
-        .catch((e) => {
-          console.log(e);
-          return "";
-        });
-      setOrigin(store_id);
-    };
-    fetchStore();
-  }, [user]);
 
   return (
     <Card
