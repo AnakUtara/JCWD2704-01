@@ -19,7 +19,7 @@ export default async function AuthPage() {
               Sign in
             </TabsTrigger>
             <TabsTrigger value="singup" className="w-full">
-              Sing up
+              Sign up
             </TabsTrigger>
           </TabsList>
           <TabsContent value="signin">

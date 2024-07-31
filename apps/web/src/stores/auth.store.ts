@@ -25,6 +25,7 @@ export const initAdmin: AuthState = {
     id: "",
     email: "",
     avatar_id: "",
+    avatar: null,
     reset_token: "",
     referral_code: "",
     reference_code: "",

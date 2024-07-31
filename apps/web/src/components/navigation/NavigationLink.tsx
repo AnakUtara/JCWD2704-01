@@ -14,7 +14,7 @@ const links: { href: string; icon: (className: string) => JSX.Element }[] = [
     icon: (className) => <Home className={className} />,
   },
   {
-    href: "/search",
+    href: "/categories",
     icon: (className) => <Search className={className} />,
   },
   {
@@ -26,6 +26,7 @@ const links: { href: string; icon: (className: string) => JSX.Element }[] = [
 const navigation = ["/", "/account"];
 
 export const NavigationLink = () => {
+  const { user } = useAuthStore();
   const pathname = usePathname();
   const [path, setPath] = useState("");
 
@@ -58,11 +59,15 @@ export const NavigationLink = () => {
                     onMouseEnter={() => setPath(link.href)}
                     className="relative h-full rounded-md transition-all ease-in-out active:bg-secondary-foreground/5 active:shadow-inner"
                   >
-                    <Link href={link.href === "/home" ? "/" : link.href} key={idx} className="flex h-full items-center justify-center px-4">
+                    <Link
+                      href={link.href === "/home" ? "/" : link.href === "/account" && !user.id ? "/auth" : link.href}
+                      key={idx}
+                      className="flex h-full items-center justify-center px-4"
+                    >
                       {link.icon("size-8")}
                     </Link>
 
-                    {path.startsWith(link.href) && (
+                    {path === link.href && (
                       <motion.span
                         layoutId="indicator"
                         transition={{ type: "tween", duration: 0.3, ease: "easeInOut" }}

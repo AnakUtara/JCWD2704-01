@@ -12,13 +12,14 @@ import { fetchCategories, fetchSubCategoriesWithCatID } from "@/utils/fetch/serv
 import { variantsColumns } from "./variants.column";
 import VariantCreateForm from "./_components/variant.create.form";
 import AdminTabDialog from "../_component/admin.tab.dialog";
+import { TCategory } from "@/models/category.model";
 
 type Props = { searchParams: SearchParams };
 export default async function DashboardProductsPage({ searchParams }: Props) {
   const products = await fetchProducts(searchParams);
   const productIdsAndNames = await fetchProductIdsAndNames(searchParams);
   const variants = await fetchProductsWithVariants(searchParams);
-  const categories = await fetchCategories();
+  const categories = (await fetchCategories()) as TCategory[];
   const subCatsByCatID = await fetchSubCategoriesWithCatID(searchParams);
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:px-0 md:py-8">
@@ -44,7 +45,14 @@ export default async function DashboardProductsPage({ searchParams }: Props) {
               </div>
             }
           >
-            <DataTable placeholder="Filter products..." setSearch="search_tab1" columns={productsColumns} data={products.data} />
+            <DataTable
+              layoutId="product"
+              isVariant
+              placeholder="Filter products..."
+              setSearch="search_tab1"
+              columns={productsColumns}
+              data={products.data}
+            />
           </Suspense>
           <div className="flex w-full justify-center">
             <Pagination getPage="page_tab1" totalPages={products.totalPages} />
@@ -67,7 +75,14 @@ export default async function DashboardProductsPage({ searchParams }: Props) {
               </div>
             }
           >
-            <DataTable setSearch="search_tab2" placeholder="Filter variants..." columns={variantsColumns} data={variants.data} />
+            <DataTable
+              layoutId="variant"
+              isVariant
+              setSearch="search_tab2"
+              placeholder="Filter variants..."
+              columns={variantsColumns}
+              data={variants.data}
+            />
           </Suspense>
           <div className="flex w-full justify-center">
             <Pagination getPage="page_tab2" totalPages={variants.totalPages} />

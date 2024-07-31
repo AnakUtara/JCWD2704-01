@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useMemo,  useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CircleF, GoogleMap, MarkerF } from "@react-google-maps/api";
 
 import { useLocation } from "@/stores/latLng.store";
 import { mapId } from "./maps.config";
 import { cn } from "@/lib/utils";
-import { Circle,  LocateIcon } from "lucide-react";
+import { Circle, LocateIcon } from "lucide-react";
 import { PlacesAutoComplete } from "./PlacesAutoComplete";
 import { getGeocode, getLatLng } from "use-places-autocomplete";
 import { Button } from "../ui/button";
@@ -57,7 +57,7 @@ export const Maps = ({
     const newCenter = map?.getCenter()?.toJSON() || center;
     setCenter(newCenter);
   };
-  
+
   useEffect(() => {
     setCenter({ lat, lng });
     // setLocation(center)
@@ -66,7 +66,7 @@ export const Maps = ({
   useEffect(() => {
     if (map && center) {
       map.setCenter(center);
-      setLocation(center)
+      setLocation(center);
     }
   }, [map, center]);
 
@@ -100,9 +100,9 @@ export const Maps = ({
           center={mapCenter}
           onLoad={onLoad}
           onDragEnd={onDragEnd}
-          mapContainerClassName="size-full relative cursor-zoom-in"
+          mapContainerClassName="size-full relative"
         >
-          <Circle className="absolute left-1/2 top-1/2 z-10 w-fit -translate-x-1/2 -translate-y-1/2 fill-primary/50 stroke-primary/90" />
+          <Circle className="pointer-events-none absolute left-1/2 top-1/2 z-10 w-fit -translate-x-1/2 -translate-y-1/2 fill-primary/50 stroke-primary/90" />
           {marker && <MarkerF position={center} draggable />}
 
           {radiusMarker && (

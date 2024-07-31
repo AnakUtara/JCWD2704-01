@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 
-import { AdminInfo, stepThreeSchema, stepTwoSchema } from "@/schemas/store.schema";
+import { AdminInfo, stepTwoSchema } from "@/schemas/store.schema";
 import { CreateStoreRoutes, FormErrors } from "@/types/store.action.types";
 
 export const stepThreeFormAction = (
@@ -11,7 +11,7 @@ export const stepThreeFormAction = (
   selectedAdminId: (string | undefined)[],
   selectedAdminInfo: AdminInfo[],
 ): FormErrors | undefined => {
-  const validated = stepThreeSchema.safeParse({
+  const validated = stepTwoSchema.safeParse({
     selectedAdminId,
     selectedAdminInfo,
   });
@@ -24,6 +24,6 @@ export const stepThreeFormAction = (
     console.log(errors);
     return errors;
   } else {
-    redirect(CreateStoreRoutes.STEP_FOUR);
+    redirect(CreateStoreRoutes.STEP_THREE);
   }
 };

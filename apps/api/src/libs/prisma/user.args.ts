@@ -20,7 +20,7 @@ export function userFindMany(role: Role, req: Request): Prisma.UserFindManyArgs 
     orderBy: { created_at: 'desc' },
     include: {
       addresses: { include: { city: true } },
-      store: true,
+      store: { include: { address: { include: { city: true } } } },
     },
     omit: {
       password: true,

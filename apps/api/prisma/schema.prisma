@@ -10,7 +10,6 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["omitApi", "fullTextSearch"]
-  previewFeatures = ["omitApi", "fullTextSearch"]
 }
 
 datasource db {
@@ -54,31 +53,7 @@ model User {
   avatar Image? @relation(fields: [avatar_id], references: [id])
   store  Store? @relation(fields: [store_id], references: [address_id])
 
-  id        String  @id @default(cuid())
-  avatar_id String? @unique
-  store_id  String?
-
-  email          String    @unique @db.VarChar(85)
-  phone_no       String?   @unique @db.VarChar(25)
-  password       String?
-  reset_token    String?   @db.Text
-  referral_code  String?   @unique
-  reference_code String?   @db.VarChar(100)
-  is_verified    Boolean   @default(false)
-  is_banned      Boolean   @default(false)
-  full_name      String?   @db.VarChar(100)
-  dob            DateTime?
-
-  role       Role     @default(customer)
-  gender     Gender?  @default(male)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-
-  avatar Image? @relation(fields: [avatar_id], references: [id])
-  store  Store? @relation(fields: [store_id], references: [address_id])
-
   addresses       Address[]
-  cart            Cart[]
   cart            Cart[]
   promotions      Promotion[]
   customer_orders CustomerOrders[]
@@ -88,24 +63,20 @@ model User {
 }
 
 model Promotion {
-  id       String  @id @default(cuid())
-  user_id  String?
-  image_id String? @unique
-
-  title           String   @db.VarChar(100)
-  description     String
-  amount          Float    @db.Double
-  min_transaction Float    @db.Double
-  expiry_date     DateTime
-  is_valid        Boolean
-
-  type       PromoType
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-
-  user  User?  @relation(fields: [user_id], references: [id])
-  image Image? @relation(fields: [image_id], references: [id])
-
+  id               String           @id @default(cuid())
+  user_id          String?
+  image_id         String?          @unique
+  title            String           @db.VarChar(100)
+  description      String
+  amount           Float            @db.Double
+  min_transaction  Float            @db.Double
+  expiry_date      DateTime
+  is_valid         Boolean          @default(true)
+  type             PromoType
+  created_at       DateTime         @default(now())
+  updated_at       DateTime         @updatedAt
+  user             User?            @relation(fields: [user_id], references: [id])
+  image            Image?           @relation(fields: [image_id], references: [id])
   customers_orders CustomerOrders[]
   variant_id       StoreStock[]
 
@@ -134,9 +105,9 @@ model Address {
   updated_at DateTime    @updatedAt
 
   user        User?           @relation(fields: [user_id], references: [id])
-  city        City            @relation(fields: [city_id], references: [city_id])
   origin      CustomerOrders? @relation("origin")
   destination CustomerOrders? @relation("destination")
+  city        City            @relation(fields: [city_id], references: [city_id])
 
   store Store[]
 
@@ -166,18 +137,16 @@ model City {
 }
 
 model Store {
-  address_id  String   @id @default(cuid())
-  schedule_id String?
-  is_deleted  Boolean  @default(false)
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
-
-  schedule StoreSchedule? @relation(fields: [schedule_id], references: [id])
-  address  Address        @relation(fields: [address_id], references: [id])
-
+  address_id      String           @id @default(cuid())
+  address         Address          @relation(fields: [address_id], references: [id])
   store_admin     User[]
   product_stock   StoreStock[]
+  schedule_id     String?
+  schedule        StoreSchedule?   @relation(fields: [schedule_id], references: [id])
   customer_orders CustomerOrders[]
+  is_deleted      Boolean          @default(false)
+  created_at      DateTime         @default(now())
+  updated_at      DateTime         @updatedAt
 
   @@index([address_id])
   @@map("stores")
@@ -341,9 +310,9 @@ enum PromoType {
   discount
   voucher
   cashback
-  cashback
   referral_voucher
   free_shipping
+  buy_get
 }
 
 model Cart {

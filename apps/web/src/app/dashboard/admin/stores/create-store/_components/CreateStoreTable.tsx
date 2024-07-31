@@ -36,12 +36,12 @@ export const CreateStoreTable = ({ data }: { data: { users: TUser[]; totalPage: 
           data={data.users}
           selectedData={(data) => {
             if (data.length) {
-              const selectedAdminId = data.map(({ id }) => id) as string[];
-              const selectedAdminInfo = data.map(({ full_name, email, gender, address }: AdminInfo) => ({
-                full_name,
-                email,
-                gender,
-                address,
+              const selectedAdminId = data.map((d) => d?.id) as string[];
+              const selectedAdminInfo = data.map((data: AdminInfo | undefined) => ({
+                address: data?.address,
+                full_name: data?.full_name,
+                email: data?.email,
+                gender: data?.gender,
               }));
               setSelectedId(selectedAdminId);
               setAdminInfo(selectedAdminInfo);

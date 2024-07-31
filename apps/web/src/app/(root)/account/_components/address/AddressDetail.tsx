@@ -10,7 +10,6 @@ export const AccountAddressDetail = ({ cities }: { cities: CityType[] }) => {
   const { results } = useLocation();
   const label = results?.address_components?.find((address) => address.types.find((type) => type === "administrative_area_level_2"));
 
-  
   return (
     <>
       <div className="h-[60%] w-full">

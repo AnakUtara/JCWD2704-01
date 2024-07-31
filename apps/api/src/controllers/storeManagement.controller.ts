@@ -3,27 +3,48 @@ import { Controller } from './index.types';
 import { messageResponse } from '@/utils/message';
 
 class StoreManagementController {
+  getById: Controller = async (req, res, next) => {
+    try {
+      const store = await storeManagementService.getById(req);
+      res.send({ ...store, ...messageResponse(`Success GET store id ${req.params.id}`) });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  get: Controller = async (req, res, next) => {
+    try {
+      const stores = await storeManagementService.get(req);
+      res.send({ ...stores, ...messageResponse('Success GET all stores') });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   create: Controller = async (req, res, next) => {
     try {
       const data = await storeManagementService.create(req);
-      console.log(data)
+      console.log(data);
       res.send(messageResponse('Success created store'));
     } catch (error) {
       next(error);
     }
   };
+
   update: Controller = async (req, res, next) => {
     try {
-      await storeManagementService.update(req);
-      res.send();
+      const update = await storeManagementService.update(req);
+      res.send(messageResponse('Success created store'));
     } catch (error) {
       next(error);
     }
   };
+
   delete: Controller = async (req, res, next) => {
     try {
+      const { id } = req.params;
       await storeManagementService.delete(req);
-      res.send();
+      res.send(messageResponse(`Success delete store ${id}`));
     } catch (error) {
       next(error);
     }

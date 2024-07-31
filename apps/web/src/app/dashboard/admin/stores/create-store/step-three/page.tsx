@@ -1,4 +1,4 @@
-import { StepFourForm } from "../_components/form/stepFourForm";
+import { StepFourForm } from "../_components/form/stepThreeForm";
 
 export default function DashboardCreateStoreStepFourPage() {
   return (

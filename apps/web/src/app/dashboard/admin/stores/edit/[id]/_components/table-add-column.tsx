@@ -1,12 +1,10 @@
-"use client";
-
 import HeaderSortButton from "@/components/table/header.sort.button";
+import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TUser } from "@/models/user.model";
-import { tableDateFormat } from "@/utils/formatter";
 import { ColumnDef } from "@tanstack/react-table";
 
-export const createStoreAdminSelectColumns: ColumnDef<TUser | undefined>[] = [
+export const storeAddColumnAdmin: ColumnDef<TUser>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -17,14 +15,10 @@ export const createStoreAdminSelectColumns: ColumnDef<TUser | undefined>[] = [
       />
     ),
     cell: ({ row }) => {
-      const store = row.original;
       return <Checkbox checked={row.getIsSelected()} onCheckedChange={(check) => row.toggleSelected(!!check)} aria-label="Select Row" />;
     },
-    enableSorting: false,
-    enableHiding: false,
   },
   {
-    id: "Fullname",
     accessorKey: "full_name",
     header: ({ column }) => <HeaderSortButton name="Full Name" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} />,
   },
@@ -38,25 +32,17 @@ export const createStoreAdminSelectColumns: ColumnDef<TUser | undefined>[] = [
     accessorFn: (user) => (user?.gender === "male" ? "Male" : "Female"),
   },
   {
-    accessorKey: "dob",
-    header: ({ column }) => <HeaderSortButton name="Date of birth" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} />,
-    cell: ({ row }) => new Intl.DateTimeFormat("id-ID", tableDateFormat).format(new Date(row.getValue("dob"))),
-  },
-  {
     accessorKey: "phone_no",
     header: ({ column }) => <HeaderSortButton name="Phone Number" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} />,
-    accessorFn: (user) => (user?.phone_no ? user.phone_no : "-"),
   },
   {
-    accessorKey: "addresses",
-    id: "address",
-    accessorFn: (user) => (user?.addresses?.length ? user.addresses[0]?.address : "-"),
-    header: "Address",
-  },
-  {
-    accessorKey: "addresses",
-    id: "details",
-    accessorFn: (user) => (user?.addresses?.length ? user.addresses[0]?.details : "-"),
-    header: "Details",
+    id: "store_id",
+    accessorKey: "store.address.city.city_name",
+    header: ({ column }) => <HeaderSortButton name="Store" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} />,
+    cell: ({ row }) => (
+      <div className="text-xs text-muted-foreground">
+        {row.getValue("store_id") ? <Badge variant='outline'>{row.getValue("store_id")} Store</Badge> : <span className="px-2.5 py-0.5">Not Set</span>}
+      </div>
+    ),
   },
 ];

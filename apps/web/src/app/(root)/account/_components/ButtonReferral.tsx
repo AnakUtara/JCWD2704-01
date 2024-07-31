@@ -13,7 +13,7 @@ export const ButtonReferral = () => {
   };
 
   return (
-    <Button variant="ghost" size="sm" className="space-x-1.5" onClick={handleCopy}>
+    <Button variant="ghost" size="sm" className="space-x-1.5 w-full" onClick={handleCopy}>
       <Copy className="size-4" />
       <span className="inline-block">{user.referral_code}</span>
     </Button>

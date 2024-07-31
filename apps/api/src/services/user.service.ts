@@ -5,7 +5,6 @@ import type { Request } from 'express';
 import { createToken } from '@/libs/jwt';
 import { comparePassword, hashPassword } from '@/libs/bcrypt';
 import { userAccessArgs, userCreateInput, userCreateVoucherInput, userUpdateArgs } from '@/constants/user.constant';
-import { userAccessArgs, userCreateInput, userCreateVoucherInput, userUpdateArgs } from '@/constants/user.constant';
 import { ACC_SECRET_KEY, FP_SECRET_KEY, REFR_SECRET_KEY, VERIF_SECRET_KEY } from '@/config';
 import {
   userForgotSchema,
@@ -17,20 +16,13 @@ import {
 } from '@/schemas/user.schema';
 import { CustomError } from '@/utils/error';
 import { verifyEmail, verifyEmailFP } from '@/templates';
-import { userDataImage } from '@/constants/image.constant';
 import { Prisma } from '@prisma/client';
 import { userDataImage } from '@/constants/image.constant';
-import { Prisma } from '@prisma/client';
 
 class UserService {
   async register(req: Request) {
     const file = req.file;
     const validate = userRegisterSchema.parse(req.body);
-    console.log(validate);
-    console.log(req.body);
-    const validate = userRegisterSchema.parse(req.body);
-    console.log(validate);
-    console.log(req.body);
     return await prisma.$transaction(async (tx) => {
       const checkUser = await tx.user.findFirst({ where: { email: validate.email } });
       const checkPhoneNo = await tx.user.findFirst({ where: { phone_no: validate.phone_no || '' } });
@@ -38,7 +30,6 @@ class UserService {
       if (checkUser) throw new CustomError('Email address is already associated with an existing account in the system.');
       if (checkPhoneNo) throw new CustomError('Phone Number is already associated with an existing account in the system.');
       if (validate.referrence_code) {
-        const checkCode = await tx.user.findFirst({ where: { referral_code: validate.referrence_code } });
         const checkCode = await tx.user.findFirst({ where: { referral_code: validate.referrence_code } });
         if (!checkCode) throw new CustomError('Referral invalid');
         data.reference_code = validate.referrence_code;
@@ -71,7 +62,6 @@ class UserService {
   async login(req: Request) {
     const { email, password } = userLoginSchema.parse(req.body);
     const user = await prisma.user.findUnique(userAccessArgs.unique(email));
-    const user = await prisma.user.findUnique(userAccessArgs.unique(email));
     if (!user?.password)
       throw new CustomError("We're sorry, the email address you entered is not registered in our system.", {
         cause: 'Please double-check the email address you entered and make sure there are no typos.',
@@ -93,7 +83,6 @@ class UserService {
 
   async authorization(req: Request) {
     return await prisma.$transaction(async (tx) => {
-      const user = await tx.user.findFirst(userAccessArgs.first(`${req.user?.id}`));
       const user = await tx.user.findFirst(userAccessArgs.first(`${req.user?.id}`));
       if (!user) throw new CustomError('Need to login');
       const { password: _password, ...data } = user;
@@ -117,13 +106,7 @@ class UserService {
       const findUnique = await tx.user.findFirst({ where: { phone_no: validate.phone_no } });
       if (findUnique?.phone_no === validate.phone_no) throw new CustomError('Phone Number is already exist');
       const user = await tx.user.update(userUpdateArgs({ id: `${req.user?.id}`, validate }));
-      const findUnique = await tx.user.findFirst({ where: { phone_no: validate.phone_no } });
-      if (findUnique?.phone_no === validate.phone_no) throw new CustomError('Phone Number is already exist');
-      const user = await tx.user.update(userUpdateArgs({ id: `${req.user?.id}`, validate }));
       if (file) {
-        if (!user.avatar_id) {
-          await tx.image.create({
-            data: await userDataImage(file, 'avatar', user),
         if (!user.avatar_id) {
           await tx.image.create({
             data: await userDataImage(file, 'avatar', user),
@@ -132,12 +115,9 @@ class UserService {
           await tx.image.update({
             where: { id: user.avatar_id },
             data: await userDataImage(file, 'avatar'),
-            where: { id: user.avatar_id },
-            data: await userDataImage(file, 'avatar'),
           });
         }
       }
-
 
       const { password: _password, ...data } = user;
       return { accessToken: createToken({ ...data }, ACC_SECRET_KEY, '15m') };
@@ -187,14 +167,7 @@ class UserService {
     });
   }
 
-  async deactive(req: Request) {
-    // await prisma.store.findMany({ where: { address: { city_id: 55 } } });
-    // return await prisma.product.findMany({ where: { variants: { some: { store_stock: { some: { store: { address: { city_id: 55 } } } } } } } });
-    return await prisma.product.findMany({
-      where: { variants: { some: { store_stock: { some: { store: { address: { city_id: 155 } } } } } }, is_deleted: false },
-      include: { category: { select: { name: true } }, variants: { select: { store_stock: true, images: { select: { name: true } } } } },
-    });
-  }
+  async deactive(req: Request) {}
 }
 
 export default new UserService();

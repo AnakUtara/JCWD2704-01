@@ -41,7 +41,13 @@ export default async function DashboarCategoriesPage({ searchParams }: Props) {
               </div>
             }
           >
-            <DataTable setSearch="search_tab1" placeholder="Filter categories..." columns={categoriesColumns} data={catDatas.categories} />
+            <DataTable
+              setSearch="search_tab1"
+              layoutId="categories"
+              placeholder="Filter categories..."
+              columns={categoriesColumns}
+              data={catDatas.categories}
+            />
           </Suspense>
           <div className="flex w-full justify-center">
             <Pagination getPage="page_tab1" totalPages={catDatas.totalPages} />
@@ -69,6 +75,7 @@ export default async function DashboarCategoriesPage({ searchParams }: Props) {
               placeholder="Filter sub-categories..."
               columns={subCategoriesColumns}
               data={subCats.subCategories}
+              layoutId="categories-variant"
             />
           </Suspense>
           <div className="flex w-full justify-center">

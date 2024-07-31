@@ -9,9 +9,6 @@ const defaultResultData: DefaultResultDataType = {
   city_id: undefined,
   longitude: undefined,
   latitude: undefined,
-  name: "",
-  start_time: "",
-  end_time: "",
   selectedAdminId: undefined,
   selectedAdminInfo: undefined
 };

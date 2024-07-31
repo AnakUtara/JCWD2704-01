@@ -12,12 +12,14 @@ export const CreateStoreSelectCity = ({
   onCitySelect,
   errorMsg,
   defaultValue,
+  label = "Store City",
 }: {
   cities: CityType[];
   className?: string;
   errorMsg?: string;
   onCitySelect?: (city_id: number) => void;
   defaultValue?: number;
+  label?: string;
 }) => {
   const [value, setValue] = useState(0);
   const ref = useRef<HTMLButtonElement>(null);
@@ -25,7 +27,7 @@ export const CreateStoreSelectCity = ({
   return (
     <div className={className}>
       <label htmlFor="city" className="text-lg font-medium">
-        Store City
+        {label}
       </label>
 
       <Popover>
@@ -35,7 +37,7 @@ export const CreateStoreSelectCity = ({
             id="city"
             variant="outline"
             role="combobox"
-            className={cn("w-full justify-start text-muted-foreground", errorMsg ? "text-destructive" : "")}
+            className={cn("w-full justify-start text-muted-foreground px-3 font-normal", value && 'text-foreground', errorMsg ? "text-destructive" : "")}
           >
             {defaultValue
               ? cities.find((city) => city.city_id === defaultValue)?.city_name

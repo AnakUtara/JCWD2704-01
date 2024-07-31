@@ -7,9 +7,26 @@ import useAuthStore from "@/stores/auth.store";
 import { AddressSetting } from "./AddressSetting";
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { useLocation } from "@/stores/latLng.store";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export const AccountAddress = () => {
   const { user } = useAuthStore();
+  const { isLoaded } = useLocation();
+  const { push } = useRouter();
+
+  useEffect(() => {
+    if (!isLoaded) {
+      push("/");
+      toast.warning("Cannot access location", {
+        description: "Please turn on your location or check your internet access, for further access.",
+        richColors: false,
+        position: "top-right",
+      });
+    };
+  }, [isLoaded]);
 
   if (!user.addresses?.length)
     return (

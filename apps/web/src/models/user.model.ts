@@ -1,5 +1,5 @@
 import { TAddress } from "./address.model";
-import { Cart } from "./cart.model";
+import { TCart } from "./cart.model";
 import { TStore } from "./store.model";
 
 export enum Role {
@@ -34,5 +34,5 @@ export type TUser = {
   store?: TStore | null;
   addresses: TAddress[] | [];
   promotions: PromotionType[] | [];
-  cart: Cart[] | [];
+  cart: TCart[] | [];
 };

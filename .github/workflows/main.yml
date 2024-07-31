@@ -20,7 +20,7 @@ jobs:
       - name: Build Project
         run: |
           npm install
-          npm run build
+          # npm run build
       - name: Deploy to Linode
         uses: appleboy/scp-action@master
         with:

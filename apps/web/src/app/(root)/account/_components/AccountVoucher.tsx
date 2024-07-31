@@ -11,7 +11,7 @@ export const AccountVoucher = () => {
   const { user } = useAuthStore();
   return (
     <Card className="mx-auto -mt-12 max-w-2xl items-center">
-      <CardContent className="flex items-center justify-between pt-6">
+      <CardContent className="flex flex-wrap items-center justify-between pt-6">
         <Link
           href="/"
           className="group flex items-center gap-6 rounded-md px-2.5 py-2 transition-all duration-300 hover:bg-secondary active:scale-95"
@@ -27,8 +27,8 @@ export const AccountVoucher = () => {
           </p>
         </Link>
 
-        <div className="text-end">
-          <p className="select-none px-3 text-sm text-muted-foreground">Referral No.</p>
+        <div className="w-full sm:w-fit sm:text-end space-y-2 sm:space-y-0">
+          <p className="hidden select-none px-3 text-sm text-muted-foreground sm:block">Referral No.</p>
           <ButtonReferral />
         </div>
       </CardContent>
