@@ -1,12 +1,12 @@
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useResultData } from "../CreateStoreProvider";
-import { ResultData } from "../../../../../../../schemas/store.schema";
+import { ResultData } from "@/schemas/store.schema";
 
 type InputProps = {
   label: string;
   placeholder?: string;
-  id: keyof ResultData;
+  id: keyof Pick<ResultData, 'details'>;
   description?: string;
   required?: boolean;
   pattern?: string;

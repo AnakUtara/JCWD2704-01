@@ -16,15 +16,18 @@ export async function middleware(request: NextRequest) {
     const isRequiredAdminLogin = adminRoutes.includes(pathname);
 
     // TODO: User protection routes
-    if (!user?.addresses.length && pathname.startsWith("/account/cart")) return NextResponse.redirect(new URL("/account/address"));
+    console.log(user?.addresses.length)
     if (!user && isRequiredLogin) return NextResponse.redirect(new URL("/auth", request.url));
-    if (user && pathname.startsWith("/auth")) return NextResponse.redirect(new URL("/", request.url));
-    if (!user?.addresses.length && pathname.includes("/categories")) return NextResponse.redirect(new URL("/account/address", request.url));
+    // if (user && !user.addresses.length && pathname === "/account/cart") return NextResponse.redirect(new URL("/account/address"));
+    // if (!user?.addresses.length && pathname.startsWith("/account/cart")) return NextResponse.redirect(new URL("/account/address"));
+    // if (!user && isRequiredLogin) return NextResponse.redirect(new URL("/auth", request.url));
+    // if (user && pathname.startsWith("/auth")) return NextResponse.redirect(new URL("/", request.url));
+    // if (!user?.addresses.length && pathname.includes("/categories")) return NextResponse.redirect(new URL("/account/address", request.url));
 
     // Super & Store admin protection routes
-    if ((!user || user.role === Role.customer) && isRequiredAdminLogin) return NextResponse.redirect(new URL("/", request.url));
+    // if ((!user || user.role === Role.customer) && isRequiredAdminLogin) return NextResponse.redirect(new URL("/", request.url));
 
-    if (!user || (user?.role === "customer" && pathname.startsWith("/dashboard"))) return NextResponse.redirect(new URL("/", request.url));
+    // if (!user || (user?.role === "customer" && pathname.startsWith("/dashboard"))) return NextResponse.redirect(new URL("/", request.url));
     return response;
   } catch (error) {
     console.log(error);
@@ -33,5 +36,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config: MiddlewareConfig = {
-  matcher: ["/dashboard/admin/:path*", "/cart/:path*", "/account/:path*", "/auth", "/categories/:path*"],
+  matcher: ["/dashboard/admin/:path*", "/account/:path*", "/auth", "/categories/:path*"],
 };

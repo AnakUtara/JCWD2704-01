@@ -17,7 +17,7 @@ export const AddressCityInput = ({
   city: userCity,
 }: {
   form: UseFormReturn<UserCreateAddressType>;
-  cities: CityType[];
+  cities: CityType[] | undefined;
   city?: string;
 }) => {
   const ref = useRef<HTMLButtonElement>(null);
@@ -40,7 +40,7 @@ export const AddressCityInput = ({
                   className={cn("w-full justify-between", !field.value && "text-muted-foreground")}
                 >
                   {field.value
-                    ? cities.find((city) => city.city_id.toString() === field.value)?.city_name
+                    ? cities?.find((city) => city.city_id.toString() === field.value)?.city_name
                     : userCity
                       ? userCity
                       : "Select your city"}
@@ -54,7 +54,7 @@ export const AddressCityInput = ({
                 <CommandList className="scrollbar-hidden">
                   <CommandEmpty>No City found.</CommandEmpty>
                   <CommandGroup>
-                    {cities.map((city) => (
+                    {cities?.map((city) => (
                       <CommandItem
                         value={city.city_name}
                         key={city.city_id}
