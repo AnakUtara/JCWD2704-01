@@ -6,10 +6,20 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useAuthStore from "@/stores/auth.store";
 import { Role } from "@/models/user.model";
+import { useEffect, useState } from "react";
+import { fetchStoreNamesIdsClient } from "@/utils/fetch/client/store.client-fetch";
+import { TStore } from "@/models/store.model";
 
 type Props = {};
 export default function AdminNavLinks({}: Props) {
   const { user: admin } = useAuthStore((s) => s);
+  const [stores, setStores] = useState<TStore[]>([]);
+  async function handleSetStore() {
+    setStores([...(await fetchStoreNamesIdsClient())]);
+  }
+  useEffect(() => {
+    handleSetStore();
+  }, []);
   const baseURL = "/dashboard/admin";
   let links: { name: string; href: string }[] = [
     { name: "Users", href: `${baseURL}/users` },
@@ -31,7 +41,7 @@ export default function AdminNavLinks({}: Props) {
       {links.map(({ name, href }) => (
         <Link
           key={name}
-          href={`${href}${searchParams}`}
+          href={`${href}${searchParams}${href === links[links.length - 1].href ? `&store_id=${admin.role === Role.super_admin ? stores[0]?.address_id : admin.role === Role.store_admin ? admin.store_id : ""}&category_id=1&month=${new Date().getMonth()}&year=${new Date().getFullYear()}` : ""}`}
           className={cn(
             pathname === href ? "border-b-2 border-primary font-bold text-foreground" : "text-muted-foreground",
             "transition-colors hover:text-foreground",

@@ -3,7 +3,7 @@ import { SearchParams } from "@/models/search.params";
 import { AxiosError } from "axios";
 import { toast } from "sonner";
 
-export async function fetchStoreNamesIdsClient(search_sel2: string) {
+export async function fetchStoreNamesIdsClient(search_sel2?: string) {
   try {
     const res = await axiosInstanceCSR().get("/store/names-ids", {
       params: { search_sel2 },

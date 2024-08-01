@@ -4,8 +4,8 @@ import { AccountAddressDetail } from "../../_components/address/AddressDetail";
 import { CityType } from "@/types/cities.type";
 
 export default async function AddressDetailPage() {
-  const cities = await fetchAllCities() as CityType[]
-  
+  const cities = (await fetchAllCities()) as CityType[];
+
   return (
     <main className="min-h-dvh w-full">
       <section className="container relative h-dvh">

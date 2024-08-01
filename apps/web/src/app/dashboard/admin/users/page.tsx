@@ -22,7 +22,7 @@ export default async function AdminDashboard({ searchParams }: Props) {
   const customers = await fetchCustomersData(searchParams);
   const cities = await fetchAllCities();
   return (
-    <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:px-0 md:py-8">
+    <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:py-8 xl:px-0">
       <Tabs defaultValue="store-admin">
         <TabsList className="mb-5 grid w-full grid-cols-2">
           <TabsTrigger value="store-admin">Store Admins</TabsTrigger>
@@ -57,7 +57,7 @@ export default async function AdminDashboard({ searchParams }: Props) {
             <Pagination getPage="page_tab1" totalPages={storeAdmins.totalPage} />
           </div>
         </TabsContent>
-        
+
         <TabsContent value="customers">
           <h2 className="mb-5 text-3xl font-extrabold">Customers Data</h2>
           <Suspense

@@ -35,7 +35,7 @@ export default function CheckoutAddressOption() {
           </option>
         ))}
       </FillterSelect> */}
-      <div className="flex gap-2 items-center">
+      <div className="flex items-center gap-2">
         <span className="block text-muted-foreground">Send to</span>
         <span className="block font-semibold">{user.addresses[0].city.city_name}</span>
       </div>

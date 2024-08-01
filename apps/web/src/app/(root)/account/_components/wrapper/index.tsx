@@ -13,7 +13,7 @@ export const AccountWrapper = ({ children }: { children: React.ReactNode }) => {
       <div className="container flex flex-col items-center justify-center gap-6 bg-primary px-4 py-10 text-primary-foreground sm:justify-between md:flex-row md:items-end md:rounded-b-md">
         <div className="text-balance text-center md:text-left">
           <p className="text-lg font-bold md:text-xl">Sign in to take advantage of our special offers.</p>
-          <p>Sing in for further access.</p>
+          <p>Sign in for further access.</p>
         </div>
 
         <Button asChild variant="secondary" className="w-full text-lg font-medium md:max-w-sm">

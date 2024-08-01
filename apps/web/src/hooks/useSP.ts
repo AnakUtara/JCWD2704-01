@@ -1,6 +1,5 @@
 "use client";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function useSP() {
   const router = useRouter();

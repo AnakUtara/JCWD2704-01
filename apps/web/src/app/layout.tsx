@@ -6,6 +6,7 @@ import "./globals.css";
 
 import AuthProvider from "@/components/providers/auth.provider";
 import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={GeistSans.className}>
+      <body className={cn(GeistSans.className, "overscroll-none")}>
         <AuthProvider>
           {children}
           <Toaster richColors />

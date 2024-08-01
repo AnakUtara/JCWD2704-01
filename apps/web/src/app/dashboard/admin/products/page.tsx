@@ -22,7 +22,7 @@ export default async function DashboardProductsPage({ searchParams }: Props) {
   const categories = (await fetchCategories()) as TCategory[];
   const subCatsByCatID = await fetchSubCategoriesWithCatID(searchParams);
   return (
-    <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:px-0 md:py-8">
+    <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:py-8 xl:px-0">
       <Tabs defaultValue="products">
         <TabsList className="mb-5 grid w-full grid-cols-2">
           <TabsTrigger value="products">Products</TabsTrigger>

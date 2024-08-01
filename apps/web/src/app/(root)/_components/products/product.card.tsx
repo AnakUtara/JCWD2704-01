@@ -20,11 +20,7 @@ export default function ProductCard({ product }: Props) {
   const unitPrice = product.variants[0].store_stock[0].unit_price;
   const storeId = product.variants[0].store_stock[0].store_id;
   return (
-    <Link
-      // searchParams.get("store_id")
-      href={`/product/${product.name.toLowerCase().replaceAll(" ", "-")}?store_id=${storeId}`}
-      className="shadow-md"
-    >
+    <Link href={`/product/${product.name.toLowerCase().replaceAll(" ", "-")}?store_id=${storeId}`} className="shadow-md">
       <Card key={product.id} className="flex size-full flex-col justify-between gap-2">
         <div className="relative">
           <Image

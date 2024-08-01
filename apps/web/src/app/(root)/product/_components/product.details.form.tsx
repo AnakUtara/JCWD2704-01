@@ -9,7 +9,7 @@ import { z } from "zod";
 import { cartSchema } from "@/lib/zod-schemas/cart.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { Loader2, ShoppingCartIcon, Tag } from "lucide-react";
+import { ChevronRight, Loader2, ShoppingCartIcon, Tag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toIDR } from "@/utils/toIDR";
 import { Badge } from "@/components/ui/badge";
@@ -17,8 +17,14 @@ import FormQuantityInput from "@/components/form/form.qty.number";
 import { addToCart } from "@/utils/fetch/client/cart.client-fetch";
 import useAuthStore from "@/stores/auth.store";
 import { updateCart } from "@/actions/updateCart";
+import { toast } from "sonner";
+import { AxiosError } from "axios";
+import Link from "next/link";
+import Image from "next/image";
+import { NEXT_PUBLIC_BASE_API_URL } from "@/config/config";
+import { formatQueryString } from "@/utils/formatter";
+import { useSearchParams } from "next/navigation";
 import { ButtonSubmit } from "@/components/ui/button-submit";
-import { useEffect } from "react";
 
 type Props = { product: Product };
 export default function ProductDetailsForm({ product }: Props) {
@@ -30,9 +36,17 @@ export default function ProductDetailsForm({ product }: Props) {
       quantity: 1,
     },
   });
+  const searchParams = useSearchParams();
   async function onSubmit(data: z.infer<typeof cartSchema>) {
-    await updateCart(data);
-    window.location.reload();
+    try {
+      await updateCart(data);
+      toast.success("Product added to cart");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+        console.error(error.response?.data.message);
+      }
+    }
   }
   const findStock =
     product.variants.find((variant) => variant.store_stock[0].id === form.watch("store_stock_id"))?.store_stock[0] ||
@@ -43,20 +57,43 @@ export default function ProductDetailsForm({ product }: Props) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="order-1 md:order-2">
         <Card className="min-w-96 p-5">
-          <div className="flex flex-col-reverse gap-4 md:flex-col">
-            <h2 className="text-2xl font-extrabold md:hidden">{product.name}</h2>
-            <ProductCarouselForm form={form} product={product} />
+          <ProductCarouselForm form={form} product={product} />
+          <div className="px-1 md:hidden">
+            <h2 className="mt-3 text-3xl font-extrabold">{product.name}</h2>
+            <Separator className="my-3" />
+            <div className="flex items-center gap-2">
+              <Link
+                href={`/categories/${product?.category.name.toLowerCase().split(" ").join("-")}?city_id=${searchParams.get("city_id")}`}
+                className="flex w-fit items-center gap-4 rounded-lg border p-2"
+              >
+                <Image
+                  src={`${NEXT_PUBLIC_BASE_API_URL}/images/${product?.category.image?.name}`}
+                  alt={`${product?.category.image?.name} image`}
+                  width={240}
+                  height={240}
+                  className="size-6 rounded-md border object-cover"
+                />
+                <p className="text-nowrap text-sm">{product?.category.name}</p>
+              </Link>
+              <ChevronRight className="w-5" />
+              <Link
+                className="text-sm hover:underline"
+                href={`/categories/${product?.category.name.toLowerCase().split(" ").join("-")}?city_id=${searchParams.get("city_id")}&sub_category=${formatQueryString(product?.sub_category.name)}`}
+              >
+                {product?.sub_category.name}
+              </Link>
+            </div>
           </div>
           <div className="mt-3 flex flex-col gap-4 px-1">
             <Separator />
             <CardTitle>{toIDR(!findStock?.discount ? findStock?.unit_price : discCalc || 0)}</CardTitle>
-            <CardDescription className={cn(!findStock?.discount ? "hidden" : "flex items-center gap-2")}>
+            <div className={cn(!findStock?.discount ? "hidden" : "flex items-center gap-2")}>
               <Badge variant={"destructive"} className="text-white">
                 <Tag className="mr-1" />
                 {findStock?.discount}% OFF
               </Badge>
-              <p className="text-lg text-muted-foreground line-through">{toIDR(findStock?.unit_price)}</p>
-            </CardDescription>
+              <span className="text-lg text-muted-foreground line-through">{toIDR(findStock?.unit_price)}</span>
+            </div>
             <Separator />
             <div className="flex items-center justify-between">
               <p>Stock: {findStock?.quantity}</p>

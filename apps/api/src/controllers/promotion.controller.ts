@@ -28,6 +28,14 @@ class PromotionController extends EntityController {
       next(error);
     }
   }
+  async getBuyGetPromos(req: Request, res: Response, next: NextFunction) {
+    try {
+      const results = await promotionService.getBuyGetPromos(req);
+      res.send({ message: 'Fetched all buy get type promos', results });
+    } catch (error) {
+      next(error);
+    }
+  }
   async getAllValidVouchers(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await promotionService.getAllValidPromos(req);

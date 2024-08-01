@@ -55,6 +55,12 @@ export const historyColumns: ColumnDef<TStockHistory>[] = [
     cell: ({ row }) => Number(row.getValue("final_qty")) + Number(row.original.qty_change),
   },
   {
+    accessorKey: "reference",
+    header: ({ column }) => (
+      <HeaderSortButton name="Listed Quantity" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} />
+    ),
+  },
+  {
     accessorKey: "created_at",
     id: "created",
     header: () => (

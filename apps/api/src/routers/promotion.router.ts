@@ -17,6 +17,7 @@ class AddressRouter {
     this.router.get('/all', promotionController.getAllValidVouchers);
     this.router.get('/user', userMiddleware.accessToken, promotionController.getUserVoucherByUserID);
     this.router.get('/featured', promotionController.getAllFeaturedPromos);
+    this.router.get('/buy-get', promotionController.getBuyGetPromos);
     this.router.get('/', promotionController.getAllPromotions);
     this.router.get('/users', promotionController.getAllUserVouchers);
     this.router.post('/', verifyAdminAccToken, authorizeSuperAdmin, blobUploader().single('promo_image'), promotionController.createPromotion);

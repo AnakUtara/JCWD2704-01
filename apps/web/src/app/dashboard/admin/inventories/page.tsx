@@ -15,6 +15,7 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { Role } from "@/models/user.model";
+import { fetchAllBuyGetPromos } from "@/utils/fetch/server/promo.fetch";
 
 type Props = { searchParams: SearchParams };
 export default async function InventoryDashboardPage({ searchParams }: Props) {
@@ -23,8 +24,9 @@ export default async function InventoryDashboardPage({ searchParams }: Props) {
   const stores = await fetchStoreNamesIds(searchParams);
   const variants = await fetchVariantsNamesIds(searchParams);
   const histories = await fetchStockHistories(searchParams, activeUser.store_id && activeUser.store_id);
+  const buyGets = await fetchAllBuyGetPromos();
   return (
-    <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:px-0 md:py-8">
+    <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:py-8 xl:px-0">
       <Tabs defaultValue="stocks">
         <TabsList className="mb-5 grid w-full grid-cols-2">
           <TabsTrigger value="stocks">Stocks</TabsTrigger>
@@ -41,7 +43,7 @@ export default async function InventoryDashboardPage({ searchParams }: Props) {
                 </Button>
               </DialogTrigger>
               <AdminCRUDDialog title="Assign New Stock" desc="You can add new product stock to a store here.">
-                <AssignStockForm stores={stores} variants={variants} />
+                <AssignStockForm stores={stores} variants={variants} promos={buyGets} />
               </AdminCRUDDialog>
             </Dialog>
           </div>
@@ -59,7 +61,8 @@ export default async function InventoryDashboardPage({ searchParams }: Props) {
               columns={stocksColumns}
               data={stocks.data}
               useDate
-              useStoreFilter={activeUser.role === Role.super_admin && stores}
+              useStoreFilter={activeUser.role === Role.super_admin}
+              stores={stores}
             />
           </Suspense>
           <div className="flex w-full justify-center">
@@ -84,7 +87,8 @@ export default async function InventoryDashboardPage({ searchParams }: Props) {
               columns={historyColumns}
               data={histories.data}
               useDate
-              useStoreFilter={activeUser.role === Role.super_admin && stores}
+              useStoreFilter={activeUser.role === Role.super_admin}
+              stores={stores}
             />
           </Suspense>
           <div className="flex w-full justify-center">

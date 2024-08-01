@@ -16,7 +16,6 @@ import useAuthStore from "@/stores/auth.store";
 import { axiosInstanceCSR } from "@/lib/axios.client-config";
 import { imageUrl } from "@/utils/imageUrl";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CheckedState } from "@radix-ui/react-checkbox";
 
 export function CartProduct({ cartProduct }: { cartProduct: TCart }) {
   const store_id = cartProduct.store_stock.store_id;
@@ -40,9 +39,6 @@ export function CartProduct({ cartProduct }: { cartProduct: TCart }) {
         discount: cartProduct.store_stock.discount,
       });
     }
-  };
-  const handlerCheck = (e: CheckedState) => {
-    setIsChecked(Boolean(e));
   };
 
   useEffect(() => {
@@ -80,7 +76,7 @@ export function CartProduct({ cartProduct }: { cartProduct: TCart }) {
       >
         <div className="flex gap-4">
           {/* <input type="checkbox" ref={ref} onClick={checkHandler} disabled={store_id !== nearestStore} checked={checked} /> */}
-          <Checkbox checked={isChecked} onCheckedChange={handlerCheck} className="size-6" />
+          <Checkbox checked={isChecked} onCheckedChange={checkHandler} className="size-6" />
           <div className="relative overflow-hidden rounded-md sm:h-36 sm:w-36">
             <Image
               src={imageUrl.render(cartProduct.store_stock.product.images?.name)}
@@ -94,7 +90,9 @@ export function CartProduct({ cartProduct }: { cartProduct: TCart }) {
       </CardContent>
       <CardContent className="flex w-full flex-col justify-between gap-2 p-2">
         <div>
-          <Link href={`/product/${cartProduct.store_stock.id}`}>
+          <Link
+            href={`/product/${cartProduct.store_stock.product.product.name.toLowerCase().replaceAll(" ", "-")}?city_id=${cartProduct.store_stock.store.address.city_id}`}
+          >
             <CardDescription className="mb-2 min-w-40 font-bold">{cartProduct.store_stock.product.product.name}</CardDescription>
             <CardDescription className="mb-2 min-w-40 font-bold">{cartProduct.store_stock.product.name}</CardDescription>
           </Link>

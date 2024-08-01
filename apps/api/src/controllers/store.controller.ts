@@ -21,5 +21,13 @@ export class StoreController extends EntityController {
       next(error);
     }
   }
+  async getStoreByCityId(req: Request, res: Response, next: NextFunction) {
+    try {
+      const results = await storeService.getStoreByCityId(req);
+      res.send({ message: 'Fetched store by city id.', results });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 export default new StoreController();

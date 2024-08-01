@@ -52,7 +52,7 @@ export type Product = {
   sub_category_id: number;
   category: TCategory;
   sub_category: TSubCategory;
-  variants: TProductVariant[];
+  variants: ProductVariant[];
   created_at: string;
   updated_at: string;
 };

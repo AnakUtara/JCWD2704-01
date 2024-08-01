@@ -67,6 +67,16 @@ export class PromotionService {
     }
   }
 
+  async getBuyGetPromos(req: Request) {
+    return await prisma.promotion.findMany({
+      where: {
+        type: 'buy_get',
+        expiry_date: { gt: new Date().toISOString() },
+        is_valid: true,
+      },
+    });
+  }
+
   async getCustomerVouchers(req: Request) {
     if (!req.user) throw new AuthError();
     const user_id = req.query.user_id as string | undefined;

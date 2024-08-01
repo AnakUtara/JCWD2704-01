@@ -49,5 +49,14 @@ export class StoreService {
     if (!data) throw new NotFoundError('Store not found.');
     return data;
   }
+
+  async getStoreByCityId(req: Request) {
+    const { city_id } = req.params;
+    const data = await prisma.store.findFirst({
+      where: { address: { city_id: Number(city_id) } },
+      include: { address: { select: { address: true, id: true, city: { select: { city_name: true } } } } },
+    });
+    return data;
+  }
 }
 export default new StoreService();

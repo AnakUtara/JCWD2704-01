@@ -3,7 +3,7 @@ import { IMidtransCreatePaymentLinkOption, TMidtransPaymenLink } from '@/models/
 import axios from 'axios';
 
 export const createMidtransPaymenLink = async (midtransOptions: IMidtransCreatePaymentLinkOption) => {
-  console.log(MIDTRANS_API, 'WOOOOOOO');
+  console.log(MIDTRANS_API);
   return await axios.post<TMidtransPaymenLink>(`${MIDTRANS_API}/v1/payment-links`, midtransOptions, {
     headers: {
       Accept: 'application/json',

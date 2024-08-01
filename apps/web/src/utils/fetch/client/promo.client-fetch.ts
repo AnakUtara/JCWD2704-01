@@ -27,3 +27,15 @@ export async function updateImagePromo(data: Record<string, any>, id: string) {
     }
   }
 }
+
+export async function fetchAllBuyGetPromosClient() {
+  try {
+    const res = await axiosInstanceCSR().get("/promotion/buy-get");
+    return res.data.results;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error);
+      throw error;
+    }
+  }
+}

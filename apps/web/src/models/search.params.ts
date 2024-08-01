@@ -10,10 +10,13 @@ export interface SearchParams {
   search: string;
   search_tab1: string;
   search_tab2: string;
-  category_id?: string;
+  category_id?: number;
   category_name?: string;
   sub_category?: string;
   city_id?: number;
+  store_id?: string;
+  month?: number;
+  year?: number;
 }
 
 export const searchParams: string = "?page_tab1=1&page_tab2=1";

@@ -2,6 +2,8 @@ import orderService from '@/services/order.service';
 import { EntityController } from './entity.controller';
 import order2Service from '@/services/order2.service';
 import orderMidtransService from '@/services/orderMidtrans.service';
+import { NextFunction, Request, Response } from 'express';
+import reportService from '@/services/report.service';
 
 export class OrderController extends EntityController {
   createCutomerOrder = this.sendResponse({
@@ -63,5 +65,14 @@ export class OrderController extends EntityController {
     service: orderMidtransService.payViaMidtrans,
     response: 'fetch payment link',
   });
+
+  async getSalesReport(req: Request, res: Response, next: NextFunction) {
+    try {
+      const results = await reportService.getSalesReport(req);
+      res.send({ message: 'Fetched monthly sales report.', results });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 export default new OrderController();

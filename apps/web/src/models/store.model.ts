@@ -1,5 +1,5 @@
 import { TAddress } from "./address.model";
-import { Product, ProductVariant } from "./product.model";
+import { ProductVariant } from "./product.model";
 import { TPromotion } from "./promotion.model";
 import { TUser } from "./user.model";
 

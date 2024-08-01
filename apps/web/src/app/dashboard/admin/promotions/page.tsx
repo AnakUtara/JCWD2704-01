@@ -22,7 +22,7 @@ export default async function PromotionsDashboardPage({ searchParams }: Props) {
   const promos = await fetchAllPromos(searchParams);
   const userVouchers = await fetchAllUserVouchers(searchParams);
   return (
-    <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:px-0 md:py-8">
+    <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:py-8 xl:px-0">
       <Tabs defaultValue="promotions">
         <TabsList className={cn(admin.role === Role.store_admin ? "hidden" : "grid", "mb-5 w-full grid-cols-2")}>
           <TabsTrigger value="promotions">Promotions</TabsTrigger>

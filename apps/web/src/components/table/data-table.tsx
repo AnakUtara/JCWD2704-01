@@ -26,7 +26,8 @@ interface DataTableProps<TData, TValue> {
   placeholder?: string;
   setSearch?: string;
   useDate?: boolean;
-  useStoreFilter?: TStore[];
+  useStoreFilter?: boolean;
+  stores?: TStore[];
   selectedData?: (data: TData[]) => void;
   className?: string;
   isVariant?: boolean;
@@ -39,7 +40,8 @@ export function DataTable<TData, TValue>({
   placeholder = "Search...",
   setSearch = "search",
   useDate = false,
-  useStoreFilter,
+  useStoreFilter = false,
+  stores,
   selectedData,
   className,
   isVariant = false,
@@ -68,8 +70,8 @@ export function DataTable<TData, TValue>({
   const MotionTableBody = motion(TableBody);
 
   return (
-    <div className={className}>
-      <div className="mb-5 flex items-center gap-4">
+    <div>
+      <div className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-center">
         <SearchParamsInput placeholder={placeholder} setSearch={setSearch} />
         {useDate && (
           <>
@@ -77,7 +79,7 @@ export function DataTable<TData, TValue>({
             <SearchParamsDatepicker title="Filter End Date" placeholder="Pick a filter end date." setSearch="end_date" />
           </>
         )}
-        {useStoreFilter?.length && <StoreSearchCombobox datas={useStoreFilter} />}
+        {useStoreFilter && <StoreSearchCombobox datas={stores as TStore[]} />}
         <ColumnToggle>
           {table
             .getAllColumns()

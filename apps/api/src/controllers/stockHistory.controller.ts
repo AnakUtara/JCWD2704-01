@@ -10,4 +10,12 @@ export class StockHistoryController {
       next(error);
     }
   }
+  async getStockHistoryReport(req: Request, res: Response, next: NextFunction) {
+    try {
+      const results = await stockHistoryService.getStockHistoryReport(req);
+      res.send({ message: 'Fetched stock history monthly report.', results });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

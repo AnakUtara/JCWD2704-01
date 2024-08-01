@@ -1,5 +1,5 @@
 import prisma from '@/prisma';
-import { BadRequestError, NotFoundError } from '@/utils/error';
+import { BadRequestError, catchAllErrors, NotFoundError } from '@/utils/error';
 import { countTotalPage, paginate } from '@/utils/pagination';
 import { Prisma, StoreStock } from '@prisma/client';
 import { add } from 'date-fns';
@@ -9,15 +9,7 @@ export class StoreStockService {
   async getStoreStockById(id: string) {
     const result = await prisma.storeStock.findUnique({
       where: { id },
-      include: {
-        product: {
-          include: {
-            product: {
-              include: { category: { include: { sub_categories: true } } },
-            },
-          },
-        },
-      },
+      include: { product: { include: { product: { include: { category: { include: { sub_categories: true } } } } } } },
     });
     if (!result) throw new NotFoundError('Product not found');
     return result;
@@ -46,6 +38,7 @@ export class StoreStockService {
         product: { include: { images: { select: { name: true } }, product: { select: { name: true } } } },
         store: { include: { address: { include: { city: { select: { city_name: true } } } } } },
         stock_history: { orderBy: { created_at: 'desc' } },
+        promo: true,
       },
     };
     if (page_tab1) queries = { ...queries, ...paginate(show, Number(page_tab1)) };
@@ -65,7 +58,7 @@ export class StoreStockService {
     };
     let queries: Prisma.ProductFindManyArgs = {
       where,
-      include: { variants: { include: { store_stock: true, images: { select: { name: true } } } } },
+      include: { variants: { include: { store_stock: { include: { promo: true } }, images: { select: { name: true } } } } },
     };
     if (filter)
       where.AND = { ...where, OR: [{ category: { name: { equals: String(filter) } } }, { sub_category: { name: { equals: String(filter) } } }] };
@@ -92,11 +85,35 @@ export class StoreStockService {
       include: {
         category: { include: { image: { select: { name: true } } } },
         sub_category: true,
-        variants: { include: { images: { select: { name: true } }, store_stock: true } },
+        variants: { include: { images: { select: { name: true } }, store_stock: { include: { promo: true } } } },
       },
     });
-    if(!data) throw new NotFoundError('Cannot find product')
+    if (!data) throw new NotFoundError('Cannot find product');
     return data;
+  }
+
+  async getProductRecommendationsByCityId(req: Request) {
+    const { city_id, store_stock_id, page } = req.query;
+    const show = 20;
+    let where: Prisma.ProductWhereInput = { is_deleted: false };
+    if (city_id && store_stock_id)
+      where = {
+        ...where,
+        AND: [
+          { variants: { some: { store_stock: { some: { store: { address: { city_id: Number(city_id) } } } } } } },
+          { NOT: { variants: { some: { store_stock: { some: { id: String(store_stock_id) } } } } } },
+        ],
+      };
+    let queries: Prisma.ProductFindManyArgs = { where };
+    if (page) queries = { ...queries, ...paginate(show, Number(page)) };
+    try {
+      const data = await prisma.product.findMany(queries);
+      const count = await prisma.product.count({ where });
+      if (!data) throw new NotFoundError('Products not found.');
+      return { data, totalPage: countTotalPage(count, Number(show)) };
+    } catch (error) {
+      catchAllErrors(error);
+    }
   }
 
   async initStock(req: Request) {
@@ -126,8 +143,6 @@ export class StoreStockService {
     const currentQty = Number(req.currentStock?.quantity);
     const qtyChange = Number(stock?.quantity);
     const stockCalc = currentQty + qtyChange;
-    console.log(stockCalc);
-
     if (stockCalc < 0) throw new BadRequestError('Quantity cannot be minus/less than 0.');
     await prisma.$transaction(async (prisma) => {
       await prisma.stockHistory.create({

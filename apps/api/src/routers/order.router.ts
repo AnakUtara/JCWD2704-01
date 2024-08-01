@@ -2,7 +2,7 @@ import { Router } from 'express';
 import orderController, { OrderController } from '@/controllers/order.controller';
 import { zod } from '@/middlewares/zod';
 import { createOrderSchema, rajaOngkirCostQuerySchema } from '@/libs/zod-schemas/order.schema';
-import { verifyAdminAccToken } from '@/middlewares/admin.middleware';
+import { authorizeStoreAdmin, verifyAdminAccToken } from '@/middlewares/admin.middleware';
 import userMiddleware from '@/middlewares/user.middleware';
 import { blobUploader } from '@/libs/multer';
 
@@ -17,10 +17,10 @@ class OrderRouter {
 
   private initializeRoutes(): void {
     this.router.get('/', userMiddleware.accessToken, this.controller.getOrderList);
+    this.router.get('/report', userMiddleware.accessToken, authorizeStoreAdmin, this.controller.getSalesReport);
     this.router.get('/shipcost', this.controller.getShipCost);
     this.router.get('/:inv', userMiddleware.accessToken, this.controller.getOrderByInv);
     this.router.get('/:inv/v1', userMiddleware.accessToken, this.controller.payViaMidtrans);
-
     this.router.post('/', userMiddleware.accessToken, zod(createOrderSchema), this.controller.createCutomerOrder);
 
     this.router.patch(

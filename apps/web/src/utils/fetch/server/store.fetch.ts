@@ -15,10 +15,39 @@ export async function fetchStocks(params: SearchParams, store_id?: string) {
   }
 }
 
-export async function fetchStoreNamesIds(params: SearchParams) {
+export async function fetchStoreNamesIds(params?: SearchParams) {
   try {
-    const res = await axiosInstanceSSR().get("/store/names-ids", {
-      params,
+    const res = await axiosInstanceSSR().get(
+      "/store/names-ids",
+      params && {
+        params,
+      },
+    );
+    return res.data.results;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+      throw error;
+    }
+  }
+}
+
+export async function fetchStoreByCityId(city_id: number) {
+  try {
+    const res = await axiosInstanceSSR().get(`/store/${city_id}`);
+    return res.data.results;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+      throw error;
+    }
+  }
+}
+
+export async function fetchAllProductsByCityId(city_id: number) {
+  try {
+    const res = await axiosInstanceSSR().get(`/store/products`, {
+      params: { city_id },
     });
     return res.data.results;
   } catch (error) {

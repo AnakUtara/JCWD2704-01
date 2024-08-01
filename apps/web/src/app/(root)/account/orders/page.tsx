@@ -2,7 +2,7 @@ import { Label } from "@radix-ui/react-label";
 import FillterInput from "@/components/fillter/fillterInput";
 import FillterDateTime from "@/components/fillter/fillterDateTime";
 import { Suspense } from "react";
-import OrderList from "@/components/order/orderList";
+// import OrderList from "@/components/order/orderList";
 
 type Props = {
   searchParams: {
@@ -40,11 +40,11 @@ export default function Page({ searchParams }: Props) {
         </div>
       </section>
       {/* Table */}
-      <section className="p-x-2 my-4 flex size-full flex-col justify-between">
+      {/* <section className="p-x-2 my-4 flex size-full flex-col justify-between">
         <Suspense fallback={<h1>Loading...</h1>}>
           <OrderList searchParams={searchParams} />
         </Suspense>
-      </section>
+      </section> */}
     </main>
   );
 }

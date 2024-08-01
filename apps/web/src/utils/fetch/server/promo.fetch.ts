@@ -24,3 +24,15 @@ export async function fetchAllUserVouchers(params: SearchParams) {
     }
   }
 }
+
+export async function fetchAllBuyGetPromos() {
+  try {
+    const res = await axiosInstanceSSR().get("/promotion/buy-get");
+    return res.data.results;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error);
+      throw error;
+    }
+  }
+}

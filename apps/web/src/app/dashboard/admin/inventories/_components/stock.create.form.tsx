@@ -16,9 +16,12 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import useAuthStore from "@/stores/auth.store";
 import { Role } from "@/models/user.model";
+import { TPromotion } from "@/models/promotion.model";
+import FormSelect from "@/components/form/form.field.select";
+import { SelectItem } from "@/components/ui/select";
 
-type Props = { stores: TStore[]; variants: ProductVariant[] };
-export default function AssignStockForm({ stores, variants }: Props) {
+type Props = { stores: TStore[]; variants: ProductVariant[]; promos: TPromotion[] };
+export default function AssignStockForm({ stores, variants, promos }: Props) {
   const { user } = useAuthStore((s) => s);
   const form = useForm<z.infer<typeof initStockSchema>>({
     resolver: zodResolver(initStockSchema),
@@ -44,7 +47,6 @@ export default function AssignStockForm({ stores, variants }: Props) {
             setSearch="search_sel1"
           />
         </div>
-
         <FormComboBoxVariants
           form={form}
           datas={variants}
@@ -57,6 +59,11 @@ export default function AssignStockForm({ stores, variants }: Props) {
         <FormNumber form={form} name="quantity" label="Quantity:*" placeholder="Enter stock quantity..." />
         <FormNumber form={form} name="unit_price" label="Price(IDR):*" placeholder="Enter unit price..." />
         <FormNumber form={form} name="discount" label="Discount:" placeholder="Enter product discount amount..." />
+        <FormSelect control={form.control} name="promo_id" label="Select promo:" placeholder="Pick a promo.">
+          {promos.map((promo: TPromotion) => (
+            <SelectItem value={promo?.id || ""}>{promo?.title}</SelectItem>
+          ))}
+        </FormSelect>
         <FormTextArea
           control={form.control}
           name="reference"

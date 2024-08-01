@@ -2,6 +2,7 @@
 import { Input } from "@/components/ui/input";
 import useDebounce from "@/hooks/debounce";
 import useSP from "@/hooks/useSP";
+import { useRouter, useSearchParams } from "next/navigation";
 import { InputHTMLAttributes, useState } from "react";
 
 interface FillterInputProps extends InputHTMLAttributes<HTMLInputElement> {

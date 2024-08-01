@@ -31,6 +31,15 @@ export class StoreStockController extends EntityController {
       next(error);
     }
   }
+
+  async getProductRecommendationsByCityId(req: Request, res: Response, next: NextFunction) {
+    try {
+      const results = await storeStockService.getProductRecommendationsByCityId(req);
+      res.send({ message: 'Fetched product recommendations by store id', results });
+    } catch (error) {
+      next(error);
+    }
+  }
   async initStock(req: Request, res: Response, next: NextFunction) {
     try {
       await storeStockService.initStock(req);
