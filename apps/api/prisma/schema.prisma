@@ -93,7 +93,6 @@ enum AddressType {
 model Address {
   id      String  @id @default(cuid())
   user_id String? @unique
-  user_id String? @unique
   city_id Int
 
   address   String

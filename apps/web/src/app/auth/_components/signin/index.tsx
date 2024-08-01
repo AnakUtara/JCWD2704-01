@@ -9,18 +9,12 @@ import { LoginInput } from "./input";
 import { ButtonSubmit } from "@/components/ui/button-submit";
 import useAuthStore from "@/stores/auth.store";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 export const LoginForm = () => {
-  const { login, user } = useAuthStore();
-  const router = useRouter();
+  const { login } = useAuthStore();
   const form = useForm<LoginType>({
     resolver: zodResolver(loginSchema),
   });
-
-  useEffect(() => {
-    if (user.id) router.push("/");
-  }, [user.id]);
 
   return (
     <Form {...form}>

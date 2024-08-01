@@ -8,6 +8,7 @@ export const getUserSession = async (res: NextResponse<unknown>, refresh_token: 
     const response = await fetch(`${NEXT_PUBLIC_BASE_API_URL}/users/v2`, {
       method: "GET",
       credentials: "include",
+      next: { revalidate: 600 },
       headers: {
         Authorization: `Bearer ${refresh_token}`,
         Accept: "application/json",
@@ -16,13 +17,13 @@ export const getUserSession = async (res: NextResponse<unknown>, refresh_token: 
     });
 
     const data = (await response.json()) as Awaited<{ accessToken?: string | null }>;
+
     if (!data.accessToken) {
       res.cookies.delete("access_token");
       return null;
     }
     res.cookies.set("access_token", data.accessToken);
     const user = jwtDecode(data.accessToken) as TUser;
-
     return user;
   } catch (error) {
     res.cookies.delete("refresh_token");

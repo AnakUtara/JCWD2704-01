@@ -22,6 +22,8 @@ export function CartProduct({ cartProduct }: { cartProduct: TCart }) {
   const { user } = useAuthStore();
   const sp = useSearchParams();
   const [add, remove, list, nearestStore] = useCheckout((s) => [s.add, s.remove, s.list, s.origin]);
+  console.log(nearestStore)
+  console.log(cartProduct)
   const hide = sp.get("store_id") != "all" ? cartProduct.store_stock.store_id !== nearestStore : false;
   const ref = useRef<HTMLInputElement>(null);
   const [isChecked, setIsChecked] = useState(false);

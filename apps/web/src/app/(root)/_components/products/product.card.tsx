@@ -3,24 +3,26 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { NEXT_PUBLIC_BASE_API_URL } from "@/config/config";
 import { cn } from "@/lib/utils";
-import { Product, ProductVariant } from "@/models/product.model";
+import { Product } from "@/models/product.model";
 import { imageUrl } from "@/utils/imageUrl";
 import { toIDR } from "@/utils/toIDR";
 import { TagIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 type Props = { product: Product };
+
 export default function ProductCard({ product }: Props) {
   const searchParams = useSearchParams();
   const discount = product.variants[0].store_stock[0].discount;
   const unitPrice = product.variants[0].store_stock[0].unit_price;
-  const storeId = product.variants[0].store_stock[0].store_id;
+
+  console.log(product.variants)
+
   return (
-    <Link href={`/product/${product.name.toLowerCase().replaceAll(" ", "-")}?store_id=${storeId}`} className="shadow-md">
+    <Link href={`/product/${product.name.toLowerCase().replaceAll(" ", "-")}?city_id=${searchParams.get("city_id")}`} className="shadow-md">
       <Card key={product.id} className="flex size-full flex-col justify-between gap-2">
         <div className="relative">
           <Image
@@ -39,9 +41,9 @@ export default function ProductCard({ product }: Props) {
           <h2 className="text-md mb-0 font-bold">{product.name}</h2>
           <CardDescription className="flex gap-2">
             {product.variants.map((variant) => (
-              <div key={variant.id} className="rounded-full bg-primary px-3 text-[10px] font-bold text-white">
+              <span key={variant.id} className="inline-block rounded-full bg-primary px-3 text-[10px] font-bold text-white">
                 {variant.name}
-              </div>
+              </span>
             ))}
           </CardDescription>
           <CardContent className="p-0">

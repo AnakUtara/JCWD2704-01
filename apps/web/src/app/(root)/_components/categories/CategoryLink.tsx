@@ -14,7 +14,7 @@ export const CategoryLink = ({ category }: { category: TCategory }) => {
   return (
     <li key={category.id} className="w-[80px] text-center">
       <Link
-        href={`/categories/${category.name.toLowerCase()}?page=1&store_id=${user.addresses.length ? user.addresses[0].city_id : 0}`}
+        href={`/categories/${category.name.toLowerCase()}?page=1&city_id=${user.addresses.length ? user.addresses[0].city_id : 0}`}
         className="flex h-full flex-col items-center justify-between"
       >
         <Image

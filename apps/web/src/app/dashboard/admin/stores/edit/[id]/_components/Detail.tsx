@@ -28,10 +28,10 @@ export const Detail = ({ store }: { store: TStore | undefined }) => {
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent className="flex items-center justify-center py-2" value="admins">
+            <TabsContent className="flex w-full items-center justify-center py-2" value="admins">
               <DetailAdmin admins={store?.store_admin} />
             </TabsContent>
-            <TabsContent className="flex items-center justify-center" value="products">
+            <TabsContent className="flex w-full items-center justify-center" value="products">
               <DetailProduct products={store?.product_stock} />
             </TabsContent>
           </Tabs>

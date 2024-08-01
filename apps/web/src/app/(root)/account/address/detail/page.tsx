@@ -10,8 +10,8 @@ export default async function AddressDetailPage() {
     <main className="min-h-dvh w-full">
       <section className="container relative h-dvh">
         <div className="absolute left-0 top-0 z-20 w-full bg-background">
-          <div className="flex h-20 w-full items-center bg-primary px-2 text-primary-foreground xl:rounded-b-md">
-            <ButtonBack>Add Shipping Address</ButtonBack>
+          <div className="flex h-20 w-full items-center bg-primary px-4 text-primary-foreground xl:rounded-b-md">
+            <ButtonBack className="gap-4">Add Shipping Address</ButtonBack>
           </div>
         </div>
 

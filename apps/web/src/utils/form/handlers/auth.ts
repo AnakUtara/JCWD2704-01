@@ -38,6 +38,7 @@ export const registerSubmit = async (payload: RegisterType) => {
 
 export const loginSubmit = async (payload: LoginType, login: (email: string, password: string) => Promise<void>) => {
   await login(payload.email, payload.password);
+  window.location.reload()
 };
 
 export const emailVerificationSubmit = async (payload: EmailVerificationType) => {

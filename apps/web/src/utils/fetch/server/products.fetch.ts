@@ -59,6 +59,7 @@ export async function fetchProductIdsAndNames(params: SearchParams) {
 }
 
 export async function fetchProductsByCityID(filter: string, city_id: number, search?: string, page: number = 1) {
+  console.log(filter, city_id, search, page);
   try {
     const res = await axiosInstanceSSR().get("/store/products", {
       params: {
