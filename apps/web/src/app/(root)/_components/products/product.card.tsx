@@ -1,5 +1,6 @@
 "use client";
 
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -16,30 +17,29 @@ type Props = { product: Product };
 
 export default function ProductCard({ product }: Props) {
   const searchParams = useSearchParams();
-  const discount = product.variants[0].store_stock[0].discount;
-  const unitPrice = product.variants[0].store_stock[0].unit_price;
-
+  const discount = product?.variants[0]?.store_stock[0]?.discount;
+  const unitPrice = product?.variants[0]?.store_stock[0]?.unit_price;
   return (
-    <Link href={`/product/${product.name.toLowerCase().replaceAll(" ", "-")}?city_id=${searchParams.get("city_id")}`} className="shadow-md">
-      <Card key={product.id} className="flex size-full flex-col justify-between gap-2">
+    <Link href={`/product/${product.name.toLowerCase().replaceAll(" ", "-")}?city_id=${searchParams.get("city_id")}`}>
+      <Card key={product.id} className="flex size-full flex-col justify-between gap-2 shadow-md">
         <div className="relative">
           <Image
             src={imageUrl.render(product.variants[0].images?.name)}
             alt={`${product.name} image`}
             width={240}
             height={240}
-            className="aspect-square w-full object-cover"
+            className="aspect-square w-full rounded-t-md object-cover"
           />
           <Badge className={cn(!discount && "hidden", "absolute left-2 top-2")} variant={"destructive"}>
             <TagIcon className="mr-2 size-4" />
             {discount}% OFF
           </Badge>
         </div>
-        <div className="flex flex-col gap-1 p-3">
-          <h2 className="text-md mb-0 font-bold">{product.name}</h2>
+        <div className="flex min-h-[116px] flex-col gap-1 p-3">
+          <h2 className="mb-0 text-lg font-bold">{product.name}</h2>
           <CardDescription className="flex gap-2">
             {product.variants.map((variant) => (
-              <span key={variant.id} className="inline-block rounded-full bg-primary px-3 text-[10px] font-bold text-white">
+              <span key={variant.id} className="rounded-full bg-primary px-3 text-[10px] font-bold text-white">
                 {variant.name}
               </span>
             ))}
@@ -52,7 +52,7 @@ export default function ProductCard({ product }: Props) {
           </CardContent>
         </div>
         <Separator />
-        <CardFooter className="px-3 py-2 text-xs">Stock: {product.variants[0].store_stock[0].quantity}</CardFooter>
+        <CardFooter className="px-3 py-2 text-xs">Stock: {product?.variants[0]?.store_stock[0]?.quantity}</CardFooter>
       </Card>
     </Link>
   );

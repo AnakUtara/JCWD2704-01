@@ -26,6 +26,7 @@ export class StoreRouter {
     this.router.get('/products/:name', this.storeStockController.getProductDetailsByStoreId);
     this.router.get('/names-ids', storeController.getStoreNamesIds);
     this.router.get('/stocks', this.storeStockController.getStoreStocks);
+    this.router.get('/stocks/find', this.storeStockController.getProductsByQuery);
     this.router.get('/stocks/histories', this.stockHistoryController.getStockHistories);
     this.router.get('/stocks/report', userMiddleware.accessToken, authorizeStoreAdmin, this.stockHistoryController.getStockHistoryReport);
     this.router.post(

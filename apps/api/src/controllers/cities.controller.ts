@@ -10,4 +10,12 @@ export class CitiesController {
       next(error);
     }
   }
+  async getCityByCityName(req: Request, res: Response, next: NextFunction) {
+    try {
+      const results = await citiesService.getCityByCityName(req);
+      res.send({ message: 'Fetch city data by city name.', results });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

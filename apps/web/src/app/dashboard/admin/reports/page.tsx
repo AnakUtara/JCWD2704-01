@@ -43,6 +43,7 @@ export default async function DashboardReportPage({ searchParams }: Props) {
               data={salesReport.report}
               useStoreFilter={activeUser.role === Role.super_admin}
               stores={stores}
+              filename="sales-report"
             />
           </Suspense>
           <div className="flex w-full justify-center">
@@ -66,6 +67,7 @@ export default async function DashboardReportPage({ searchParams }: Props) {
               data={stockReport.report}
               useStoreFilter={activeUser.role === Role.super_admin}
               stores={stores}
+              filename="stock-report"
             />
           </Suspense>
           <div className="flex w-full justify-center">

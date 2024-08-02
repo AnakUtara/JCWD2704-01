@@ -12,3 +12,7 @@ export function formatDate(date: string) {
 export function formatQueryString(string: string) {
   return string.replaceAll(" ", "+").replaceAll("&", "%26").replaceAll(",", "%2C");
 }
+
+export function formatSearchParams(string: string) {
+  return string.replaceAll("+", " ").replaceAll("%26", " & ").replaceAll("%2C", ", ");
+}

@@ -61,7 +61,6 @@ class CategoryService {
       let where: Prisma.CategoryWhereInput = { is_deleted: false };
       if (req.query.category_id) where.AND = { id: Number(req.query.category_id) };
       if (req.query.category_name) where.AND = { name: { equals: String(req.query.category_name) } };
-
       const data = await prisma.category.findFirst({
         where,
         include: { sub_categories: true },

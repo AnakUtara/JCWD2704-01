@@ -23,6 +23,17 @@ import { NEXT_PUBLIC_BASE_API_URL } from "@/config/config";
 import { formatQueryString } from "@/utils/formatter";
 import { useSearchParams } from "next/navigation";
 import { ButtonSubmit } from "@/components/ui/button-submit";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 type Props = { product: Product };
 export default function ProductDetailsForm({ product }: Props) {
@@ -105,20 +116,30 @@ export default function ProductDetailsForm({ product }: Props) {
             </div>
           </div>
           <Separator className="mt-3" />
-          {/* <Button
-            size={"lg"}
-            type="submit"
-            className="mt-3 w-full text-white"
-            disabled={form.formState.isSubmitting || findStock.quantity === 0 || !user.email}
-          >
-            <Loader2 className={cn(form.formState.isSubmitting ? "block" : "hidden", "mr-2 h-4 w-4 animate-spin")} />
-            <ShoppingCartIcon className="mr-2" />
-            Add To Cart
-          </Button> */}
+          <AlertDialog>
+            <AlertDialogTrigger className="w-full" asChild>
+              <Button type="button" className={cn(user.email ? "hidden" : "flex", "mt-3 w-full text-white")}>
+                <ShoppingCartIcon className="mr-2" />
+                Add To Cart
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Sign In Needed.</AlertDialogTitle>
+                <AlertDialogDescription>Please sign in to add this product to your cart.</AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <Link href="/auth">
+                  <AlertDialogAction>Sign In</AlertDialogAction>
+                </Link>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           <ButtonSubmit
             type="submit"
-            className="mt-3 flex w-full text-white"
-            disable={findStock.quantity === 0 || !user.email}
+            className={cn(!user.email ? "hidden" : "flex", "mt-3 w-full text-white")}
+            disable={findStock.quantity === 0 || form.formState.isSubmitting}
             isSubmitting={form.formState.isSubmitting}
             label={
               <>

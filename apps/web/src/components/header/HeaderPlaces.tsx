@@ -16,16 +16,40 @@ import { Button } from "../ui/button";
 import { useMediaQueries } from "@/hooks/use-media-queries";
 import Link from "next/link";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTrigger } from "../ui/dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Maps } from "../maps";
 import { cn } from "@/lib/utils";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { axiosInstanceCSR } from "@/lib/axios.client-config";
+import { AxiosError } from "axios";
 
 export const HeaderPlaces = ({ className }: { className?: string }) => {
   const [open, setOpen] = useState(false);
   const { matches } = useMediaQueries("(min-width: 640px)"); // isDesktop
   const { location } = useLocation();
   const label = location?.address_components.find((address) => address.types.find((type) => type === "administrative_area_level_3"));
-
+  const city = location?.address_components
+    ?.find((address) => address.types.find((type) => type === "administrative_area_level_2"))
+    ?.long_name.replace("Kota", "")
+    .replace("Kabupaten", "")
+    .trim();
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams);
+  const { replace } = useRouter();
+  const pathname = usePathname();
+  async function cityHandler() {
+    try {
+      const res = await axiosInstanceCSR().get(`/cities/city`, { params: { name: city } });
+      const cityID = res.data.results.city_id;
+      cityID ? params.set("city_id", cityID) : params.delete("city_id");
+      replace(`${pathname}?${params.toString()}`);
+    } catch (error) {
+      if (error instanceof AxiosError) console.log(error.response?.data);
+    }
+  }
+  useEffect(() => {
+    if (city !== undefined) cityHandler();
+  }, [city]);
   if (matches)
     return (
       <Dialog open={open} onOpenChange={setOpen}>

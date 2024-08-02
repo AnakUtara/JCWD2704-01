@@ -7,14 +7,15 @@ import useAuthStore from "@/stores/auth.store";
 
 import { TCategory } from "@/models/category.model";
 import { imageUrl } from "@/utils/imageUrl";
+import { useSearchParams } from "next/navigation";
 
 export const CategoryLink = ({ category }: { category: TCategory }) => {
   const { user } = useAuthStore();
-
+  const searchParams = useSearchParams();
   return (
     <li key={category.id} className="w-[80px] text-center">
       <Link
-        href={`/categories/${category.name.toLowerCase()}?page=1&city_id=${user.addresses.length ? user.addresses[0].city_id : 0}`}
+        href={`/categories/${category.name.toLowerCase().replaceAll(" ", "-")}?page=1&city_id=${user.addresses.length ? user.addresses[0].city_id : searchParams.get("city_id")}`}
         className="flex h-full flex-col items-center justify-between"
       >
         <Image

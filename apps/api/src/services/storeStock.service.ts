@@ -1,7 +1,7 @@
 import prisma from '@/prisma';
 import { BadRequestError, catchAllErrors, NotFoundError } from '@/utils/error';
 import { countTotalPage, paginate } from '@/utils/pagination';
-import { Prisma, StoreStock } from '@prisma/client';
+import { Prisma, PromoType, StoreStock } from '@prisma/client';
 import { add } from 'date-fns';
 import { Request } from 'express';
 
@@ -50,7 +50,7 @@ export class StoreStockService {
   }
 
   async getProductByStoreId(req: Request) {
-    const { filter, search, city_id, page } = req.query;
+    const { filter, search, city_id, page, min, max } = req.query;
     const show = 20;
     const where: Prisma.ProductWhereInput = {
       is_deleted: false,
@@ -63,6 +63,14 @@ export class StoreStockService {
     if (filter)
       where.AND = { ...where, OR: [{ category: { name: { equals: String(filter) } } }, { sub_category: { name: { equals: String(filter) } } }] };
     if (search) where.AND = { ...where, OR: [{ name: { contains: String(search) } }] };
+    if (min && max)
+      where.AND = { ...where, ...{ variants: { some: { store_stock: { some: { unit_price: { gte: Number(min), lte: Number(max) } } } } } } };
+    if (filter && min && max)
+      where.AND = {
+        ...where,
+        ...{ variants: { some: { store_stock: { some: { unit_price: { gte: Number(min), lte: Number(max) } } } } } },
+        OR: [{ category: { name: { equals: String(filter) } } }, { sub_category: { name: { equals: String(filter) } } }],
+      };
     if (page) queries = { ...queries, ...paginate(show, Number(page)) };
     const products = await prisma.product.findMany(queries);
     const count = await prisma.product.count({ where });
@@ -111,6 +119,32 @@ export class StoreStockService {
       const count = await prisma.product.count({ where });
       if (!data) throw new NotFoundError('Products not found.');
       return { data, totalPage: countTotalPage(count, Number(show)) };
+    } catch (error) {
+      catchAllErrors(error);
+    }
+  }
+
+  async getProductsByQuery(req: Request) {
+    try {
+      const { category_name, promo, discount, city_id } = req.query;
+      const show = 20;
+      const where: Prisma.ProductWhereInput = { is_deleted: false };
+      if (city_id) where.AND = { variants: { some: { store_stock: { some: { store: { address: { city_id: Number(city_id) } } } } } } };
+      if (category_name) where.AND = { ...where.AND, OR: [{ category: { name: { contains: String(category_name) } } }] };
+      if (promo)
+        where.AND = {
+          ...where.AND,
+          OR: [{ variants: { some: { store_stock: { some: { promo: { type: { equals: String(promo) as PromoType } } } } } } }],
+        };
+      if (Boolean(discount)) where.AND = { ...where.AND, OR: [{ variants: { every: { store_stock: { every: { discount: { gt: 0 } } } } } }] };
+      let queries: Prisma.ProductFindManyArgs = {
+        where,
+        include: { variants: { include: { store_stock: { include: { promo: true } }, images: { select: { name: true } } } } },
+        take: show,
+      };
+      const data = await prisma.product.findMany(queries);
+      if (!data) throw new NotFoundError('Products not found.');
+      return data;
     } catch (error) {
       catchAllErrors(error);
     }

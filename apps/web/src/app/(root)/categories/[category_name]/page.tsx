@@ -13,7 +13,9 @@ import Pagination from "@/components/pagination";
 import SearchParamsInput from "@/components/table/input.search";
 import Spinner from "@/components/ui/spinner";
 import HeaderBgPrimary from "../../_components/header/header.bg-primary";
-
+import { cn } from "@/lib/utils";
+import PriceRangeButtons from "../_components/price-range.buttons";
+import { Footer } from "@/components/footer";
 export const generateMetadata = async ({ params }: Props) => {
   const { category_name } = params;
   return {
@@ -24,64 +26,102 @@ export const generateMetadata = async ({ params }: Props) => {
 type Props = { params: { category_name: string }; searchParams: SearchParams };
 export default async function ProductsByCategoryListPage({ params, searchParams }: Props) {
   const { category_name } = params;
-  const { search, page } = searchParams;
+  const { search, page, min, max } = searchParams;
   const categories = await fetchCategories();
   const subCategories = await fetchSubCategoriesWithCatName(category_name.split("-").join(" ").replaceAll("%26", "&"));
   const { products, totalPage } = await fetchProductsByCityID(
     searchParams.sub_category?.replaceAll("%26", " & ") || category_name || "",
-    Number(searchParams.city_id),
+    searchParams.city_id && Number(searchParams.city_id),
     search,
     page,
+    min && Number(min),
+    max && Number(max),
   );
-  if (!categories?.length) return <div>Not Found</div>;
-
   return (
-    <div className="container">
-      <HeaderBgPrimary href="/" useSearch={false} title={"Search Categories"} />
-      <div className="flex flex-col md:flex-row md:pt-5">
-        <aside className="flex gap-5 overflow-x-auto rounded-lg p-5 md:flex-col md:border">
-          {categories.map((category: TCategory) => (
-            <Link
-              key={category.id}
-              href={`/categories/${category.name.toLowerCase().split(" ").join("-")}?city_id=${searchParams.city_id}`}
-              className="flex flex-col items-center gap-4 rounded-lg border p-2 md:flex-row"
-            >
-              <Image
-                src={`${NEXT_PUBLIC_BASE_API_URL}/images/${category.image?.name}`}
-                alt={`${category.image?.name} image`}
-                width={240}
-                height={240}
-                className="min-h-16 min-w-16 rounded-md object-cover md:size-12"
-              />
-              <p className="text-center text-xs md:text-nowrap md:text-left lg:text-sm">{category.name}</p>
-            </Link>
-          ))}
-        </aside>
-        <main className="flex-1 overflow-y-auto px-5 pt-1">
-          <div className="mb-5 mt-5 md:mt-0">
-            <SearchParamsInput placeholder="Search products..." />
-          </div>
-          <div className="flex gap-5 overflow-x-auto pb-5">
-            <SubCategoriesBtns subCategories={subCategories} />
-          </div>
+    <>
+      <HeaderBgPrimary searchParams={searchParams} />
+      <div className="container">
+        <div className="flex flex-col md:flex-row md:py-5">
           <Suspense
             fallback={
-              <div className="mt-5 grid place-items-center">
+              <div className="mt-5 grid min-h-dvh place-items-center">
                 <Spinner />
               </div>
             }
           >
-            <div className="mt-5 grid grid-cols-2 gap-5 lg:grid-cols-3 xl:grid-cols-4">
-              {products.map((product: Product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
+            <nav className="flex flex-col gap-5">
+              <aside className="flex gap-5 overflow-x-auto rounded-lg p-5 md:flex-col md:border md:bg-white md:shadow-sm">
+                {categories?.map((category: TCategory) => (
+                  <Link
+                    key={category.id}
+                    href={`/categories/${category.name.toLowerCase().split(" ").join("-")}?city_id=${searchParams.city_id}`}
+                    className={cn(
+                      category_name.replaceAll("-", " ").toLowerCase() === category.name.toLowerCase() ? "bg-primary" : "bg-white",
+                      "flex flex-col items-center gap-2 rounded-lg border p-2 md:flex-row",
+                    )}
+                  >
+                    <Image
+                      src={`${NEXT_PUBLIC_BASE_API_URL}/images/${category.image?.name}`}
+                      alt={`${category.image?.name} image`}
+                      width={240}
+                      height={240}
+                      className="min-h-16 min-w-16 rounded-md border object-cover md:size-12"
+                    />
+                    <p
+                      className={cn(
+                        category_name.replaceAll("-", " ").toLowerCase() === category.name.toLowerCase() && "font-bold text-white",
+                        "text-center text-xs md:text-nowrap md:text-left lg:text-sm",
+                      )}
+                    >
+                      {category.name}
+                    </p>
+                  </Link>
+                ))}
+              </aside>
+              <aside className="flex flex-col gap-3 border-y bg-white p-4 md:rounded-md md:border">
+                <PriceRangeButtons />
+              </aside>
+            </nav>
+          </Suspense>
+          <main className="flex-1 overflow-y-auto px-5 pt-1">
+            <div className="mb-5 mt-5 md:mt-0">
+              <SearchParamsInput placeholder="Search products..." />
             </div>
-            <div className="mt-5 flex justify-center border-t">
+            <div className="flex gap-5 overflow-x-auto pb-5">
+              <Suspense
+                fallback={
+                  <div className="mt-5 grid min-h-dvh place-items-center">
+                    <Spinner />
+                  </div>
+                }
+              >
+                <SubCategoriesBtns subCategories={subCategories} />
+              </Suspense>
+            </div>
+            <div className="min-h-dvh">
+              <Suspense
+                fallback={
+                  <div className="mt-5 grid min-h-dvh place-items-center">
+                    <Spinner />
+                  </div>
+                }
+              >
+                <div className={cn(!products?.length && "hidden", "mt-5 grid grid-cols-2 gap-5 lg:grid-cols-3 xl:grid-cols-4")}>
+                  {products?.map((product: Product) => <ProductCard key={product.id} product={product} />)}
+                </div>
+              </Suspense>
+              <div className={cn(products?.length ? "hidden" : "flex", "mt-5 min-h-dvh flex-col items-center justify-center gap-5")}>
+                <Image src={"/empty.svg"} width={240} height={240} alt={"empty"} />
+                <span>No products added to this store/category yet...</span>
+              </div>
+            </div>
+            <div className={cn(!products?.length && "hidden", "mt-5 flex justify-center border-t")}>
               <Pagination totalPages={totalPage} />
             </div>
-          </Suspense>
-        </main>
+          </main>
+        </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 }

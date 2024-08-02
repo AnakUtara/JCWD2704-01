@@ -9,7 +9,7 @@ export const testApplyVoucherSchema = z.object({
 
 export const createPromoSchema = z.object({
   title: z.string().min(5, { message: 'Must have at least 5 characters.' }),
-  description: z.string().min(4, { message: 'Must have at least 4 characters.' }),
+  description: z.string().min(4, { message: 'Must have at least 4 characters.' }).max(180, { message: 'Max. 180 characters.' }),
   amount: z.number().nonnegative(),
   min_transaction: z.number().nonnegative(),
   expiry_date: z.date(),
