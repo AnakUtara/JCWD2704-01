@@ -1,27 +1,13 @@
 "use client";
 
-import { Home, Search, User } from "lucide-react";
 import useAuthStore from "@/stores/auth.store";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-
-const links: { href: string; icon: (className: string) => JSX.Element }[] = [
-  {
-    href: "/home",
-    icon: (className) => <Home className={className} />,
-  },
-  {
-    href: "/categories",
-    icon: (className) => <Search className={className} />,
-  },
-  {
-    href: "/account",
-    icon: (className) => <User className={className} />,
-  },
-];
+import { useMediaQueries } from "@/hooks/use-media-queries";
+import { navLinks } from "@/constants/links";
 
 const navigation = ["/", "/account"];
 
@@ -29,6 +15,7 @@ export const NavigationLink = () => {
   const { user } = useAuthStore();
   const pathname = usePathname();
   const [path, setPath] = useState("");
+  const { matches } = useMediaQueries("(min-width: 640px)");
 
   useEffect(() => {
     setPath(pathname === "/" ? "/home" : pathname);
@@ -36,8 +23,8 @@ export const NavigationLink = () => {
 
   return (
     <AnimatePresence mode="wait">
-      {navigation.includes(pathname) && (
-        <nav className="fixed bottom-0 left-0 z-20 flex h-20 w-full items-center justify-center md:bottom-10 md:px-4">
+      {navigation.includes(pathname) && !matches && (
+        <nav className="fixed bottom-0 left-0 z-20 flex h-14 w-full items-center justify-center md:bottom-10 md:h-20 md:px-4">
           <motion.div
             initial={{ y: "200%", opacity: 0 }}
             animate={{ y: "0%", opacity: 1 }}
@@ -53,7 +40,7 @@ export const NavigationLink = () => {
               className="flex size-full items-center justify-between"
             >
               <AnimatePresence>
-                {links.map((link, idx) => (
+                {navLinks.map((link, idx) => (
                   <li
                     key={idx}
                     onMouseEnter={() => setPath(link.href)}
@@ -62,9 +49,14 @@ export const NavigationLink = () => {
                     <Link
                       href={link.href === "/home" ? "/" : link.href === "/account" && !user.id ? "/auth" : link.href}
                       key={idx}
-                      className="flex h-full items-center justify-center px-4"
+                      className="relative flex h-full items-center justify-center md:px-4"
                     >
-                      {link.icon("size-8")}
+                      {link.icon("siize-6 md:size-8 shrink-0")}
+                      {link.href === "/account/cart" && (
+                        <div className="absolute right-3 top-3 flex size-4 animate-bounce items-center justify-center rounded-[50%] border bg-background font-medium leading-[0]">
+                          <div>{user.cart.length}</div>
+                        </div>
+                      )}
                     </Link>
 
                     {path === link.href && (

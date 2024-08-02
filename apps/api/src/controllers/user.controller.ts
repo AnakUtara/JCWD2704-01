@@ -1,6 +1,7 @@
 import { Controller } from './index.types';
 import { messageResponse } from '@/utils/message';
 import userService from '@/services/user.service';
+import { cookiesOpt } from '@/utils/cookiesOpt';
 
 class UserController {
   register: Controller = async (req, res, next) => {
@@ -28,8 +29,8 @@ class UserController {
       const { accessToken, refreshToken } = await userService.login(req);
       res
         .status(201)
-        .cookie('access_token', accessToken)
-        .cookie('refresh_token', refreshToken)
+        .cookie('access_token', accessToken, cookiesOpt)
+        .cookie('refresh_token', refreshToken, cookiesOpt)
         .send(messageResponse('Successfully login', "let's explore our product"));
     } catch (error) {
       next(error);
@@ -48,7 +49,7 @@ class UserController {
   update: Controller = async (req, res, next) => {
     try {
       const { accessToken } = await userService.update(req);
-      res.cookie('access_token', accessToken).send(messageResponse('Successfully edit your profile'));
+      res.cookie('access_token', accessToken, cookiesOpt).send(messageResponse('Successfully edit your profile'));
     } catch (error) {
       next(error);
     }
@@ -57,7 +58,7 @@ class UserController {
   updatePassword: Controller = async (req, res, next) => {
     try {
       const { accessToken } = await userService.updatePassword(req);
-      res.cookie('access_token', accessToken).send(messageResponse('Successfully change your password'));
+      res.cookie('access_token', accessToken, cookiesOpt).send(messageResponse('Successfully change your password'));
     } catch (error) {
       next(error);
     }
@@ -76,15 +77,6 @@ class UserController {
     try {
       await userService.forgetPasswordVerification(req);
       res.send(messageResponse('Check your email for reset your password'));
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  deactice: Controller = async (req, res, next) => {
-    try {
-      const test = await userService.deactive(req);
-      res.send(test);
     } catch (error) {
       next(error);
     }

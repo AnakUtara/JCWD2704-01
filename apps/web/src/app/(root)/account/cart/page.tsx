@@ -12,28 +12,28 @@ type Prop = {
 };
 
 export default function Page({ searchParams }: Prop) {
-  console.log(searchParams)
-  
   return (
     <main className="min-h-dvh w-full bg-secondary">
-      <div className="container space-y-4 p-4">
-        <ButtonBack className="gap-4">Cart</ButtonBack>
-        <section className="flex flex-wrap justify-center gap-4">
+      <div className="container flex h-16 w-full items-center bg-primary px-4 justify-between xl:rounded-b-md">
+        <ButtonBack isCenter={false} className="gap-1.5 md:gap-4 text-primary-foreground w-fit">Cart</ButtonBack>
+        <Label htmlFor="store_id" className="flex items-center gap-1.5">
+          <p className="text-xs uppercase text-primary-foreground truncate">All Store</p>
+          <FillterToggle name="store_id" queryKey="store_id" trueValue="all" className="h-5" />
+        </Label>
+      </div>
+      <section className="container p-4">
+        <div className="flex flex-wrap gap-4">
           <FillterInput queryKey="s" placeholder="Search" />
           <Address />
-          <Label htmlFor="store_id">
-            <p>All Store</p>
-            <FillterToggle name="store_id" queryKey="store_id" trueValue="all" className="h-5" />
-          </Label>
-        </section>
-        <section className="flex min-h-screen w-full flex-col gap-y-2 py-2">
-          <ul className="flex flex-col gap-y-4">
+        </div>
+        <div className="flex min-h-screen w-full flex-col gap-y-2 py-2">
+          <ul className="flex flex-col gap-y-2">
             <Suspense fallback={<h1>Loading...</h1>}>
               <CartList search={searchParams.s || ""} store={searchParams?.store} />
             </Suspense>
           </ul>
-        </section>
-      </div>
+        </div>
+      </section>
       <Checkout />
     </main>
   );

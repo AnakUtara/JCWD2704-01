@@ -14,6 +14,7 @@ export const storeCreate: StoreCreateReturn = {
       latitude,
       longitude,
       city: { connect: { city_id } },
+      type: 'store',
     },
   }),
   store: ({ id }) => ({
@@ -30,7 +31,7 @@ export const storeUpdate: StoreUpdateReturn = {
   address: ({ address, city_id, details, latitude, longitude, address_id }) => ({
     where: { address_id },
     data: {
-      ...(address && { address: { update: { address, city_id, details, latitude, longitude } } }),
+      ...(address && { address: { update: { address, city_id, details, latitude, longitude , type: 'store'} } }),
     },
   }),
   admin: (id, store_id) => ({

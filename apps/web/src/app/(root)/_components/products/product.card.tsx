@@ -19,8 +19,6 @@ export default function ProductCard({ product }: Props) {
   const discount = product.variants[0].store_stock[0].discount;
   const unitPrice = product.variants[0].store_stock[0].unit_price;
 
-  console.log(product.variants)
-
   return (
     <Link href={`/product/${product.name.toLowerCase().replaceAll(" ", "-")}?city_id=${searchParams.get("city_id")}`} className="shadow-md">
       <Card key={product.id} className="flex size-full flex-col justify-between gap-2">

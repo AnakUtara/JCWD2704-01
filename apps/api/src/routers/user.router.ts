@@ -28,9 +28,6 @@ class UserRouter {
     // [X] Feature Forget Password User
     this.router.patch('/v3/:token', userController.forgetPassword); // Forget password
     this.router.post('/v3', userController.forgetPasswordVerification); // Forget Password Email verification
-
-    // [ ] Feature Ban or Delete User
-    this.router.get('/test', userController.deactice);
   }
 
   public getRouter() {

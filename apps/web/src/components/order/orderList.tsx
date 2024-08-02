@@ -5,11 +5,12 @@ import { DataTable } from "../table/data-table";
 import { orderColoumn } from "./order.coloumn";
 
 export default async function OrderList({ searchParams }: { searchParams: { [k: string]: string } }) {
-  console.log("SP", searchParams);
   const orders = (await axiosInstanceSSR().get("/order", { params: { ...searchParams } })).data as {
     page: { now: number; end: number };
     data: CustomerOrders[];
   };
+
+  console.log(orders)
 
   const ordersINV = orders.data;
   const orderList = await Promise.all(

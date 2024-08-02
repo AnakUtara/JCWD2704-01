@@ -11,11 +11,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 import useAuthStore from "@/stores/auth.store";
 import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export const ButtonLogout = ({ className, children }: { className?: string; children?: React.ReactNode }) => {
+export const ButtonLogout = ({ className, isMargin = true, size }: { className?: string; isMargin?: boolean, size?:string }) => {
   const { logout } = useAuthStore();
   const router = useRouter();
   const handleClick = () => {
@@ -26,10 +27,10 @@ export const ButtonLogout = ({ className, children }: { className?: string; chil
 
   return (
     <Dialog>
-      <DialogTrigger asChild className="mt-2 px-2 sm:mt-0">
-        <Button variant="ghost" size="sm" className="flex items-center justify-start gap-4 py-6 sm:py-8">
+      <DialogTrigger asChild className={cn(isMargin ? "mt-2 px-2 sm:mt-0" : "")}>
+        <Button variant="ghost" size="sm" className={cn("flex items-center justify-start gap-4 py-6 sm:py-8", className)}>
           <span className="inline-block p-2">
-            <LogOut className="size-6" />
+            <LogOut className={cn("size-6", size)} />
           </span>
           <span className="inline-block font-medium">Logout</span>
         </Button>
@@ -43,7 +44,7 @@ export const ButtonLogout = ({ className, children }: { className?: string; chil
 
         <DialogFooter className="gap-4 sm:gap-0">
           <DialogClose asChild>
-            <Button size="sm" variant='destructive' onClick={handleClick}>
+            <Button size="sm" variant="destructive" onClick={handleClick}>
               Confirm
             </Button>
           </DialogClose>

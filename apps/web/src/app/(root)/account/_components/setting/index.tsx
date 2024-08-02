@@ -16,11 +16,11 @@ export const AccountSetting = () => {
   return (
     <div className="flex size-full flex-col gap-4">
       <div className="space-y-6">
-        <div className="flex h-20 items-center bg-primary px-2 text-primary-foreground xl:rounded-b-md">
-          <ButtonBack>Account Setting</ButtonBack>
+        <div className="flex h-16 items-center bg-primary px-2 text-primary-foreground xl:rounded-b-md">
+          <ButtonBack className="gap-4 bg-transparent">Account Setting</ButtonBack>
         </div>
 
-        <div className="flex flex-col items-center justify-center p-4 md:flex-row md:justify-between">
+        <div className="flex flex-col items-center justify-center p-4 md:flex-row md:justify-between max-w-screen-md mx-auto">
           <div className="flex flex-col items-center gap-6 md:flex-row md:gap-10">
             <ProfilePicture user={user} size={120} />
             <div className="flex h-fit items-end gap-4 text-sm text-muted-foreground">

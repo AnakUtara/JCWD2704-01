@@ -28,6 +28,7 @@ export default function FillterToggle({ queryKey, redirect = "replace", trueValu
     <Switch
       checked={sp.get(queryKey) === trueValue}
       onCheckedChange={(e) => fn[redirect]({ key: queryKey, value: e ? trueValue : falseValue })}
+      className="data-[state=checked]:bg-background/40 data-[state=unchecked]:bg-input"
     />
   );
 }

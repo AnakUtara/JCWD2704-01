@@ -7,16 +7,28 @@ import { Footer } from "@/components/footer";
 import { dummyPromotion } from "@/constants/promotion";
 import { Suspense } from "react";
 import Spinner from "@/components/ui/spinner";
+import { axiosInstanceSSR } from "@/lib/axios.server-config";
 
 export const revalidate: Revalidate = 900;
 
+const getPromotion = async (): Promise<{ result: { name: string }[] } | undefined> => {
+  try {
+    const response = await axiosInstanceSSR().get("/promotion/featured");
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export default async function Home() {
+  const promotion = await getPromotion();
+
   return (
     <>
       <Header />
       <main className="size-full min-h-screen space-y-6 pb-6">
         <section className="container">
-          <Promotion datas={dummyPromotion} />
+          <Promotion datas={promotion} />
         </section>
 
         <div className="size-full px-4 md:px-0">

@@ -3,14 +3,18 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import Link from "next/link";
 import { RegisterForm } from "./_components/singup";
 import { LoginForm } from "./_components/signin";
+import Image from "next/image";
 
 export default async function AuthPage() {
   return (
-    <main className="container flex h-screen w-full justify-center px-4 pt-20">
-      <section className="h-fit w-full max-w-screen-lg space-y-4">
+    <main className="container relative flex h-screen w-full justify-center px-4 pt-20">
+      <Image src="/placeholder-image.jpg" alt="Login" fill priority className="object-cover brightness-50" />
+      <section className="z-40 h-fit w-full max-w-screen-lg space-y-4">
         <div className="space-y-2 text-balance text-center">
-          <h2 className="text-5xl font-bold leading-none">Farm2Door</h2>
-          <p>Lorem ipsum dolor sit amet consectetur.</p>
+          <Link href="/" className="text-background">
+            <h2 className="text-5xl font-bold leading-none">Farm2Door</h2>
+          </Link>
+          <p className="text-balance text-background">Your trusted market platform for you and your family.</p>
         </div>
 
         <Tabs defaultValue="signin" className="size-full">
@@ -27,7 +31,7 @@ export default async function AuthPage() {
               <CardHeader>
                 <CardTitle>Login</CardTitle>
 
-                <CardDescription>Lorem ipsum dolor sit amet consectetur.</CardDescription>
+                <CardDescription>Login to get access to the products that are best for you</CardDescription>
               </CardHeader>
 
               <CardContent>

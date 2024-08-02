@@ -163,8 +163,6 @@ class UserService {
       );
     });
   }
-
-  async deactive(req: Request) {}
 }
 
 export default new UserService();

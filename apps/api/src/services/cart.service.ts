@@ -13,7 +13,7 @@ export class CartService {
         store_stock: {
           include: {
             product: { include: { product: true, images: { select: { name: true } } } },
-            store: { include: { address: true } },
+            store: { include: { address: { include: { city: { select: { city_name: true } } } } } },
           },
         },
       },

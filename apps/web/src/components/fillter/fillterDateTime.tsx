@@ -10,9 +10,10 @@ interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   queryKey: string;
   redirect?: "push" | "replace";
   defaultV?: number;
+  label?: string;
 }
 
-export default function FillerDateTime({ queryKey, redirect = "replace", defaultV, ...props }: SearchInputProps) {
+export default function FillerDateTime({ queryKey, redirect = "replace", defaultV, label, ...props }: SearchInputProps) {
   const { push, replace, sp } = useSP();
   const fn = { push, replace };
   const defaultDate: Matcher = new Date(Number(sp.get(queryKey) || defaultV));
@@ -25,7 +26,7 @@ export default function FillerDateTime({ queryKey, redirect = "replace", default
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button>{sp.get(queryKey) || defaultV ? defaultDate.toLocaleDateString() : "Select Date"}</Button>
+        <Button size='sm' className="min-w-24" variant='outline'>{sp.get(queryKey) || defaultV ? defaultDate.toLocaleDateString() : label ? label : "Select Date"}</Button>
       </PopoverTrigger>
       <PopoverContent>
         <Calendar

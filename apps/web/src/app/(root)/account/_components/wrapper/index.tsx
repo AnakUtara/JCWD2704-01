@@ -4,9 +4,16 @@ import { Button } from "@/components/ui/button";
 import useAuthStore from "@/stores/auth.store";
 import Link from "next/link";
 import { ProfilePicture } from "../ProfilePicture";
+import { useMediaQueries } from "@/hooks/use-media-queries";
+import { AccountVoucher } from "../AccountVoucher";
+import { Card, CardContent } from "@/components/ui/card";
+import { Ticket } from "lucide-react";
+import { ButtonReferral } from "../ButtonReferral";
+import { ButtonBack } from "../ButtonBack";
 
 export const AccountWrapper = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuthStore();
+  const { matches } = useMediaQueries("(min-width: 640px)");
 
   if (!user.id)
     return (
@@ -23,21 +30,53 @@ export const AccountWrapper = ({ children }: { children: React.ReactNode }) => {
     );
 
   return (
-    <section className="container pb-24 sm:pb-0">
-      <div className="space-y-6 bg-primary py-4 px-8 pb-20 text-primary-foreground xl:rounded-b-md">
-        <h3 className="text-lg font-semibold sm:text-xl">Account</h3>
+    <section className="container space-y-4 pb-16 sm:pb-0">
+      <div className="">
+        <div className="flex h-32 flex-col justify-between bg-primary pb-2 pt-4 md:h-40 md:rounded-b-md">
+          <div className="relative mx-auto flex w-full max-w-screen-lg text-background">
+            <ButtonBack className="absolute left-0 top-0 h-full w-fit gap-2 text-background" />
+            <h3 className="w-full text-center text-lg font-medium">Account</h3>
+          </div>
+        </div>
 
         <div className="flex flex-col gap-4 sm:flex-row">
-          <div className="flex w-full justify-between">
-            <div className="flex gap-4">
-              <ProfilePicture user={user} />
-              <div className="">
-                <p className="text-xl font-medium">{user.full_name}</p>
-                <p className="text-primary-foreground/80">{user.phone_no}</p>
+          <div className="flex w-full justify-between px-6 md:px-0">
+            <div className="relative mx-auto flex w-full max-w-screen-lg justify-between gap-4 pt-4 md:py-4">
+              <div className="leading-none">
+                <p className="text-lg font-medium md:text-xl">{user.full_name}</p>
+                <p className="text-primary">{user.email}</p>
+                <p className="text-sm text-muted-foreground">{user.phone_no}</p>
               </div>
+              <ProfilePicture size={matches ? 150 : 120} user={user} className="absolute bottom-1/3 right-0 border-4 md:bottom-1/4" />
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="w-full px-4">
+        <Card className="mx-auto w-full max-w-2xl items-center md:max-w-screen-lg">
+          <CardContent className="flex w-full flex-wrap items-center justify-between p-0 md:p-6 md:pt-6">
+            <Link
+              href="/"
+              className="group flex items-center gap-6 rounded-md px-2.5 py-2 transition-all duration-300 hover:bg-secondary active:scale-95"
+            >
+              <span className="block rounded-full p-2 transition-all duration-300 group-hover:bg-primary/10">
+                <Ticket className="size-10 stroke-primary" />
+              </span>
+              <p className="flex flex-col">
+                <span className="inline-block font-medium">
+                  Farm2Door <span className="text-primary">Voucher</span>
+                </span>
+                <span className="inline-block text-muted-foreground">{user.promotions?.length} Voucher</span>
+              </p>
+            </Link>
+
+            <div className="w-fit space-y-2 self-start p-1 sm:space-y-0 sm:text-end md:p-0">
+              {/* <p className="select-none px-3 text-sm text-muted-foreground">Referral No.</p> */}
+              <ButtonReferral className="text-xs md:text-base" />
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {children}

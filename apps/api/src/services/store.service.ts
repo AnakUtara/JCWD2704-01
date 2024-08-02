@@ -27,6 +27,8 @@ export class StoreService {
     ORDER BY distance
     LIMIT 1;
   `;
+
+    console.log(result);
     return result[0];
   }
 

@@ -1,6 +1,7 @@
 import type { CorsOptions } from 'cors';
 import { config } from 'dotenv';
 import { resolve } from 'path';
+import z from 'zod';
 
 export const NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -13,6 +14,7 @@ config({ path: resolve(__dirname, `../${envFile}.local`), override: true });
 
 export const PORT = process.env.PORT || 8000;
 export const DATABASE_URL = process.env.DATABASE_URL || '';
+export const CORS_URL = z.string().optional().parse(process.env.COOKIE_DOMAIN);
 
 export const ACC_SECRET_KEY = process.env.ACC_SECRET_KEY || '';
 export const REFR_SECRET_KEY = process.env.REFR_SECRET_KEY || '';
