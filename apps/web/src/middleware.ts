@@ -25,8 +25,10 @@ export async function middleware(request: NextRequest) {
     // Super & Store admin protection routes
     if (user?.role === Role.customer && isRequiredAdminLogin) return NextResponse.redirect(new URL("/", request.url));
     if (!user && pathname.includes("login")) return response;
-    if ((user?.role === "store_admin" || user?.role === "super_admin") && pathname.endsWith("login"))
+    if (user?.role === "store_admin" && pathname.endsWith("login"))
       return NextResponse.redirect(new URL("/dashboard/admin/products" + searchParams, request.url));
+    if (user?.role === "super_admin" && pathname.endsWith("login"))
+      return NextResponse.redirect(new URL("/dashboard/admin/users" + searchParams, request.url));
 
     return response;
   } catch (error) {

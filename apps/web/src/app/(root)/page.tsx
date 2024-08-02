@@ -8,12 +8,8 @@ import { Suspense } from "react";
 import Spinner from "@/components/ui/spinner";
 import { fetchProductsByQuery } from "@/utils/fetch/server/store.fetch";
 import { SearchParams } from "@/models/search.params";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { Product } from "@/models/product.model";
-import ProductCard from "./_components/products/product.card";
-import { cn } from "@/lib/utils";
-import { FrownIcon, HeartCrackIcon } from "lucide-react";
 import ProductsCarousel from "./_components/products/products.carousel";
+import { axiosInstanceSSR } from "@/lib/axios.server-config";
 
 export const revalidate: Revalidate = 900;
 
@@ -32,6 +28,7 @@ type Props = {
 export default async function Home({ searchParams }: Props) {
   const getProductByDiscount = await fetchProductsByQuery({ city_id: searchParams.city_id, discount: "true" });
   const getProductsBuyGet = await fetchProductsByQuery({ city_id: searchParams.city_id, promo: "buy_get" });
+  const promotion = await getPromotion();
   return (
     <>
       <Header />
