@@ -28,7 +28,6 @@ export class StoreService {
     LIMIT 1;
   `;
 
-    console.log(result);
     return result[0];
   }
 

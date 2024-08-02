@@ -38,7 +38,6 @@ export async function isAdminExist(req: Request, res: Response, next: NextFuncti
         OR: [{ email }, { phone_no }],
       },
     });
-    console.log(isAdminExist);
     if (isAdminExist) throw new BadRequestError('Email/phone number already exist.');
     next();
   } catch (error) {

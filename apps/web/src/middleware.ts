@@ -31,8 +31,8 @@ export async function middleware(request: NextRequest) {
     // if (!user || (user?.role === "customer" && pathname.startsWith("/dashboard"))) return NextResponse.redirect(new URL("/", request.url));
     return response;
   } catch (error) {
-    // console.log(error);
-    // return NextResponse.redirect(new URL("/", request.url));
+    console.log(error);
+    return NextResponse.redirect(new URL("/", request.url));
   }
 }
 

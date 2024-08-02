@@ -48,8 +48,6 @@ export async function validateInitStock(req: Request, res: Response, next: NextF
 export async function validateUpdateStock(req: Request, res: Response, next: NextFunction) {
   try {
     const data = reqBodyReducer(req.body) as TStoreStock;
-    console.log(data);
-
     if (data.quantity) data.quantity = Number(data.quantity);
     if (data.unit_price) data.unit_price = Number(data.unit_price);
     if (data.discount) data.discount = Number(data.discount);

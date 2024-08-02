@@ -23,15 +23,7 @@ class OrderRouter {
     this.router.get('/:inv/v1', userMiddleware.accessToken, this.controller.payViaMidtrans);
     this.router.post('/', userMiddleware.accessToken, zod(createOrderSchema), this.controller.createCutomerOrder);
 
-    this.router.patch(
-      '/:inv/v1',
-      (a, b, c) => {
-        console.log(a.body), c();
-      },
-      blobUploader().single('img'),
-      verifyAdminAccToken,
-      this.controller.uploadPaymentProof,
-    );
+    this.router.patch('/:inv/v1', blobUploader().single('img'), verifyAdminAccToken, this.controller.uploadPaymentProof);
     this.router.patch('/:inv/v2', userMiddleware.accessToken, this.controller.cancelOrder);
     this.router.patch('/:inv/v3', userMiddleware.accessToken, this.controller.approveOrderPayment);
     this.router.patch('/:inv/v4', userMiddleware.accessToken, this.controller.sendingOrder);

@@ -18,7 +18,6 @@ export default function SubCatCreateForm({ categories }: Props) {
     resolver: zodResolver(createSubCatSchema),
   });
   function onSubmit(data: z.infer<typeof createSubCatSchema>) {
-    console.log(data);
     createNewSubCat(data);
   }
   return (

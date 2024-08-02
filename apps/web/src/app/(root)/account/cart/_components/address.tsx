@@ -22,7 +22,6 @@ export default function Address() {
         .catch((e) => {
           return "origin not found";
         });
-      console.log(store_id);
       setOrigin(store_id);
     };
     fetchStore();

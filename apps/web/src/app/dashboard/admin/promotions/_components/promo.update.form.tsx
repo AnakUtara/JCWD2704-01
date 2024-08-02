@@ -16,7 +16,6 @@ export default function PromoImageUpdate({ promo }: Props) {
     resolver: zodResolver(updatePromoImageSchema),
   });
   function onSubmit(data: z.infer<typeof updatePromoImageSchema>) {
-    console.log(data);
     updateImagePromo(data, promo?.id || "");
   }
   return (

@@ -113,7 +113,6 @@ export class Order2Service {
             },
           });
           result = order;
-          console.log('create history');
         } catch (error) {
           result = error;
         }

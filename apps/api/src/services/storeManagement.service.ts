@@ -88,7 +88,6 @@ class StoreManagementService {
 
   async delete(req: Request) {
     const { id: address_id } = req.params;
-    console.log(req.body);
     if (req.user?.role !== 'super_admin') throw new CustomError('Access denied');
     return await prisma.store.update({ where: { address_id }, data: { is_deleted: true } });
   }

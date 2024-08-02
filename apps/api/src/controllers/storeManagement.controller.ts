@@ -23,8 +23,7 @@ class StoreManagementController {
 
   create: Controller = async (req, res, next) => {
     try {
-      const data = await storeManagementService.create(req);
-      console.log(data);
+      await storeManagementService.create(req);
       res.send(messageResponse('Success created store'));
     } catch (error) {
       next(error);
@@ -33,7 +32,7 @@ class StoreManagementController {
 
   update: Controller = async (req, res, next) => {
     try {
-      const update = await storeManagementService.update(req);
+      await storeManagementService.update(req);
       res.send(messageResponse('Success created store'));
     } catch (error) {
       next(error);

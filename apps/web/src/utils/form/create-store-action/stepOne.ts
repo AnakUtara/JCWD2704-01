@@ -26,7 +26,6 @@ export const stepOneFormAction = (prevState: FormErrors | undefined, formData: F
     }, {});
     return errors;
   } else {
-    console.log(validated.data);
     redirect(CreateStoreRoutes.STEP_TWO);
   }
 };

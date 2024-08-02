@@ -25,7 +25,7 @@ export const useLocation = create<LatLngStore>()((set) => ({
         set({ location: results[0], results: responese });
       } else {
         set({ location: null, results: null });
-        console.log("No location found for given coordinates.");
+        console.error("No location found for given coordinates.");
       }
     } catch (error) {
       console.error("Error fetching location:", error);

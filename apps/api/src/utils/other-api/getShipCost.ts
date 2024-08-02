@@ -28,7 +28,6 @@ export async function getShipCost(query: z.infer<typeof rajaOngkirCostQuerySchem
   };
   const fetchRajaOngkirCost = async (params: z.infer<typeof rajaOngkirCostParamSchema>) => {
     try {
-      console.log(RAJAONGKIR_API_KEY);
       const rajaOngkirInstance = axios.create({
         baseURL: 'https://api.rajaongkir.com/starter',
         withCredentials: true,
@@ -38,7 +37,6 @@ export async function getShipCost(query: z.infer<typeof rajaOngkirCostQuerySchem
       return data;
     } catch (error) {
       const a = error as any;
-      console.log(a.config);
       throw new InternalServerError('RajaOngkir: ' + a.response.data.rajaongkir.status.description);
     }
   };

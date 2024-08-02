@@ -30,7 +30,6 @@ export default function AssignStockForm({ stores, variants, promos }: Props) {
     },
   });
   function onSubmit(data: z.infer<typeof initStockSchema>) {
-    console.log(data);
     initStock(data);
   }
   return (

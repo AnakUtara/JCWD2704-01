@@ -10,8 +10,6 @@ export default async function OrderList({ searchParams }: { searchParams: { [k: 
     data: CustomerOrders[];
   };
 
-  console.log(orders)
-
   const ordersINV = orders.data;
   const orderList = await Promise.all(
     ordersINV.map(async ({ inv_no }) => (await axiosInstanceSSR().get("/order/" + inv_no)).data.data as CustomerOrders),

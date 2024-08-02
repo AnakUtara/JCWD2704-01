@@ -30,7 +30,6 @@ export const useCheckout = create<State & Action>((set, get) => ({
   add: (data) =>
     set(({ list }) => {
       const idx = list.findIndex((e) => e.store_stock_id == data.store_stock_id);
-      console.log(idx);
       if (idx !== -1) {
         const newList = [...list];
         newList[idx] = { ...data };
