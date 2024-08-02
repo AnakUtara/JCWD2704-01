@@ -1,7 +1,6 @@
 import { axiosInstanceSSR } from "@/lib/axios.server-config";
 import { TCategory } from "@/models/category.model";
 import { CategoryLink } from "./CategoryLink";
-import { AxiosError } from "axios";
 
 const getCategories = async () => {
   try {

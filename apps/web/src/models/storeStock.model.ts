@@ -12,9 +12,6 @@ export type TStoreStock = {
   discount: number;
   quantity: number;
   promo_id?: string | null;
-  // promo?: Promotion | null;
-  // stock_history: StockHistory[];
-  // order_details: OrderDetail[];
   cart: TCart[];
   is_deleted: boolean;
   created_at: Date;

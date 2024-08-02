@@ -7,7 +7,6 @@ import {
   getCoreRowModel,
   getSortedRowModel,
   useReactTable,
-  Row,
 } from "@tanstack/react-table";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
@@ -43,7 +42,6 @@ export function DataTable<TData, TValue>({
   useStoreFilter = false,
   stores,
   selectedData,
-  className,
   isVariant = false,
   layoutId,
 }: DataTableProps<TData, TValue>) {

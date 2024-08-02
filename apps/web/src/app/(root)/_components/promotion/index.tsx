@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
-import Link from "next/link";
 import Image from "next/image";
 
 import { Progress } from "@/components/ui/progress";

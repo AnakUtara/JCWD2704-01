@@ -1,7 +1,6 @@
 import { AccountWrapper } from "./_components/wrapper";
 import { AccountLink } from "./_components/AccountLink";
 import { ButtonLogout } from "./_components/ButtonLogout";
-import { AccountVoucher } from "./_components/AccountVoucher";
 
 export default function AccountPage() {
   return (

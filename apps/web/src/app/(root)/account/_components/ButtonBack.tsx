@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -22,9 +21,7 @@ export const ButtonBack = ({
       onClick={() => router.back()}
       className={cn("relative flex w-full items-center justify-center gap-0.5 text-lg font-medium sm:text-xl md:justify-normal", className)}
     >
-      {/* <Button asChild variant="outline" size="icon"> */}
       <ChevronLeft size={size} className={cn("left-0 stroke-primary-foreground md:relative", isCenter ? "absolute" : "")} />
-      {/* </Button> */}
       <span className="inline-block">{children}</span>
     </button>
   );

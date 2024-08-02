@@ -1,5 +1,4 @@
 import Pagination from "@/components/pagination";
-import { DataTable } from "@/components/table/data-table";
 import Spinner from "@/components/ui/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SearchParams } from "@/models/search.params";

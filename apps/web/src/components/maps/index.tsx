@@ -60,7 +60,6 @@ export const Maps = ({
 
   useEffect(() => {
     setCenter({ lat, lng });
-    // setLocation(center)
   }, [lat, lng]);
 
   useEffect(() => {

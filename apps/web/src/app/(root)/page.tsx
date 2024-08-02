@@ -4,7 +4,6 @@ import { Category } from "./_components/categories";
 import { Promotion } from "./_components/promotion";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { dummyPromotion } from "@/constants/promotion";
 import { Suspense } from "react";
 import Spinner from "@/components/ui/spinner";
 import { axiosInstanceSSR } from "@/lib/axios.server-config";

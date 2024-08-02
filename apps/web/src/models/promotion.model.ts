@@ -24,7 +24,6 @@ export type TPromotion = {
   expiry_date: string;
   is_valid: boolean;
   type: PromoType;
-  //   customer_orders: TCustomerOrders[]
   variant_id: TStoreStock[];
   created_at: Date;
   updated_at: Date;

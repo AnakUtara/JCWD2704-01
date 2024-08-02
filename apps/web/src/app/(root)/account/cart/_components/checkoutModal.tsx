@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableFooter, TableRow } from "@/components/ui/table";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { createOrderSchema } from "@/schemas/order.scema";
-import { promise, z } from "zod";
+import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
 import { TVoucher } from "../_model/props";

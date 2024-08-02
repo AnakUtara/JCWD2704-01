@@ -1,5 +1,4 @@
 import { axiosInstanceCSR } from "@/lib/axios.client-config";
-import { TAddress } from "@/models/address.model";
 import { TStore } from "@/models/store.model";
 import { Gender, Role, TUser } from "@/models/user.model";
 import { deleteClientTokens } from "@/utils/token";

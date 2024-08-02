@@ -3,8 +3,6 @@ import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { axiosInstanceSSR } from "@/lib/axios.server-config";
 import { CustomerOrders } from "@/models/order.model";
 import { toIDR } from "@/utils/toIDR";
-// import PaymentBtn from "../../app/(root)/orders/_components/paymentBtn";
-// import CancelBtn from "../../app/(root)/orders/_components/cancelBtn";
 import PaymentBtn from "@/app/(root)/account/orders/_components/paymentBtn";
 import CancelBtn from "@/app/(root)/account/orders/_components/cancelBtn";
 import Image from "next/image";

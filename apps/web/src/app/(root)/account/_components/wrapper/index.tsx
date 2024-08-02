@@ -5,7 +5,6 @@ import useAuthStore from "@/stores/auth.store";
 import Link from "next/link";
 import { ProfilePicture } from "../ProfilePicture";
 import { useMediaQueries } from "@/hooks/use-media-queries";
-import { AccountVoucher } from "../AccountVoucher";
 import { Card, CardContent } from "@/components/ui/card";
 import { Ticket } from "lucide-react";
 import { ButtonReferral } from "../ButtonReferral";

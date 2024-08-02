@@ -7,7 +7,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
 
 import { googleMapsApiKey } from "./maps.config";
-import useAuthStore from "@/stores/auth.store";
 
 import { cn } from "@/lib/utils";
 import Spinner from "../ui/spinner";

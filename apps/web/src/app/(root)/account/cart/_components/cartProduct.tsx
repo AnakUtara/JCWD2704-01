@@ -10,20 +10,15 @@ import { InputQuantityProps } from "../_model/props";
 import { toIDR } from "@/utils/toIDR";
 import { Button } from "@/components/ui/button";
 import { TCart } from "@/models/cart.model";
-import { NEXT_PUBLIC_BASE_API_URL } from "@/config/config";
 import { cn } from "@/lib/utils";
 import useAuthStore from "@/stores/auth.store";
-import { axiosInstanceCSR } from "@/lib/axios.client-config";
 import { imageUrl } from "@/utils/imageUrl";
 import { Checkbox } from "@/components/ui/checkbox";
 
 export function CartProduct({ cartProduct }: { cartProduct: TCart }) {
-  const store_id = cartProduct.store_stock.store_id;
-  const { user } = useAuthStore();
   const sp = useSearchParams();
   const [add, remove, list, nearestStore] = useCheckout((s) => [s.add, s.remove, s.list, s.origin]);
   const hide = sp.get("store_id") != "all" ? cartProduct.store_stock.store_id !== nearestStore : false;
-  const ref = useRef<HTMLInputElement>(null);
   const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {

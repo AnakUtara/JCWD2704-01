@@ -2,7 +2,6 @@ import FillterInput from "@/components/fillter/fillterInput";
 import FillterSelect from "@/components/fillter/fillterSelect";
 import FillterDateTime from "@/components/fillter/fillterDateTime";
 import { Label } from "@/components/ui/label";
-import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table";
 import { axiosInstanceSSR } from "@/lib/axios.server-config";
 import { SelectContent, SelectItem } from "@/components/ui/select";
 import { CustomerOrders } from "@/models/order.model";

@@ -17,11 +17,9 @@ import { TCategory, TSubCategory } from "@/models/category.model";
 import { Product } from "@/models/product.model";
 import { useEffect, useState } from "react";
 import { fetchCategoriesClient, fetchSubCategoriesWithCatIDClient } from "@/utils/fetch/client/categories.client-fetch";
-import { useSearchParams } from "next/navigation";
 
 type Props = { product: Product };
 export default function ProductEditForm({ product }: Props) {
-  // const params = useSearchParams();
   const [category_id, setCategoryID] = useState<number>(1);
   const [categories, setCategories] = useState<TCategory[]>([]);
   const [subCats, setSubCats] = useState<TSubCategory[]>([]);

@@ -1,8 +1,6 @@
 "use client";
 import Modal from "@/components/Modal";
-import OrderStatusButton from "@/components/order/orderStatusButton";
 import { Button } from "@/components/ui/button";
-import { useParams } from "next/navigation";
 import { ReactNode, useState } from "react";
 
 type Props = {

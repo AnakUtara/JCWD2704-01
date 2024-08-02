@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useMediaQueries } from "@/hooks/use-media-queries";
 import { useLocation } from "@/stores/latLng.store";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { getGeocode, getLatLng } from "use-places-autocomplete";
 import { CreateStoreSelectCity } from "../../../create-store/_components/form/select-city";
 import { CityType } from "@/types/cities.type";
-import { storeUpadteLocSchema, storeUpadteSchema } from "@/schemas/store.schema";
+import { storeUpadteLocSchema } from "@/schemas/store.schema";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { axiosInstanceCSR } from "@/lib/axios.client-config";
@@ -52,7 +52,7 @@ export const LocationStoreEdit = ({ cities, addressId }: { cities: CityType[] | 
           longitude,
           latitude,
         });
-        window.location.reload()
+        window.location.reload();
       } catch (error) {
         if (error instanceof AxiosError) {
           toast.error(`Error! ${error.response?.status}`, { richColors: false, position: "top-right" });

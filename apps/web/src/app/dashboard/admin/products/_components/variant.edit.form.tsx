@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { SelectItem } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { createVariantSchema, updateVariantSchema } from "@/lib/zod-schemas/product.schema";
+import { updateVariantSchema } from "@/lib/zod-schemas/product.schema";
 import { Product, Variants, variants } from "@/models/product.model";
 import { fetchProductIdsAndNamesClient, updateVariant } from "@/utils/fetch/client/product.client-fetch";
 import { zodResolver } from "@hookform/resolvers/zod";

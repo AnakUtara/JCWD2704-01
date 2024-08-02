@@ -1,8 +1,6 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TStore } from "@/models/store.model";
-import { formatDistanceToNowStrict } from "date-fns";
 import { DetailAdmin } from "./DetailAdmin";
 import { DetailProduct } from "./DetailProduct";
 

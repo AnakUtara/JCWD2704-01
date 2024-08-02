@@ -1,6 +1,5 @@
 import HeaderServerSortBtn from "@/components/table/header.server-sort.button";
 import HeaderSortButton from "@/components/table/header.sort.button";
-import { ProductVariant } from "@/models/product.model";
 import { TStoreStock } from "@/models/store.model";
 import { imageUrl } from "@/utils/imageUrl";
 import { toIDR } from "@/utils/toIDR";
