@@ -58,11 +58,11 @@ export default async function Home({ searchParams }: { searchParams: SearchParam
 
           <div className="px-4 xl:px-0">
             <div className="w-full space-y-4 rounded-md border bg-background p-4">
-              <div className="container hidden md:block">
-                <Category data={categories} />
-              </div>
-              <div className="flex gap-2">
-                <h3 className="text-3xl text-primary font-bold leading-none">Happy Shopping</h3>
+              <div className="flex gap-2 items-center">
+                <div className="container hidden md:block">
+                  <Category data={categories} />
+                </div>
+                <h3 className="text-3xl font-bold leading-none text-primary whitespace-nowrap">Happy Shopping</h3>
               </div>
               <ProductsCarousel title="Diskon Meriah Hari Ini!" searchParams={searchParams} products={getProductByDiscount} />
               <div className="flex gap-2">

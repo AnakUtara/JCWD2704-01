@@ -86,10 +86,10 @@ export const Category = ({ data }: { data: TCategory[] | undefined }) => {
 
   return (
     <Dialog>
-      <ul className="flex w-full items-center justify-between overflow-x-scroll gap-4">
+      <ul className="flex w-full items-center justify-between overflow-x-scroll gap-4 rounded-md">
         <DialogTrigger className="flex cursor-pointer items-center gap-1.5 rounded-md border px-3 py-1 text-center flex-shrink-0 bg-background">
           <span className="block rounded-full bg-primary/80 p-[5px]">
-            <Grip className="size-[15px] shrink-0 stroke-primary-foreground" />
+            <Grip className="size-[20px] shrink-0 stroke-primary-foreground" />
           </span>
           <span className="block text-xs">All Category</span>
         </DialogTrigger>
