@@ -15,7 +15,7 @@ import {
 import { ProductVariant } from "@/models/product.model";
 import { tableDateFormat } from "@/utils/formatter";
 import { ColumnDef } from "@tanstack/react-table";
-import { ChevronsUpDown, Delete, Edit, MoreHorizontal } from "lucide-react";
+import { Delete, Edit, MoreHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import AdminCRUDDialog from "../_component/admin.crud.dialog";
 import Image from "next/image";

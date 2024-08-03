@@ -6,3 +6,10 @@ export const cookiesOpt: CookieOptions = {
   secure: true,
   domain: CORS_URL,
 };
+
+export const cookiesHTTPOnlyOpt: CookieOptions = {
+  sameSite: 'strict',
+  secure: true,
+  httpOnly: true,
+  domain: CORS_URL,
+};

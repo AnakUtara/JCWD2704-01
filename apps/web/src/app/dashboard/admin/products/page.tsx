@@ -46,7 +46,7 @@ export default async function DashboardProductsPage({ searchParams }: Props) {
           <Suspense
             key={searchParams.page}
             fallback={
-              <div className="flex size-full items-center justify-center">
+              <div className="flex size-full min-h-dvh items-center justify-center">
                 <Spinner />
               </div>
             }
@@ -76,7 +76,7 @@ export default async function DashboardProductsPage({ searchParams }: Props) {
           <Suspense
             key={searchParams.page}
             fallback={
-              <div className="flex size-full items-center justify-center">
+              <div className="flex size-full min-h-dvh items-center justify-center">
                 <Spinner />
               </div>
             }

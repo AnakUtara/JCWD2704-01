@@ -20,15 +20,20 @@ import { fetchCategoriesClient, fetchSubCategoriesWithCatIDClient } from "@/util
 
 type Props = { product: Product };
 export default function ProductEditForm({ product }: Props) {
-  const [category_id, setCategoryID] = useState<number>(1);
+  const [category_id, setCategoryID] = useState<number>(product.category_id);
   const [categories, setCategories] = useState<TCategory[]>([]);
   const [subCats, setSubCats] = useState<TSubCategory[]>([]);
   async function handleCategories() {
     setCategories([...(await fetchCategoriesClient())]);
+  }
+  async function handleSubCategories() {
     setSubCats([...(await fetchSubCategoriesWithCatIDClient(String(category_id)))]);
   }
   useEffect(() => {
     handleCategories();
+  }, []);
+  useEffect(() => {
+    handleSubCategories();
   }, [category_id]);
   const form = useForm<z.infer<typeof updateProductSchema>>({
     resolver: zodResolver(updateProductSchema),
@@ -70,7 +75,7 @@ export default function ProductEditForm({ product }: Props) {
           placeholder="Pick a category..."
           setState={setCategoryID}
         >
-          {categories.map((cat: TCategory) => (
+          {categories?.map((cat: TCategory) => (
             <SelectItem key={cat.id} value={String(cat.id)}>
               {cat.name}
             </SelectItem>
@@ -78,7 +83,7 @@ export default function ProductEditForm({ product }: Props) {
         </FormSelect>
         {subCats.length !== 0 && (
           <FormSelect control={form.control} name="sub_category_id" label="Select Sub-Category:" placeholder="Pick a sub-category...">
-            {subCats.map((sub: TSubCategory) => (
+            {subCats?.map((sub: TSubCategory) => (
               <SelectItem key={sub.id} value={String(sub.id)}>
                 {sub.name}
               </SelectItem>
