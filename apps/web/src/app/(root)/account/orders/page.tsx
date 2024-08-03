@@ -22,24 +22,20 @@ export default function Page({ searchParams }: Props) {
 
         <div className="px-4 py-6 md:px-0">
           <section className="container flex flex-col gap-4 md:flex-row">
-            <div className="flex w-full flex-col gap-2">
-              <FillterInput name="inv" queryKey="inv" className="w-full max-w-[360px] md:max-w-full" placeholder="Search by invoice" />
-              <div className="flex gap-2">
+            <FillterInput name="product" queryKey="pn" placeholder="Search by Product Name" className="w-full" />
+
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-2 relative">
                 <FillterDateTime queryKey="before" label="Start From" />
                 <FillterDateTime name="after" queryKey="after" label="End To" />
                 <Tooltip>
-                  <TooltipTrigger className="self-start">
+                  <TooltipTrigger className="self-start md:right-0 top-0">
                     <CircleAlert className="size-4 shrink-0 stroke-muted-foreground" />
                   </TooltipTrigger>
                   <TooltipContent>
                     <p className="text-sm text-muted-foreground">Check from and to the date of your order.</p>
                   </TooltipContent>
                 </Tooltip>
-              </div>
-            </div>
-            <div className="flex w-full flex-col gap-2">
-              <div className="flex">
-                <FillterInput name="product" queryKey="pn" placeholder="Search by Product Name" />
               </div>
             </div>
           </section>
