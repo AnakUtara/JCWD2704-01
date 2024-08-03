@@ -13,7 +13,7 @@ import { ChevronRight } from "lucide-react";
 import ProductDetailsAddress from "../_components/product.address";
 import { fetchStoreByCityId } from "@/utils/fetch/server/store.fetch";
 import { TCategory } from "@/models/category.model";
-import HeaderBgPrimary from "../../_components/header/header.bg-primary";
+import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 
 type Props = { params: { name: string }; searchParams: SearchParams };
@@ -33,7 +33,7 @@ export default async function ProductDetailsPage({ params, searchParams }: Props
   const categories = await fetchCategories();
   return (
     <>
-      <HeaderBgPrimary searchParams={searchParams} />
+      <Header searchParams={searchParams} />
       <div className="container">
         <div className="flex flex-col gap-5 p-5 md:flex-row">
           <article className="order-2 flex flex-col gap-3 md:order-1">
@@ -68,12 +68,12 @@ export default async function ProductDetailsPage({ params, searchParams }: Props
             </div>
             <div className={cn(!details?.shelf_life && "hidden", "flex flex-col gap-2")}>
               <h3 className="text-xl font-bold">Shelf Life:</h3>
-              <p className="text-sm">{details?.shelf_life}</p>
+              <p className="text-sm">{details?.shelf_life || "-"}</p>
               <Separator />
             </div>
             <div className={cn(!details?.nutrition_facts && "hidden", "flex flex-col gap-2")}>
               <h3 className="text-xl font-bold">Nutrition Facts:</h3>
-              <p className="text-sm">{details?.nutrition_facts}</p>
+              <p className="text-sm">{details?.nutrition_facts || "-"}</p>
               <Separator />
             </div>
             <div className={cn(!details?.storage_instructions && "hidden", "flex flex-col gap-2")}>
@@ -104,7 +104,6 @@ export default async function ProductDetailsPage({ params, searchParams }: Props
                 ))}
               </div>
             </div>
-            <Separator />
           </article>
           <ProductDetailsForm product={details} />
         </div>

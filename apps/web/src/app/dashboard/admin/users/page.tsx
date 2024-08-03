@@ -17,6 +17,12 @@ import { DataTable } from "@/components/table/data-table";
 type Props = {
   searchParams: SearchParams;
 };
+
+export const generateMetadata = async () => {
+  return {
+    title: "Users Dashboard",
+  };
+};
 export default async function AdminDashboard({ searchParams }: Props) {
   const storeAdmins = await fetchStoreAdminData(searchParams);
   const customers = await fetchCustomersData(searchParams);
@@ -24,7 +30,7 @@ export default async function AdminDashboard({ searchParams }: Props) {
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:py-8 xl:px-0">
       <Tabs defaultValue="store-admin">
-        <TabsList className="mb-5 grid w-full grid-cols-2">
+        <TabsList className="mb-5 grid w-full grid-cols-2 bg-neutral-200">
           <TabsTrigger value="store-admin">Store Admins</TabsTrigger>
           <TabsTrigger value="customers">Customers</TabsTrigger>
         </TabsList>

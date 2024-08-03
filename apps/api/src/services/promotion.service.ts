@@ -189,7 +189,7 @@ export class PromotionService {
         where: {
           is_valid: true,
           expiry_date: { gte: new Date() },
-          AND: [{ type: { not: PromoType.referral_voucher } }, { type: { not: PromoType.free_shipping } }],
+          AND: [{ type: { not: PromoType.referral_voucher } }, { type: { not: PromoType.free_shipping } }, { type: { not: PromoType.buy_get } }],
         },
       });
       if (!promos) throw new NotFoundError('Promos not found.');

@@ -16,6 +16,12 @@ import { getAccTokenServer } from "@/utils/ssr.jwtdecode";
 import { cn } from "@/lib/utils";
 import { Role } from "@/models/user.model";
 
+export const generateMetadata = async () => {
+  return {
+    title: "Promotions Dashboard",
+  };
+};
+
 type Props = { searchParams: SearchParams };
 export default async function PromotionsDashboardPage({ searchParams }: Props) {
   const admin = await getAccTokenServer();
@@ -24,7 +30,7 @@ export default async function PromotionsDashboardPage({ searchParams }: Props) {
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:py-8 xl:px-0">
       <Tabs defaultValue="promotions">
-        <TabsList className={cn(admin.role === Role.store_admin ? "hidden" : "grid", "mb-5 w-full grid-cols-2")}>
+        <TabsList className={cn(admin.role === Role.store_admin ? "hidden" : "grid", "mb-5 w-full grid-cols-2 bg-neutral-200")}>
           <TabsTrigger value="promotions">Promotions</TabsTrigger>
           <TabsTrigger value="referrals">Referrals & Free Shippings</TabsTrigger>
         </TabsList>

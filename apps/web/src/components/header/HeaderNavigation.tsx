@@ -1,9 +1,7 @@
 "use client";
 
-import { headerLink } from "@/constants/links";
-import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { ChevronRight, LogOut } from "lucide-react";
@@ -11,7 +9,6 @@ import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuPortal,
@@ -33,9 +30,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
+import { headerLink } from "@/constants/links";
 
 export const HeaderNavigation = () => {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [isActive, setIsActive] = useState(false);
   const { logout } = useAuthStore();
   const router = useRouter();
@@ -44,14 +43,18 @@ export const HeaderNavigation = () => {
     router.refresh();
     router.push("/auth");
   };
-  const label = headerLink.find((link) => link.href.includes(pathname))?.label || "";
+  const label = pathname.startsWith("/product")
+    ? "Product Details"
+    : pathname.startsWith("/search")
+      ? "Search"
+      : headerLink.find((link) => link.href(searchParams).includes(pathname))?.label || "";
 
   return (
     <nav className="w-full">
       <AlertDialog>
         <DropdownMenu open={isActive} onOpenChange={setIsActive}>
           <DropdownMenuTrigger asChild>
-            <Button size="sm" variant="ghost" className="w-full max-w-56 justify-between">
+            <Button  variant="outline" className="size-full max-w-56 justify-between">
               <span className="block">{label}</span>
               <ChevronRight className={cn("size-6 shrink-0 transition-transform duration-300 ease-out", isActive ? "rotate-90" : "")} />
             </Button>
@@ -65,7 +68,7 @@ export const HeaderNavigation = () => {
                 return (
                   <DropdownMenuItem key={link.label} className="flex items-center gap-3">
                     {link.icon("size-4 shrink-0")}
-                    <Link className="w-full" href={link.href}>
+                    <Link className="w-full" href={link.href(searchParams)}>
                       {link.label}
                     </Link>
                   </DropdownMenuItem>
@@ -75,7 +78,7 @@ export const HeaderNavigation = () => {
                 <DropdownMenuSub key={link.label}>
                   <DropdownMenuSubTrigger className="flex items-center gap-3">
                     {link.icon("size-4 shrink-0")}
-                    <Link className="w-full" href={link.href}>
+                    <Link className="w-full" href={link.href(searchParams)}>
                       {link.label}
                     </Link>
                   </DropdownMenuSubTrigger>
@@ -85,7 +88,7 @@ export const HeaderNavigation = () => {
                         return (
                           <DropdownMenuItem key={sub.label} className="flex items-center gap-3">
                             {sub.icon("size-4 shrink-0")}
-                            <Link className="w-full" href={sub.href}>
+                            <Link className="w-full" href={sub.href(searchParams)}>
                               {sub.label}
                             </Link>
                           </DropdownMenuItem>
@@ -98,7 +101,7 @@ export const HeaderNavigation = () => {
             })}
 
             <DropdownMenuSeparator />
-            
+
             <DropdownMenuItem asChild>
               <AlertDialogTrigger className="flex w-full cursor-pointer items-center gap-3 hover:bg-destructive">
                 <LogOut className="size-4 shrink-0" />
@@ -116,7 +119,9 @@ export const HeaderNavigation = () => {
 
           <AlertDialogFooter>
             <AlertDialogAction asChild>
-              <Button variant='destructive' size='sm' onClick={handleClick}>Confirm</Button>
+              <Button variant="destructive" size="sm" onClick={handleClick}>
+                Confirm
+              </Button>
             </AlertDialogAction>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
           </AlertDialogFooter>

@@ -1,6 +1,5 @@
 import { TCategory, TSubCategory } from "./category.model";
 import { TImage } from "./image.model";
-import { TProductVariant } from "./productVariant.model";
 import { TStoreStock } from "./store.model";
 
 export enum Variants {

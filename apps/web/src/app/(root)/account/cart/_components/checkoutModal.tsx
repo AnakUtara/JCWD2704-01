@@ -28,7 +28,7 @@ export default function CheckoutModal() {
   });
   const { user } = useAuthStore();
   const [courier, setCourier] = useState("jne");
-  const [voucherList, setVoucherList] = useState<TVoucher[] | null>(null);
+  const [voucherList, setVoucherList] = useState<PromotionType[] | null>(null);
   const [services, setServices] = useState<TRajaOngkirCostResponse["rajaongkir"]["results"] | null>(null);
   const [selectedService, setSelectedService] = useState<{ name: string; cost: number } | null>(null);
   const [selectedVoucher, setSelectedVoucher] = useState<{ promotion_id: string; result?: { total: number; discount: number } } | null>(
@@ -54,8 +54,8 @@ export default function CheckoutModal() {
   const fetchVouchers = async () => {
     setVoucherList(null);
     try {
-      const vouchers = (await axiosInstanceCSR().get("/promotion/user")).data.data as TVoucher[];
-      setVoucherList(vouchers);
+      const vouchers = (await axiosInstanceCSR().get("/promotion/all")).data.result as PromotionType[];
+      setVoucherList([...user?.promotions, ...vouchers]);
     } catch (error) {
       setVoucherList([]);
     }
@@ -202,27 +202,27 @@ export default function CheckoutModal() {
                     )}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent>
+                <PopoverContent className="z-50 h-60 overflow-y-auto">
                   {services == null && <h1>Loading...</h1>}
                   <ul>
                     {voucherList?.map((e, i) => (
                       <li key={i} className="my-2">
                         <PopoverClose asChild>
                           <Button
-                            disabled={selectedVoucher?.promotion_id == e.id}
+                            disabled={selectedVoucher?.promotion_id == e?.id}
                             variant="ghost"
-                            className="flex h-max w-full flex-col items-start gap-2 text-sm text-muted-foreground"
-                            onClick={() => setSelectedVoucher({ promotion_id: e.id })}
+                            className="flex h-full w-full flex-col items-start gap-2 text-sm text-muted-foreground"
+                            onClick={() => setSelectedVoucher({ promotion_id: e?.id || "" })}
                           >
-                            <span className="flex w-full items-center justify-between">
-                              <span className="block">{e.description}</span>
-                              {e.type == "discount" || e.type == "referral_voucher" ? (
-                                <span className="block">{e.amount + "%"}</span>
+                            <div className="flex w-full items-center justify-between">
+                              <span className="block">{e?.description}</span>
+                              {e?.type == "discount" || e?.type == "referral_voucher" ? (
+                                <span className="block">{e?.amount + "%"}</span>
                               ) : undefined}
-                            </span>
-                            {e.type == "buy_get" ? "" : <span>toIDR(e.amount)</span>}
+                            </div>
+                            {e?.type == "buy_get" ? "" : <span>{toIDR(e?.amount)}</span>}
                             <span className="block self-end text-secondary-foreground">
-                              <LocalTime time={e.expiry_date} />
+                              <LocalTime time={e?.expiry_date || new Date()} />
                             </span>
                           </Button>
                         </PopoverClose>

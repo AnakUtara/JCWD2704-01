@@ -9,7 +9,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useMediaQueries } from "@/hooks/use-media-queries";
 import { navLinks } from "@/constants/links";
 
-const navigation = ["/", "/account"];
+const navigation = ["/", "/account", "/categories", "/product", "/search"];
 
 export const NavigationLink = () => {
   const { user } = useAuthStore();
@@ -23,7 +23,7 @@ export const NavigationLink = () => {
 
   return (
     <AnimatePresence mode="wait">
-      {navigation.includes(pathname) && !matches && (
+      {navigation.find((link) => pathname.startsWith(link)) && !matches && (
         <nav className="fixed bottom-0 left-0 z-20 flex h-14 w-full items-center justify-center md:bottom-10 md:h-20 md:px-4">
           <motion.div
             initial={{ y: "200%", opacity: 0 }}

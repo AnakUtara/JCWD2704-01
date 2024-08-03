@@ -1,4 +1,7 @@
+import { SearchParams } from "@/models/search.params";
+import { formatSearchParams } from "@/utils/formatter";
 import { ArrowLeftRight, Home, MapPin, Search, Settings, ShoppingCart, User } from "lucide-react";
+import { ReadonlyURLSearchParams } from "next/navigation";
 
 export const navLinks: { href: string; label?: string; icon: (className: string) => JSX.Element }[] = [
   {
@@ -19,41 +22,47 @@ export const navLinks: { href: string; label?: string; icon: (className: string)
   },
 ];
 
-type Link = { href: string; label: string; icon: (className: string) => JSX.Element; sub?: Link[] };
+type Link = {
+  href: (searchParams: ReadonlyURLSearchParams) => string;
+  label: string;
+  icon: (className: string) => JSX.Element;
+  sub?: Link[];
+};
 
 export const headerLink: Link[] = [
   {
-    href: "/",
+    href: (searchParams: ReadonlyURLSearchParams) => `/?city_id=${searchParams.get("city_id")}`,
     label: "Home",
     icon: (className) => <Home className={className} />,
   },
   {
-    href: "/categories",
+    href: (searchParams: ReadonlyURLSearchParams) =>
+      `/categories/${formatSearchParams(searchParams.get("category_name") || "buah")}?city_id=${searchParams.get("city_id")}`,
     label: "Categories",
     icon: (className) => <Search className={className} />,
   },
   {
-    href: "/account",
+    href: (searchParams?: ReadonlyURLSearchParams) => "/account",
     label: "Account",
     icon: (className) => <User className={className} />,
     sub: [
       {
-        href: "/account/cart",
+        href: (searchParams?: ReadonlyURLSearchParams) => "/account/cart",
         label: "Cart",
         icon: (className) => <ShoppingCart className={className} />,
       },
       {
-        href: "/account/orders",
+        href: (searchParams?: ReadonlyURLSearchParams) => "/account/orders",
         label: "Order",
         icon: (className) => <ArrowLeftRight className={className} />,
       },
       {
-        href: "/account/address",
+        href: (searchParams?: ReadonlyURLSearchParams) => "/account/address",
         label: "Address",
         icon: (className) => <MapPin className={className} />,
       },
       {
-        href: "/account/setting",
+        href: (searchParams?: ReadonlyURLSearchParams) => "/account/setting",
         label: "Setting",
         icon: (className) => <Settings className={className} />,
       },

@@ -10,8 +10,8 @@ import { fetchProductsByCityID } from "@/utils/fetch/server/products.fetch";
 import { SearchParams } from "@/models/search.params";
 import HeaderBgPrimary from "../_components/header/header.bg-primary";
 import { Footer } from "@/components/footer";
-import { Separator } from "@radix-ui/react-separator";
 import PriceRangeButtons from "../categories/_components/price-range.buttons";
+import { Header } from "@/components/header";
 
 type Props = {
   searchParams: SearchParams;
@@ -25,11 +25,9 @@ export default async function SearchPage({ searchParams }: Props) {
     searchParams.min && Number(searchParams.min),
     searchParams.max && Number(searchParams.max),
   );
-  console.log(products);
-
   return (
     <>
-      <HeaderBgPrimary searchParams={searchParams} />
+      <Header searchParams={searchParams} />
       <div className="container mt-5 px-4 xl:p-0">
         <SearchParamsInput placeholder="Search products..." />
         <PriceRangeButtons className="mt-3 flex flex-col gap-2 lg:flex-row lg:items-center" />

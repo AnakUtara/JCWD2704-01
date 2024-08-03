@@ -16,6 +16,8 @@ import HeaderBgPrimary from "../../_components/header/header.bg-primary";
 import { cn } from "@/lib/utils";
 import PriceRangeButtons from "../_components/price-range.buttons";
 import { Footer } from "@/components/footer";
+import { HeaderNavigation } from "@/components/header/HeaderNavigation";
+import { Header } from "@/components/header";
 export const generateMetadata = async ({ params }: Props) => {
   const { category_name } = params;
   return {
@@ -39,7 +41,7 @@ export default async function ProductsByCategoryListPage({ params, searchParams 
   );
   return (
     <>
-      <HeaderBgPrimary searchParams={searchParams} />
+      <Header searchParams={searchParams} />
       <div className="container">
         <div className="flex flex-col md:flex-row md:py-5">
           <Suspense
@@ -115,7 +117,7 @@ export default async function ProductsByCategoryListPage({ params, searchParams 
                 <span>No products added to this store/category yet...</span>
               </div>
             </div>
-            <div className={cn(!products?.length && "hidden", "mt-5 flex justify-center border-t")}>
+            <div className={cn(!products?.length && "hidden", "my-5 flex justify-center border-t")}>
               <Pagination totalPages={totalPage} />
             </div>
           </main>

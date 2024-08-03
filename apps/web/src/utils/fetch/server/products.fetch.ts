@@ -88,7 +88,9 @@ export async function fetchProductDetailsByCityID(city_id: number, name: string)
   } catch (error) {
     if (error instanceof Error) {
       console.log(error.message);
-      throw error;
+      throw new Error(
+        "Oops... Can't find any assigned store to your location. Kindy wait for further updates on our store arrival to your location.",
+      );
     }
   }
 }

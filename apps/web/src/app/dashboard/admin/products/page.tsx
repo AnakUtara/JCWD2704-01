@@ -14,6 +14,12 @@ import VariantCreateForm from "./_components/variant.create.form";
 import AdminTabDialog from "../_component/admin.tab.dialog";
 import { TCategory } from "@/models/category.model";
 
+export const generateMetadata = async () => {
+  return {
+    title: "Products Dashboard",
+  };
+};
+
 type Props = { searchParams: SearchParams };
 export default async function DashboardProductsPage({ searchParams }: Props) {
   const products = await fetchProducts(searchParams);
@@ -24,7 +30,7 @@ export default async function DashboardProductsPage({ searchParams }: Props) {
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:py-8 xl:px-0">
       <Tabs defaultValue="products">
-        <TabsList className="mb-5 grid w-full grid-cols-2">
+        <TabsList className="mb-5 grid w-full grid-cols-2 bg-neutral-200">
           <TabsTrigger value="products">Products</TabsTrigger>
           <TabsTrigger value="variants">Variants</TabsTrigger>
         </TabsList>

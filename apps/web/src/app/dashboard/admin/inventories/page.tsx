@@ -17,6 +17,12 @@ import { PlusCircle } from "lucide-react";
 import { Role } from "@/models/user.model";
 import { fetchAllBuyGetPromos } from "@/utils/fetch/server/promo.fetch";
 
+export const generateMetadata = async () => {
+  return {
+    title: "Inventories Dashboard",
+  };
+};
+
 type Props = { searchParams: SearchParams };
 export default async function InventoryDashboardPage({ searchParams }: Props) {
   const activeUser = await getAccTokenServer();
@@ -28,7 +34,7 @@ export default async function InventoryDashboardPage({ searchParams }: Props) {
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:py-8 xl:px-0">
       <Tabs defaultValue="stocks">
-        <TabsList className="mb-5 grid w-full grid-cols-2">
+        <TabsList className="mb-5 grid w-full grid-cols-2 bg-neutral-200">
           <TabsTrigger value="stocks">Stocks</TabsTrigger>
           <TabsTrigger value="history">History</TabsTrigger>
         </TabsList>

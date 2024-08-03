@@ -12,6 +12,12 @@ type GetAllStore = {
   totalPage: number;
 };
 
+export const generateMetadata = async () => {
+  return {
+    title: "Stores Dashboard",
+  };
+};
+
 export const revalidate: Revalidate = 60 * 10;
 
 const getAllStore = async ({ searchParams }: { searchParams: SearchParams }): Promise<GetAllStore | undefined> => {

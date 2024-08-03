@@ -2,7 +2,7 @@ type PromotionType = {
   id: string;
   title: string;
   description: string;
-  type: "discount" | "voucher" | "cashback" | "referral_voucher" | "free_shipping";
+  type: "discount" | "voucher" | "cashback" | "referral_voucher" | "free_shipping" | "buy_get";
   amount: number;
   min_transaction: number;
   expiry_date: Date;

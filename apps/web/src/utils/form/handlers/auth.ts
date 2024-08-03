@@ -10,6 +10,7 @@ import { changePasswordAction, changeProfileAction, emailVerificationAction, for
 import { AxiosError } from "axios";
 import { toast } from "sonner";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { getCookie } from "cookies-next";
 
 export const registerSubmit = async (payload: RegisterType) => {
   try {
@@ -37,12 +38,10 @@ export const registerSubmit = async (payload: RegisterType) => {
 };
 
 export const loginSubmit = async (payload: LoginType, login: (email: string, password: string) => Promise<void>) => {
-  try {
-    await login(payload.email, payload.password);
-    window.location.reload();
-  } catch (error) {
-    console.log(error)
-  }
+  await login(payload.email, payload.password);
+  const cookies = getCookie("access_token");
+  if (!cookies) return;
+  window.location.reload();
 };
 
 export const emailVerificationSubmit = async (payload: EmailVerificationType) => {

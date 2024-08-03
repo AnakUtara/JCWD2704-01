@@ -6,6 +6,11 @@ type OrderListProps = {
   query: { [k: string]: string };
 };
 
+export const generateMetadata = async () => {
+  return {
+    title: "Orders Dashboard",
+  };
+};
 export default function Page({ searchParams }: { searchParams: OrderListProps["query"] }) {
   return (
     <main className="w-full px-4">

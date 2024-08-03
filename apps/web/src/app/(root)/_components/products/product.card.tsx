@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { Product } from "@/models/product.model";
 import { imageUrl } from "@/utils/imageUrl";
 import { toIDR } from "@/utils/toIDR";
-import { TagIcon } from "lucide-react";
+import { PlusCircle, TagIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -18,21 +18,26 @@ type Props = { product: Product };
 export default function ProductCard({ product }: Props) {
   const searchParams = useSearchParams();
   const discount = product?.variants[0]?.store_stock[0]?.discount;
+  const promo = product?.variants[0]?.store_stock[0]?.promo;
   const unitPrice = product?.variants[0]?.store_stock[0]?.unit_price;
   return (
     <Link href={`/product/${product.name.toLowerCase().replaceAll(" ", "-")}?city_id=${searchParams.get("city_id")}`}>
-      <Card key={product.id} className="flex size-full flex-col justify-between gap-2 shadow-md">
+      <Card key={product.id} className="flex size-full flex-col justify-between gap-2 overflow-hidden shadow flex-shrink-0">
         <div className="relative">
           <Image
             src={imageUrl.render(product.variants[0].images?.name)}
             alt={`${product.name} image`}
             width={240}
             height={240}
-            className="aspect-square w-full rounded-t-md object-cover"
+            className="aspect-square w-full object-cover"
           />
           <Badge className={cn(!discount && "hidden", "absolute left-2 top-2")} variant={"destructive"}>
             <TagIcon className="mr-2 size-4" />
             {discount}% OFF
+          </Badge>
+          <Badge className={cn(!promo?.id && "hidden", "absolute left-2 top-9")} variant={"default"}>
+            <PlusCircle className="mr-2 size-4" />
+            {promo?.title}
           </Badge>
         </div>
         <div className="flex min-h-[116px] flex-col gap-1 p-3">

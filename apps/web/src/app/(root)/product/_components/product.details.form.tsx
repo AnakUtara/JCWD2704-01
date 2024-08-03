@@ -1,14 +1,14 @@
 "use client";
 import { Form } from "@/components/ui/form";
-import { Product,  } from "@/models/product.model";
+import { Product } from "@/models/product.model";
 import { useForm } from "react-hook-form";
 import ProductCarouselForm from "./product.carousel.form";
-import { Card,  CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { z } from "zod";
 import { cartSchema } from "@/lib/zod-schemas/cart.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronRight, Loader2, ShoppingCartIcon, Tag } from "lucide-react";
+import { ChevronRight, Loader2, PlusCircleIcon, ShoppingCartIcon, Tag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toIDR } from "@/utils/toIDR";
 import { Badge } from "@/components/ui/badge";
@@ -96,7 +96,13 @@ export default function ProductDetailsForm({ product }: Props) {
           </div>
           <div className="mt-3 flex flex-col gap-4 px-1">
             <Separator />
-            <CardTitle>{toIDR(!findStock?.discount ? findStock?.unit_price : discCalc || 0)}</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle>{toIDR(!findStock?.discount ? findStock?.unit_price : discCalc || 0)}</CardTitle>
+              <Badge className={cn(!findStock?.promo?.id && "hidden", "text-white")}>
+                <PlusCircleIcon className="mr-1" />
+                {findStock?.promo?.title}
+              </Badge>
+            </div>
             <div className={cn(!findStock?.discount ? "hidden" : "flex items-center gap-2")}>
               <Badge variant={"destructive"} className="text-white">
                 <Tag className="mr-1" />
@@ -137,9 +143,32 @@ export default function ProductDetailsForm({ product }: Props) {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
+          <AlertDialog>
+            <AlertDialogTrigger className="w-full" asChild>
+              <Button type="button" className={cn(user.addresses.length || !user.email ? "hidden" : "flex", "mt-3 w-full text-white")}>
+                <ShoppingCartIcon className="mr-2" />
+                Add To Cart
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Address Needed.</AlertDialogTitle>
+                <AlertDialogDescription>We want to know your origin to deliver this product safely to your home.</AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <Link href="/account/address">
+                  <AlertDialogAction>
+                    <PlusCircleIcon className="mr-2" />
+                    Create Address
+                  </AlertDialogAction>
+                </Link>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           <ButtonSubmit
             type="submit"
-            className={cn(!user.email ? "hidden" : "flex", "mt-3 w-full text-white")}
+            className={cn(!user.email || !user.addresses.length ? "hidden" : "flex", "mt-3 w-full text-white")}
             disable={findStock.quantity === 0 || form.formState.isSubmitting}
             isSubmitting={form.formState.isSubmitting}
             label={

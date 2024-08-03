@@ -1,6 +1,12 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import AdminLoginForm from "./_component/admin.login.form";
 import Image from "next/image";
+
+export const generateMetadata = async () => {
+  return {
+    title: "Administrator Dashboard Login",
+  };
+};
 export default function AdminLoginPage() {
   return (
     <div className="flex h-screen items-center justify-center">

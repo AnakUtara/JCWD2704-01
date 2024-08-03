@@ -6,7 +6,7 @@ export default function MonthYearFilter({}: Props) {
   return (
     <div className="flex w-full items-center gap-4 md:w-fit">
       <div className="flex w-full items-center">
-        <h2 className="text-nowrap rounded-md rounded-r-none border border-r-0 p-[9px] text-sm font-semibold text-muted-foreground">
+        <h2 className="text-nowrap rounded-md rounded-r-none border border-r-0 bg-white p-[9px] text-sm font-semibold text-muted-foreground">
           Month:
         </h2>
         <FillterSelect addCustomStyle="rounded-l-none" queryKey="month" defaultValue={String(new Date().getMonth())}>
@@ -27,7 +27,7 @@ export default function MonthYearFilter({}: Props) {
         </FillterSelect>
       </div>
       <div className="flex w-full items-center">
-        <h2 className="text-nowrap rounded-md rounded-r-none border border-r-0 p-[9px] text-sm font-semibold text-muted-foreground">
+        <h2 className="text-nowrap rounded-md rounded-r-none border border-r-0 bg-white p-[9px] text-sm font-semibold text-muted-foreground">
           Year:
         </h2>
         <FillterSelect addCustomStyle="rounded-l-none" queryKey="year" defaultValue={String(new Date().getFullYear())}>

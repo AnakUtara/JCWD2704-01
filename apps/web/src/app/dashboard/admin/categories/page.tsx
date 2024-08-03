@@ -12,6 +12,12 @@ import CategoryCreateForm from "./_components/category.create.form";
 import SubCatCreateForm from "./_components/subcat.create.form";
 import AdminTabDialog from "../_component/admin.tab.dialog";
 
+export const generateMetadata = async () => {
+  return {
+    title: "Categories Dashboard",
+  };
+};
+
 type Props = { searchParams: SearchParams };
 export default async function DashboarCategoriesPage({ searchParams }: Props) {
   const catDatas = await fetchCategoriesWithPagination(searchParams);
@@ -20,7 +26,7 @@ export default async function DashboarCategoriesPage({ searchParams }: Props) {
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:py-8 xl:px-0">
       <Tabs defaultValue="categories">
-        <TabsList className="mb-5 grid w-full grid-cols-2">
+        <TabsList className="mb-5 grid w-full grid-cols-2 bg-neutral-200">
           <TabsTrigger value="categories">Categories</TabsTrigger>
           <TabsTrigger value="sub-categories">Sub-Categories</TabsTrigger>
         </TabsList>

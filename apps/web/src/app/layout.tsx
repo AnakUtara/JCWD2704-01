@@ -7,10 +7,12 @@ import AuthProvider from "@/components/providers/auth.provider";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 
-
 export const metadata: Metadata = {
   title: "Farm2Door",
   description: "Fresh Online Groceries",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
