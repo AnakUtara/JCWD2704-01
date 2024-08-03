@@ -22,10 +22,7 @@ const getPromotion = async (): Promise<{ result: { name: string }[] } | undefine
   }
 };
 
-type Props = {
-  searchParams: SearchParams;
-};
-export default async function Home({ searchParams }: Props) {
+export default async function Home({ searchParams }: { searchParams: SearchParams }) {
   const getProductByDiscount = await fetchProductsByQuery({ city_id: searchParams.city_id, discount: "true" });
   const getProductsBuyGet = await fetchProductsByQuery({ city_id: searchParams.city_id, promo: "buy_get" });
   const promotion = await getPromotion();

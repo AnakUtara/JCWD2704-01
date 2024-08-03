@@ -23,20 +23,20 @@ export async function middleware(request: NextRequest) {
     if (!user && isRequiredLogin) return NextResponse.redirect(new URL("/auth", request.url));
 
     // Super & Store admin protection routes
-    if (user?.role === Role.customer && isRequiredAdminLogin) return NextResponse.redirect(new URL("/", request.url));
-    if (!user && pathname.includes("login")) return response;
-    if (user?.role === "store_admin" && pathname.endsWith("login"))
-      return NextResponse.redirect(new URL("/dashboard/admin/products" + searchParams, request.url));
-    if (user?.role === "super_admin" && pathname.endsWith("login"))
-      return NextResponse.redirect(new URL("/dashboard/admin/users" + searchParams, request.url));
+    // if (user?.role === Role.customer && isRequiredAdminLogin) return NextResponse.redirect(new URL("/", request.url));
+    // if (!user && pathname.includes("login")) return response;
+    // if (user?.role === "store_admin" && pathname.endsWith("login"))
+    //   return NextResponse.redirect(new URL("/dashboard/admin/products" + searchParams, request.url));
+    // if (user?.role === "super_admin" && pathname.endsWith("login"))
+    //   return NextResponse.redirect(new URL("/dashboard/admin/users" + searchParams, request.url));
 
     return response;
   } catch (error) {
     console.log(error);
-    return NextResponse.redirect(new URL("/", request.url));
+    // return NextResponse.redirect(new URL("/", request.url)s);
   }
 }
 
 export const config: MiddlewareConfig = {
-  matcher: ["/dashboard/admin/:path*", "/auth:path*", "/account/:path*", "/categories/:path*"],
+  matcher: ["/dashboard/admin/:path*", "/auth:path*", "/account/:path*", "/categories/:path*", '/'],
 };
