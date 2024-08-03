@@ -46,7 +46,7 @@ export default function FormNumber({ form, name, label, placeholder = "", useSwi
                   type="number"
                   {...register(name, { valueAsNumber: true })}
                   disabled={formState.isSubmitting}
-                  defaultValue={0}
+                  defaultValue={1}
                 />
               </FormControl>
               <div className="flex items-center space-x-2">
@@ -54,7 +54,7 @@ export default function FormNumber({ form, name, label, placeholder = "", useSwi
                   type="button"
                   size={"icon"}
                   onClick={() => form.setValue(name, form.getValues(name) - 1)}
-                  disabled={form.watch(name) === 0}
+                  disabled={form.watch(name) <= 0 || formState.isSubmitting}
                 >
                   <Minus />
                 </Button>

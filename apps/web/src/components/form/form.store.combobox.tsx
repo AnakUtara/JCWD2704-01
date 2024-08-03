@@ -36,7 +36,7 @@ export default function FormComboBoxStores({
       render={({ field }) => (
         <FormItem className="flex flex-col">
           <FormLabel htmlFor={name}>{label}</FormLabel>
-          <Popover>
+          <Popover modal={true}>
             <PopoverTrigger asChild>
               <FormControl>
                 <Button variant="outline" role="combobox" className={cn("justify-between", !field.value && "text-muted-foreground")}>

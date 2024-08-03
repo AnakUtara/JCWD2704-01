@@ -98,7 +98,6 @@ class UserService {
       ...(req.body.phone_no && { phone_no: req.body.phone_no }),
       ...(req.body.dob && { dob: req.body.dob }),
     });
-
     return await prisma.$transaction(async (tx) => {
       const findUnique = await tx.user.findFirst({ where: { phone_no: validate.phone_no } });
       if (findUnique?.phone_no === validate.phone_no) throw new CustomError('Phone Number is already exist');

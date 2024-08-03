@@ -9,23 +9,24 @@ import { AddressSetting } from "./AddressSetting";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLocation } from "@/stores/latLng.store";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
 export const AccountAddress = () => {
   const { user } = useAuthStore();
   const { isLoaded } = useLocation();
-  const { push } = useRouter();
+  const router = useRouter();
+  const params = useSearchParams();
 
   useEffect(() => {
     if (!isLoaded) {
-      push("/");
+      router.push(`/?city_id=${params.get("city_id")}`);
       toast.warning("Cannot access location", {
         description: "Please turn on your location or check your internet access, for further access.",
         richColors: false,
         position: "top-right",
       });
-    };
+    }
   }, [isLoaded]);
 
   if (!user.addresses?.length)
@@ -62,12 +63,14 @@ export const AccountAddress = () => {
                 <div>Phone</div>
                 <div>Email</div>
               </div>
+              
               <div className="text-foreground">
                 <div className="text-lg font-semibold">{user.full_name}</div>
                 <div>{user.phone_no ? user.phone_no : "Not set"}</div>
                 <div>{user.email}</div>
               </div>
             </div>
+
             <div className="flex gap-2">
               <MapPin className="block size-5 shrink-0 stroke-primary" />
               <div className="max-w-md">

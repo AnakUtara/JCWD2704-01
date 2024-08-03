@@ -1,6 +1,6 @@
 /** @format */
 import { Request } from 'express';
-import { prisma } from '@/libs/prisma';
+import prisma from '@/prisma';
 import { invGenerate } from '@/utils/invGenerate';
 import { z } from 'zod';
 import { createOrderSchema, rajaOngkirCostQuerySchema } from '@/libs/zod-schemas/order.schema';

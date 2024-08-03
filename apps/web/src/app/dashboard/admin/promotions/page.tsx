@@ -57,7 +57,13 @@ export default async function PromotionsDashboardPage({ searchParams }: Props) {
               </div>
             }
           >
-            <DataTable placeholder="Filter promotions..." setSearch="search_tab1" columns={promoColumns} data={promos.data} />
+            <DataTable
+              layoutId="promotions"
+              placeholder="Filter promotions..."
+              setSearch="search_tab1"
+              columns={promoColumns}
+              data={promos.data}
+            />
           </Suspense>
           <div className="flex w-full justify-center">
             <Pagination getPage="page_tab1" totalPages={promos.totalPage} />
@@ -75,7 +81,13 @@ export default async function PromotionsDashboardPage({ searchParams }: Props) {
               </div>
             }
           >
-            <DataTable setSearch="search_tab2" placeholder="Filter referrals..." columns={userVouchersColumn} data={userVouchers.data} />
+            <DataTable
+              layoutId="referrals"
+              setSearch="search_tab2"
+              placeholder="Filter referrals..."
+              columns={userVouchersColumn}
+              data={userVouchers.data}
+            />
           </Suspense>
           <div className="flex w-full justify-center">
             <Pagination getPage="page_tab2" totalPages={userVouchers.totalPage} />

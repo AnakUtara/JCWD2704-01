@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { prisma } from '@/libs/prisma';
+import prisma from '@/prisma';
 import { z } from 'zod';
 import { deleteCartSchema, getUserCart, upsertCartSchema } from '@/libs/zod-schemas/cart.schema';
 import { AuthError, BadRequestError } from '@/utils/error';

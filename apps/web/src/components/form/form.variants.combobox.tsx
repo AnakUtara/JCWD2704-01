@@ -36,7 +36,7 @@ export default function FormComboBoxVariants({
       render={({ field }) => (
         <FormItem className="flex flex-col">
           <FormLabel htmlFor={name}>{label}</FormLabel>
-          <Popover>
+          <Popover modal={true}>
             <PopoverTrigger asChild>
               <FormControl>
                 <Button variant="outline" role="combobox" className={cn("justify-between", !field.value && "text-muted-foreground")}>
@@ -56,9 +56,9 @@ export default function FormComboBoxVariants({
               <Command>
                 <CommandList>
                   <CommandEmpty>{emptyMsg}</CommandEmpty>
-                  <CommandGroup>
-                    <ScrollArea className="h-60 w-full">
-                      {datas.map((data) => (
+                  <ScrollArea className="max-h-60 w-full overflow-auto">
+                    <CommandGroup>
+                      {datas?.map((data) => (
                         <CommandItem
                           value={data.name}
                           key={data.id}
@@ -70,8 +70,8 @@ export default function FormComboBoxVariants({
                           {data.product.name + "-" + data.name}
                         </CommandItem>
                       ))}
-                    </ScrollArea>
-                  </CommandGroup>
+                    </CommandGroup>
+                  </ScrollArea>
                 </CommandList>
               </Command>
             </PopoverContent>

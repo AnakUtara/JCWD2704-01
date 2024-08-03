@@ -2,6 +2,7 @@ import { EntityController } from './entity.controller';
 import addressService from '@/services/address.service';
 import { Controller } from './index.types';
 import { messageResponse } from '@/utils/message';
+import { cookiesOpt } from '@/utils/cookiesOpt';
 
 class AddressController extends EntityController {
   getUserAddresses = this.sendResponse({
@@ -11,8 +12,8 @@ class AddressController extends EntityController {
 
   create: Controller = async (req, res, next) => {
     try {
-      await addressService.create(req);
-      res.send(messageResponse('Success Create your Address'));
+      const { accessToken } = await addressService.create(req);
+      res.cookie('access_token', accessToken, cookiesOpt).send({ ...messageResponse('Success Create your Address') });
     } catch (error) {
       next(error);
     }
@@ -20,10 +21,10 @@ class AddressController extends EntityController {
 
   delete: Controller = async (req, res, next) => {
     try {
-      await addressService.delete(req)
-      res.send(messageResponse('Success delete your Address'));
+      const {accessToken} = await addressService.delete(req);
+      res.cookie('access_token', accessToken, cookiesOpt).send(messageResponse('Success delete your Address'));
     } catch (error) {
-      next(error)
+      next(error);
     }
   };
 

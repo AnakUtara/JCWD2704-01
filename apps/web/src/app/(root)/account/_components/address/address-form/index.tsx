@@ -16,7 +16,7 @@ import { useLocation } from "@/stores/latLng.store";
 import { useRouter } from "next/navigation";
 
 export const AddressDetailForm = ({ cities }: { cities: CityType[] }) => {
-  const { user } = useAuthStore();
+  const { user, keepLogin } = useAuthStore();
   const router = useRouter();
   const { results, latLng } = useLocation();
   const form = useForm<UserCreateAddressType>({
@@ -35,7 +35,7 @@ export const AddressDetailForm = ({ cities }: { cities: CityType[] }) => {
 
   return (
     <Form {...form}>
-      <form className="space-y-6" onSubmit={form.handleSubmit((payload) => userAddressSubmit(payload, router))}>
+      <form className="space-y-6" onSubmit={form.handleSubmit((payload) => userAddressSubmit(payload, router, keepLogin))}>
         <AddressInput
           form={form}
           name="details"

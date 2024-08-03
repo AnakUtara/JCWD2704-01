@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -20,8 +22,13 @@ import {
 import { userAddressDeleteSubmit } from "@/utils/form/handlers/address";
 import { EllipsisIcon } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import useAuthStore from "@/stores/auth.store";
 
 export const AddressSetting = ({ city }: { city: string }) => {
+  const router = useRouter();
+  const { keepLogin } = useAuthStore();
+
   return (
     <Dialog>
       <DropdownMenu>
@@ -53,9 +60,11 @@ export const AddressSetting = ({ city }: { city: string }) => {
         </DialogHeader>
 
         <DialogFooter>
-          <Button className="sm:w-full" variant="destructive" onClick={userAddressDeleteSubmit}>
-            Yes
-          </Button>
+          <DialogClose asChild>
+            <Button className="sm:w-full" variant="destructive" onClick={() => userAddressDeleteSubmit(router, keepLogin)}>
+              Yes
+            </Button>
+          </DialogClose>
           <DialogClose asChild>
             <Button className="sm:w-full" variant="outline">
               No

@@ -1,6 +1,5 @@
-/** @format */
 import { Request } from 'express';
-import { prisma } from '@/libs/prisma';
+import prisma from '@/prisma';
 import { AuthError, BadRequestError, NotFoundError } from '@/utils/error';
 import { getNearestStoreSchema } from '@/libs/zod-schemas/store.schema';
 import { Prisma } from '@prisma/client';
@@ -27,7 +26,6 @@ export class StoreService {
     ORDER BY distance
     LIMIT 1;
   `;
-
     return result[0];
   }
 

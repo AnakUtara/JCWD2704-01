@@ -5,13 +5,12 @@ import { userAddressAction } from "../actions/address";
 import { axiosInstanceCSR } from "@/lib/axios.client-config";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-export const userAddressSubmit = async (payload: UserCreateAddressType, router: AppRouterInstance) => {
+export const userAddressSubmit = async (payload: UserCreateAddressType, router: AppRouterInstance, keepLogin: () => void) => {
   try {
     const response = await userAddressAction(payload);
     toast.success(response.data.message, { richColors: false });
+    keepLogin();
     router.back();
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    window.location.reload();
   } catch (error) {
     if (error instanceof AxiosError) {
       console.log(error.response?.data);
@@ -30,10 +29,11 @@ export const userAddressSubmit = async (payload: UserCreateAddressType, router: 
   }
 };
 
-export const userAddressDeleteSubmit = async () => {
+export const userAddressDeleteSubmit = async (router: AppRouterInstance, keepLogin: () => void) => {
   try {
-    await axiosInstanceCSR().delete("/addresses/user");
-    window.location.reload();
+    const response = await axiosInstanceCSR().delete("/addresses/user");
+    toast.success(response.data.message, { richColors: false });
+    keepLogin()
   } catch (error) {
     if (error instanceof AxiosError) {
       console.log(error.response?.data);

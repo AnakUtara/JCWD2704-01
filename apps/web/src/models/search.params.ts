@@ -21,6 +21,7 @@ export interface SearchParams {
   promo?: "buy_get";
   min?: number;
   max?: number;
+  s?: string;
 }
 
 export const searchParams: string = "?page_tab1=1&page_tab2=1";

@@ -4,8 +4,9 @@ import Link from "next/link";
 import { RegisterForm } from "./_components/singup";
 import { LoginForm } from "./_components/signin";
 import Image from "next/image";
+import { SearchParams } from "@/models/search.params";
 
-export default async function AuthPage() {
+export default async function AuthPage({ searchParams }: { searchParams: SearchParams }) {
   return (
     <main className="container relative flex h-full min-h-dvh w-full flex-col items-start justify-center px-4 py-20 md:h-dvh xl:px-0">
       <Image src="/placeholder-image.jpg" alt="Login" fill priority className="object-cover brightness-50 md:hidden" />
@@ -14,8 +15,15 @@ export default async function AuthPage() {
         <div className="relative hidden size-full md:block">
           <Image src="/placeholder-image.jpg" alt="Login" fill priority className="object-cover brightness-50" />
           <div className="relative flex size-full flex-col justify-between px-6 py-8">
-            <Link href="/" className="text-background">
-              <h2 className="text-5xl font-bold leading-none">Farm2Door</h2>
+            <Link href={`/?city_id=${searchParams.city_id}`} className="w-fit text-background">
+              <Image
+                src="/logo/Farm2Door-logo-inv.png"
+                alt="Logo Farm2Door"
+                height={100}
+                width={320}
+                sizes="320px"
+                className="object-contain"
+              />
             </Link>
             <p className="max-w-sm self-end text-balance text-end text-background">
               &quot;Your trusted market platform for you and your family.&quot;
@@ -25,9 +33,16 @@ export default async function AuthPage() {
 
         <div className="relative flex h-full w-full items-center justify-center md:px-6">
           <section className="relative z-40 h-fit w-full max-w-screen-lg space-y-4 p-4 md:h-fit md:space-y-0 md:p-0">
-            <div className="block space-y-2 text-balance text-center md:hidden md:space-y-0">
-              <Link href="/" className="text-primary">
-                <h2 className="text-5xl font-bold leading-none">Farm2Door</h2>
+            <div className="flex flex-col items-center text-balance text-center md:hidden md:space-y-0">
+              <Link href={`/?city_id=${searchParams.city_id}`} className="w-fit text-background">
+                <Image
+                  src="/logo/Farm2Door-logo-inv.png"
+                  alt="Logo Farm2Door"
+                  height={100}
+                  width={220}
+                  sizes="320px"
+                  className="object-contain"
+                />
               </Link>
               <p className="text-balance text-background">Your trusted market platform for you and your family.</p>
             </div>

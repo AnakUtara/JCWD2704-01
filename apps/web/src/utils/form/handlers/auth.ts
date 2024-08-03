@@ -76,10 +76,10 @@ export const forgetPasswordSubmit = async (payload: ForgetPasswordType, token: s
   }
 };
 
-export const changeProfileSubmit = async (payload: ChangeProfileType) => {
+export const changeProfileSubmit = async (payload: ChangeProfileType, keepLogin: () => void) => {
   try {
     const response = await changeProfileAction(payload);
-    window.location.reload();
+    keepLogin();
     toast.success(response.data.message, {
       description: response.data.description,
     });
@@ -102,7 +102,6 @@ export const changeProfileSubmit = async (payload: ChangeProfileType) => {
 export const changePasswordSubmit = async (payload: ChangePasswordType) => {
   try {
     const response = await changePasswordAction(payload);
-    window.location.reload();
     toast.success(response.data.message, {
       description: response.data.description,
     });

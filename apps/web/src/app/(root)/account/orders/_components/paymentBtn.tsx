@@ -7,6 +7,7 @@ import { axiosInstanceCSR } from "@/lib/axios.client-config";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function PaymentBtn({ paymentLink }: { paymentLink?: string }) {
   const [modal, setModal] = useState(false);
@@ -21,9 +22,9 @@ export default function PaymentBtn({ paymentLink }: { paymentLink?: string }) {
     await axiosInstanceCSR()
       .patch(`/order/${inv}/v1`, data, { headers: { "Content-Type": "multipart/form-data" } })
       .then(() => {
-        alert("success");
+        toast.success("success");
       })
-      .catch(() => alert("Failed"));
+      .catch(() => toast.error("Failed"));
     setImg(undefined);
     router.refresh();
   };
@@ -42,14 +43,14 @@ export default function PaymentBtn({ paymentLink }: { paymentLink?: string }) {
           <div>
             <Label htmlFor="paymentProof">Upload your payment proof</Label>
             <Input name="paymentProof" type="file" onChange={(e) => setImg(e.target.files?.[0])} />
-            <Button disabled={!Boolean(img)} className="m-auto" onClick={submit}>
+            <Button disabled={!Boolean(img)} className="m-auto w-full" onClick={submit}>
               Send Payment Proof
             </Button>
           </div>
           <h1>----- OR -----</h1>
           <Label>use payment gateway</Label>
           <Link target="_blank" href={paymentLink || `${inv}/midtrans`}>
-            <Button variant={"secondary"}>Midtrans</Button>
+            <Button className="w-full bg-sky-800 text-white hover:bg-sky-950">Midtrans</Button>
           </Link>
         </section>
       </Modal>

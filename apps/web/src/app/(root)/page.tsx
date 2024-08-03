@@ -4,14 +4,11 @@ import { Category } from "./_components/categories";
 import { Promotion } from "./_components/promotion";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { Suspense } from "react";
-import Spinner from "@/components/ui/spinner";
 import { fetchProductsByQuery } from "@/utils/fetch/server/store.fetch";
 import { SearchParams } from "@/models/search.params";
 import ProductsCarousel from "./_components/products/products.carousel";
 import { axiosInstanceSSR } from "@/lib/axios.server-config";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { TCategory } from "@/models/category.model";
 
 export const revalidate: Revalidate = 900;

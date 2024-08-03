@@ -25,76 +25,13 @@ import { AxiosError } from "axios";
 
 export const HeaderPlaces = ({ className }: { className?: string }) => {
   const [open, setOpen] = useState(false);
-  const { matches } = useMediaQueries("(min-width: 640px)"); // isDesktop
   const { location } = useLocation();
   const label = location?.address_components.find((address) => address.types.find((type) => type === "administrative_area_level_3"));
-  const city = location?.address_components
-    ?.find((address) => address.types.find((type) => type === "administrative_area_level_2"))
-    ?.long_name.replace("Kota", "")
-    .replace("Kabupaten", "")
-    .trim();
-  const searchParams = useSearchParams();
-  const params = new URLSearchParams(searchParams);
-  const { replace } = useRouter();
-  const pathname = usePathname();
-  async function cityHandler() {
-    try {
-      const res = await axiosInstanceCSR().get(`/cities/city`, { params: { name: city } });
-      const cityID = res.data.results.city_id;
-      cityID ? params.set("city_id", cityID) : params.delete("city_id");
-      replace(`${pathname}?${params.toString()}`);
-    } catch (error) {
-      if (error instanceof AxiosError) console.log(error.response?.data);
-    }
-  }
-  useEffect(() => {
-    if (city !== undefined) cityHandler();
-  }, [city]);
-  if (matches)
-    return (
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button variant="ghost" size="sm" disabled={!label} className={cn("", className)}>
-            {label ? (
-              <div className="flex items-center gap-1.5">
-                <MapPin className="size-4" />
-                <p className="max-w-sm truncate text-sm">
-                  Send to&nbsp;<span className="font-semibold">{label?.short_name}</span>
-                </p>
-                <ChevronDown />
-              </div>
-            ) : (
-              <p>Cannot access your location</p>
-            )}
-          </Button>
-        </DialogTrigger>
-
-        <DialogContent>
-          <DrawerHeader>
-            <DrawerTitle>Select detail location</DrawerTitle>
-          </DrawerHeader>
-
-          <div className="h-60">
-            <DialogClose asChild>
-              <Link href="/account/address" className="size-full">
-                <Maps zoom={matches ? 18 : 19} className="pointer-events-none" />
-              </Link>
-            </DialogClose>
-          </div>
-
-          <DialogFooter>
-            <DialogDescription>
-              Orders for tomorrow that are paid before 12pm will be shipped tomorrow. After that, it will be shipped the day after.
-              operational hours end before 5pm.
-            </DialogDescription>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    );
+  const { matches } = useMediaQueries("(min-width: 640px)"); // isDesktop
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
         <Button variant="ghost" size="sm" disabled={!label} className={cn("", className)}>
           {label ? (
             <div className="flex items-center gap-1.5">
@@ -108,28 +45,28 @@ export const HeaderPlaces = ({ className }: { className?: string }) => {
             <p>Cannot access your location</p>
           )}
         </Button>
-      </DrawerTrigger>
+      </DialogTrigger>
 
-      <DrawerContent>
+      <DialogContent>
         <DrawerHeader>
           <DrawerTitle>Select detail location</DrawerTitle>
         </DrawerHeader>
 
-        <div className="h-80 px-4">
-          <DrawerClose asChild>
+        <div className="h-60">
+          <DialogClose asChild>
             <Link href="/account/address" className="size-full">
               <Maps zoom={matches ? 18 : 19} className="pointer-events-none" />
             </Link>
-          </DrawerClose>
+          </DialogClose>
         </div>
 
-        <DrawerFooter>
-          <DrawerDescription>
+        <DialogFooter>
+          <DialogDescription>
             Orders for tomorrow that are paid before 12pm will be shipped tomorrow. After that, it will be shipped the day after.
             operational hours end before 5pm.
-          </DrawerDescription>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+          </DialogDescription>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };

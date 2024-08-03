@@ -2,6 +2,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { CustomerOrders } from "@/models/order.model";
 import Link from "next/link";
+import LocalTime from "../localTime";
 
 export const orderColoumn: ColumnDef<CustomerOrders>[] = [
   {
@@ -19,6 +20,24 @@ export const orderColoumn: ColumnDef<CustomerOrders>[] = [
   {
     accessorKey: "status",
     header: "Status",
+  },
+  {
+    accessorKey: "created_at",
+    header: "duedate",
+    cell: ({ row }) => (
+      <h1 className="text-nowrap">
+        <LocalTime time={row.getValue("created_at")} />
+      </h1>
+    ),
+  },
+  {
+    accessorKey: "expire",
+    header: "expire",
+    cell: ({ row }) => (
+      <h1 className="text-nowrap">
+        <LocalTime time={row.getValue("expire")} />
+      </h1>
+    ),
   },
   {
     accessorKey: "inv_no",

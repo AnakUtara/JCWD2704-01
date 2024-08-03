@@ -1,12 +1,13 @@
 import { Request } from 'express';
-import { prisma } from '@/libs/prisma';
+import prisma from '@/prisma';
 import { AuthError, BadRequestError, catchAllErrors, NotFoundError } from '@/utils/error';
 import { createPromoSchema, testApplyVoucherSchema } from '@/libs/zod-schemas/promotion.schema';
-import { ImageType, Prisma, PromoType } from '@prisma/client';
+import { Prisma, PromoType } from '@prisma/client';
 import stockHistoryService from './stockHistory.service';
 import { countTotalPage, paginate } from '@/utils/pagination';
 import { imageCreate, imageUpdate } from '@/libs/prisma/images.args';
 import { ZodError } from 'zod';
+import { ImageType } from '@/models/image.model';
 
 async function applyVocher({ total, promoId, shipCost }: { total: number; shipCost: number; promoId: string }, updateValid = true) {
   const where = { id: promoId };

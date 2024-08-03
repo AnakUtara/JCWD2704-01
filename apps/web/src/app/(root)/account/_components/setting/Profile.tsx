@@ -22,6 +22,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import useAuthStore from "@/stores/auth.store";
 
 export const AccountSettingProfile = ({ user }: { user: TUser }) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -29,6 +30,8 @@ export const AccountSettingProfile = ({ user }: { user: TUser }) => {
   const form = useForm<ChangeProfileType>({ resolver: zodResolver(changeProfileSchema) });
   const handleClick = () => buttonRef.current?.click();
   const { dob, full_name, phone_no } = form.getValues();
+  const { keepLogin } = useAuthStore();
+
   useEffect(() => {
     setIsChange(!Boolean(dob || full_name || phone_no));
   }, [dob, full_name, phone_no]);
@@ -55,7 +58,7 @@ export const AccountSettingProfile = ({ user }: { user: TUser }) => {
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(changeProfileSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit((paylaod) => changeProfileSubmit(paylaod, keepLogin))} className="space-y-4">
             <ProfileAvatarInput form={form} user={user} setIsChange={setIsChange} />
             <ProfileInput form={form} name="full_name" label="Full Name" placeholder={`${user.full_name}`} />
             <ProfileInput form={form} name="phone_no" label="Phone Number" placeholder={`${user.phone_no ? user.phone_no : "+62"}`} />

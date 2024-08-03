@@ -57,7 +57,7 @@ export default async function AdminDashboard({ searchParams }: Props) {
               </div>
             }
           >
-            <DataTable placeholder="Filter store admins..." columns={storeAdminColumns} data={storeAdmins.users} />
+            <DataTable layoutId="store-admin" placeholder="Filter store admins..." columns={storeAdminColumns} data={storeAdmins.users} />
           </Suspense>
           <div className="flex w-full justify-center">
             <Pagination getPage="page_tab1" totalPages={storeAdmins.totalPage} />
@@ -74,7 +74,7 @@ export default async function AdminDashboard({ searchParams }: Props) {
               </div>
             }
           >
-            <DataTable placeholder="Filter customers..." columns={customersColumns} data={customers.users} />
+            <DataTable layoutId="customers" placeholder="Filter customers..." columns={customersColumns} data={customers.users} />
           </Suspense>
           <div className="flex w-full justify-center">
             <Pagination getPage="page_tab2" totalPages={customers.totalPage} />

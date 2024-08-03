@@ -62,6 +62,7 @@ export default async function InventoryDashboardPage({ searchParams }: Props) {
             }
           >
             <DataTable
+              layoutId="stocks"
               placeholder="Filter stocks..."
               setSearch="search_tab1"
               columns={stocksColumns}
@@ -88,6 +89,7 @@ export default async function InventoryDashboardPage({ searchParams }: Props) {
             }
           >
             <DataTable
+              layoutId="history"
               setSearch="search_tab2"
               placeholder="Filter history..."
               columns={historyColumns}

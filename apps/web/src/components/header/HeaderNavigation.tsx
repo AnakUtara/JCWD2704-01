@@ -47,7 +47,9 @@ export const HeaderNavigation = () => {
     ? "Product Details"
     : pathname.startsWith("/search")
       ? "Search"
-      : headerLink.find((link) => link.href(searchParams).includes(pathname))?.label || "";
+      : pathname.startsWith("/account/orders")
+        ? "Orders"
+        : headerLink.find((link) => link.href(searchParams).includes(pathname))?.label || "";
 
   return (
     <nav className="w-full">

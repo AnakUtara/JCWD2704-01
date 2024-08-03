@@ -4,6 +4,9 @@ import { Request } from 'express';
 import { addressUpsertArgs } from '@/constants/address.constant';
 import { userCreateAddress } from '@/schemas/address.schema';
 import { AuthError, CustomError } from '@/utils/error';
+import { userAccessArgs } from '@/constants/user.constant';
+import { createToken } from '@/libs/jwt';
+import { ACC_SECRET_KEY } from '@/config';
 
 class AddressService {
   async getUserAddresses(req: Request) {
@@ -26,6 +29,11 @@ class AddressService {
       const city = await tx.city.findFirst({ where: { city_id: validate.city_id } });
       if (!city?.city_id) throw new CustomError(`Cannot find City: ${city_id}`);
       await tx.address.upsert(addressUpsertArgs({ city_id: city.city_id, user_id: req.user?.id!, validate }));
+      const user = await tx.user.findFirst(userAccessArgs.first(`${req.user?.id}`));
+      if (!user) throw new CustomError('Need to login');
+      const { password: _password, ...data } = user;
+      const accessToken = createToken({ ...data }, ACC_SECRET_KEY, '15m');
+      return { accessToken };
     });
   }
 
@@ -34,6 +42,11 @@ class AddressService {
       const address = await tx.address.findFirst({ where: { user_id: req.user?.id } });
       if (!address?.id) throw new CustomError("You don't have an address");
       await tx.address.delete({ where: { id: address.id } });
+      const user = await tx.user.findFirst(userAccessArgs.first(`${req.user?.id}`));
+      if (!user) throw new CustomError('Need to login');
+      const { password: _password, ...data } = user;
+      const accessToken = createToken({ ...data }, ACC_SECRET_KEY, '15m');
+      return { accessToken };
     });
   }
 

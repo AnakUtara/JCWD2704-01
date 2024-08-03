@@ -14,10 +14,12 @@ type Prop = {
 export default function Page({ searchParams }: Prop) {
   return (
     <main className="min-h-dvh w-full bg-secondary">
-      <div className="container flex h-16 w-full items-center bg-primary px-4 justify-between xl:rounded-b-md">
-        <ButtonBack isCenter={false} className="gap-1.5 md:gap-4 text-primary-foreground w-fit">Cart</ButtonBack>
+      <div className="container flex h-16 w-full items-center justify-between bg-primary px-4 xl:rounded-b-md">
+        <ButtonBack isCenter={false} className="w-fit gap-1.5 text-primary-foreground md:gap-4">
+          Cart
+        </ButtonBack>
         <Label htmlFor="store_id" className="flex items-center gap-1.5">
-          <p className="text-xs uppercase text-primary-foreground truncate">All Store</p>
+          <p className="truncate text-xs uppercase text-primary-foreground">All Store</p>
           <FillterToggle name="store_id" queryKey="store_id" trueValue="all" className="h-5" />
         </Label>
       </div>

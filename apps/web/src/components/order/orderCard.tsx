@@ -11,6 +11,7 @@ import OrderStatusButton from "./orderStatusButton";
 import ChangeStatuConfirmation from "./changeStatuConfirmation";
 import { formatDate } from "@/utils/formatter";
 import { calculateDiscount } from "@/utils/calculateDiscount";
+import { PageProps } from "@/app/(root)/account/orders/_model/invPageProps";
 
 export default async function OrderCard({ inv, role = "user" }: { inv: PageProps["params"]["inv"]; role?: "admin" | "user" }) {
   const order = await axiosInstanceSSR()

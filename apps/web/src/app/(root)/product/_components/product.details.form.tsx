@@ -35,6 +35,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { calculateDiscount } from "@/utils/calculateDiscount";
 
 type Props = { product: Product };
 export default function ProductDetailsForm({ product }: Props) {
@@ -119,13 +120,13 @@ export default function ProductDetailsForm({ product }: Props) {
             <Separator />
             <div className="flex items-center justify-between">
               <p>Subtotal:</p>
-              <CardTitle>{toIDR(discCalc || findStock.unit_price * form.watch("quantity"))}</CardTitle>
+              <CardTitle>{toIDR(calculateDiscount(findStock?.unit_price, findStock?.discount || 0) * form.watch("quantity"))}</CardTitle>
             </div>
           </div>
           <Separator className="mt-3" />
           <AlertDialog>
             <AlertDialogTrigger className="w-full" asChild>
-              <Button type="button" className={cn(user.email ? "hidden" : "flex", "mt-3 w-full text-white")}>
+              <Button type="button" className={cn(user?.email ? "hidden" : "flex", "mt-3 w-full text-white")}>
                 <ShoppingCartIcon className="mr-2" />
                 Add To Cart
               </Button>
@@ -145,7 +146,7 @@ export default function ProductDetailsForm({ product }: Props) {
           </AlertDialog>
           <AlertDialog>
             <AlertDialogTrigger className="w-full" asChild>
-              <Button type="button" className={cn(user.addresses.length || !user.email ? "hidden" : "flex", "mt-3 w-full text-white")}>
+              <Button type="button" className={cn(user?.addresses.length || !user.email ? "hidden" : "flex", "mt-3 w-full text-white")}>
                 <ShoppingCartIcon className="mr-2" />
                 Add To Cart
               </Button>
@@ -168,7 +169,7 @@ export default function ProductDetailsForm({ product }: Props) {
           </AlertDialog>
           <ButtonSubmit
             type="submit"
-            className={cn(!user.email || !user.addresses.length ? "hidden" : "flex", "mt-3 w-full text-white")}
+            className={cn(!user?.email || !user?.addresses.length ? "hidden" : "flex", "mt-3 w-full text-white")}
             disable={findStock.quantity === 0 || form.formState.isSubmitting}
             isSubmitting={form.formState.isSubmitting}
             label={

@@ -42,27 +42,27 @@ export const headerLink: Link[] = [
     icon: (className) => <Search className={className} />,
   },
   {
-    href: (searchParams?: ReadonlyURLSearchParams) => "/account",
+    href: (searchParams: ReadonlyURLSearchParams) => `/account?city_id=${searchParams.get("city_id")}`,
     label: "Account",
     icon: (className) => <User className={className} />,
     sub: [
       {
-        href: (searchParams?: ReadonlyURLSearchParams) => "/account/cart",
+        href: (searchParams: ReadonlyURLSearchParams) => `/account/cart?city_id=${searchParams.get("city_id")}`,
         label: "Cart",
         icon: (className) => <ShoppingCart className={className} />,
       },
       {
-        href: (searchParams?: ReadonlyURLSearchParams) => "/account/orders",
+        href: (searchParams: ReadonlyURLSearchParams) => `/account/orders?city_id=${searchParams.get("city_id")}`,
         label: "Order",
         icon: (className) => <ArrowLeftRight className={className} />,
       },
       {
-        href: (searchParams?: ReadonlyURLSearchParams) => "/account/address",
+        href: (searchParams: ReadonlyURLSearchParams) => `/account/address?city_id=${searchParams.get("city_id")}`,
         label: "Address",
         icon: (className) => <MapPin className={className} />,
       },
       {
-        href: (searchParams?: ReadonlyURLSearchParams) => "/account/setting",
+        href: (searchParams: ReadonlyURLSearchParams) => `/account/setting?city_id=${searchParams.get("city_id")}`,
         label: "Setting",
         icon: (className) => <Settings className={className} />,
       },

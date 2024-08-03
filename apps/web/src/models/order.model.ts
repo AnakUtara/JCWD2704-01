@@ -1,3 +1,5 @@
+import { TStore } from "./store.model";
+
 export type OrderStatus = "wait_for_payment" | "wait_for_confirmation" | "process" | "sending" | "sended" | "canceled";
 
 export interface CustomerOrders {
@@ -15,6 +17,7 @@ export interface CustomerOrders {
   store_id: string;
 
   origin_id: string;
+  origin: TStore;
   destination_id: string;
 
   shipping_cost: number;
