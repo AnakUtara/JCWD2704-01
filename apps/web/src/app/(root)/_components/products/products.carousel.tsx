@@ -9,7 +9,7 @@ import { FrownIcon, HeartCrackIcon } from "lucide-react";
 type Props = { title: string; searchParams: SearchParams; products: Product[] };
 export default function ProductsCarousel({ title, searchParams, products }: Props) {
   return (
-    <div className="size-full px-4 md:px-0">
+    <div className="size-full px-0">
       <Section
         className={cn("flex flex-col md:border md:bg-secondary p-0 md:flex-row relative md:min-h-[450px]", !searchParams.city_id || !products.length ? "hidden" : "")}
       >
@@ -20,13 +20,13 @@ export default function ProductsCarousel({ title, searchParams, products }: Prop
           <Carousel>
             <CarouselContent>
               {products?.map((product: Product, i: number) => (
-                <CarouselItem key={i} className="basis-1/2 sm:basis-[210px] lg:basis-[230px]">
+                <CarouselItem key={i} className="basis-1/2 min-w-[210px] sm:basis-[210px] lg:basis-[230px] xl:basis-1/4 flex-shrink-0">
                   <ProductCard product={product} />
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="hidden xl:flex" />
-            <CarouselNext className="hidden xl:flex" />
+            <CarouselPrevious className="max-md:left-2 size-6 sm:size-8" />
+            <CarouselNext className="max-md:right-2 size-6 sm:size-8" />
           </Carousel>
         </div>
       </Section>

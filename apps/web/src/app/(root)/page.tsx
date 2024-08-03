@@ -58,11 +58,11 @@ export default async function Home({ searchParams }: { searchParams: SearchParam
 
           <div className="px-4 xl:px-0">
             <div className="w-full space-y-4 rounded-md border bg-background p-4">
-              <div className="flex gap-2 items-center">
+              <div className="flex items-center gap-2">
                 <div className="container hidden md:block">
                   <Category data={categories} />
                 </div>
-                <h3 className="text-3xl font-bold leading-none text-primary whitespace-nowrap">Happy Shopping</h3>
+                <h3 className="whitespace-nowrap text-3xl font-bold leading-none text-primary">Happy Shopping</h3>
               </div>
               <ProductsCarousel title="Diskon Meriah Hari Ini!" searchParams={searchParams} products={getProductByDiscount} />
               <div className="flex gap-2">
@@ -73,12 +73,13 @@ export default async function Home({ searchParams }: { searchParams: SearchParam
             </div>
           </div>
 
-          <div className="p-0">
-            <Section className="w-full space-y-4 p-0">
-              <Link href={`/search?page=1&city_id=${searchParams.city_id}`} className="">
-                <Button className="w-full">Explore Our Products Selection</Button>
-              </Link>
-            </Section>
+          <div className="mx-auto flex w-full max-w-sm items-center justify-center px-4 py-4 md:px-0">
+            <Link
+              href={`/search?page=1&city_id=${searchParams.city_id}`}
+              className="size-full rounded-md border border-primary py-2 text-center text-primary transition-colors hover:bg-primary hover:text-primary-foreground duration-100 bg-background"
+            >
+              Explore more Products Selection
+            </Link>
           </div>
         </div>
       </main>

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { ChevronRight, LogOut } from "lucide-react";
+import { ChevronRight, LogIn, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -36,7 +36,7 @@ export const HeaderNavigation = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isActive, setIsActive] = useState(false);
-  const { logout } = useAuthStore();
+  const { logout, user } = useAuthStore();
   const router = useRouter();
   const handleClick = () => {
     logout();
@@ -54,7 +54,7 @@ export const HeaderNavigation = () => {
       <AlertDialog>
         <DropdownMenu open={isActive} onOpenChange={setIsActive}>
           <DropdownMenuTrigger asChild>
-            <Button  variant="outline" className="size-full max-w-56 justify-between">
+            <Button variant="outline" className="size-full max-w-56 justify-between">
               <span className="block">{label}</span>
               <ChevronRight className={cn("size-6 shrink-0 transition-transform duration-300 ease-out", isActive ? "rotate-90" : "")} />
             </Button>
@@ -76,7 +76,7 @@ export const HeaderNavigation = () => {
 
               return (
                 <DropdownMenuSub key={link.label}>
-                  <DropdownMenuSubTrigger className="flex items-center gap-3">
+                  <DropdownMenuSubTrigger className={cn("flex items-center gap-3", !user.id && link.label === "Account" ? "hidden" : "")}>
                     {link.icon("size-4 shrink-0")}
                     <Link className="w-full" href={link.href(searchParams)}>
                       {link.label}
@@ -102,12 +102,21 @@ export const HeaderNavigation = () => {
 
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem asChild>
-              <AlertDialogTrigger className="flex w-full cursor-pointer items-center gap-3 hover:bg-destructive">
-                <LogOut className="size-4 shrink-0" />
-                <span className="block w-full text-left">Logout</span>
-              </AlertDialogTrigger>
-            </DropdownMenuItem>
+            {user.id ? (
+              <DropdownMenuItem asChild>
+                <AlertDialogTrigger className="flex w-full cursor-pointer items-center gap-3 hover:bg-destructive">
+                  <LogOut className="size-4 shrink-0" />
+                  <span className="block w-full text-left">Logout</span>
+                </AlertDialogTrigger>
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem asChild>
+                <Link href="/auth" className="flex w-full cursor-pointer items-center gap-3 hover:bg-destructive">
+                  <LogIn className="size-4 shrink-0" />
+                  <span className="block w-full text-left">Login</span>
+                </Link>
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
 

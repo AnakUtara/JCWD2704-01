@@ -40,7 +40,7 @@ export default function Address() {
                   <span className="block">Personal Information</span>
                   <Tooltip>
                     <TooltipTrigger>
-                      <CircleAlert className="size-4 md:size-6" />
+                      <CircleAlert className="size-4" />
                     </TooltipTrigger>
                     <TooltipContent>You can change your personal information in the profile settings.</TooltipContent>
                   </Tooltip>
@@ -72,7 +72,7 @@ export default function Address() {
               </div>
             </div>
             <Button asChild size="icon" variant="ghost" className="shrink-0">
-              <Link href="/account/setting">
+              <Link href="/account/address">
                 <ChevronRight className="size-6 shrink-0" />
               </Link>
             </Button>

@@ -44,11 +44,12 @@ export const Promotion = ({ datas }: { datas: { result: { name: string }[] } | u
         align: "start",
         loop: true,
       }}
+      className="overflow-hidden rounded-none xl:rounded-md border bg-background"
     >
       <CarouselContent className="-ml-0">
         {result.map((data, id) => (
           <CarouselItem key={id} className="flex aspect-[15/8] w-full items-center justify-center bg-muted-foreground/10 pl-0">
-            <div className="relative size-full overflow-hidden rounded-none xl:rounded-md">
+            <div className="relative size-full">
               <Image src={imageUrl.render(data.name, "/pc.jpg")} alt={`${data.name}`} fill className="object-cover" priority />
             </div>
           </CarouselItem>
