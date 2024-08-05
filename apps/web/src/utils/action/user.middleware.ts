@@ -16,6 +16,7 @@ export const getUserSession = async (res: NextResponse<unknown>, refresh_token: 
       },
     });
 
+    console.log("response", response.json());
     const data = (await response.json()) as Awaited<{ accessToken?: string | null }>;
 
     if (!data.accessToken) {
@@ -28,7 +29,7 @@ export const getUserSession = async (res: NextResponse<unknown>, refresh_token: 
   } catch (error) {
     res.cookies.delete("refresh_token");
     res.cookies.delete("access_token");
-    console.error(error);
+    console.error("Error", error);
     return null;
   }
 };

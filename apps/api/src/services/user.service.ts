@@ -1,5 +1,5 @@
 import prisma, { userTransactionOption } from '@/prisma';
-import { JsonWebTokenError, verify } from 'jsonwebtoken';
+import { verify } from 'jsonwebtoken';
 import type { Request } from 'express';
 
 import { createToken } from '@/libs/jwt';
@@ -37,7 +37,6 @@ class UserService {
       const user = await tx.user.create({ data });
       const registerToken = createToken({ id: user.id }, VERIF_SECRET_KEY, '15m');
       if (file) await tx.image.create({ data: await userDataImage(file, 'avatar', user) });
-      if (file) await tx.image.create({ data: await userDataImage(file, 'avatar', user) });
       await verifyEmail(
         { full_name: user.full_name ? user.full_name : 'Farmers', token: registerToken, subject: 'Farm2Door - Verification Email' },
         user.email,
@@ -52,8 +51,6 @@ class UserService {
       const user = await tx.user.findFirst({ where: { id }, include: { promotions: true } });
       if (!user) throw new CustomError('Invalid data');
       if (user.is_verified) throw new CustomError("You're already verified");
-      if (user.reference_code && !user.promotions.length) await tx.promotion.create({ data: userCreateVoucherInput(user) });
-      await tx.user.update({ where: { id }, data: { is_verified: true } });
       if (user.reference_code && !user.promotions.length) await tx.promotion.create({ data: userCreateVoucherInput(user) });
       await tx.user.update({ where: { id }, data: { is_verified: true } });
     }, userTransactionOption);
@@ -72,9 +69,7 @@ class UserService {
     if (!user.is_verified) throw new CustomError('Need to verify your account', { cause: 'Check your email for furthure access' });
     if (user?.role !== 'customer') throw new CustomError('This session is only for users!');
     if (user.is_banned) throw new CustomError("You're already BAN!", { cause: 'plase contact our Email or Customer Service for information' });
-    if (!user.is_verified) throw new CustomError('Need to verify your account', { cause: 'Check your email for furthure access' });
-    if (user?.role !== 'customer') throw new CustomError('This session is only for users!');
-    if (user.is_banned) throw new CustomError("You're already BAN!", { cause: 'plase contact our Email or Customer Service for information' });
+
     const { password: _password, ...data } = user;
     const refreshToken = createToken({ id: user.id }, REFR_SECRET_KEY, '30d');
     const accessToken = createToken({ ...data }, ACC_SECRET_KEY, '15m');

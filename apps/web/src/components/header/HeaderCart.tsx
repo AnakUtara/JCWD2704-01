@@ -10,6 +10,7 @@ import Link from "next/link";
 
 export const HeaderCart = ({ className, bgColor = "primary" }: { className?: string; bgColor?: string }) => {
   const { user } = useAuthStore();
+  console.log(user.cart)
   return (
     <Button asChild variant="ghost" size="sm" className={cn("relative", className)}>
       <Link href="/account/cart">

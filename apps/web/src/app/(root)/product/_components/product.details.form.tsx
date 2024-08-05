@@ -39,7 +39,7 @@ import { calculateDiscount } from "@/utils/calculateDiscount";
 
 type Props = { product: Product };
 export default function ProductDetailsForm({ product }: Props) {
-  const { user } = useAuthStore((s) => s);
+  const { user, keepLogin } = useAuthStore((s) => s);
   const form = useForm<z.infer<typeof cartSchema>>({
     resolver: zodResolver(cartSchema),
     defaultValues: {
@@ -52,6 +52,7 @@ export default function ProductDetailsForm({ product }: Props) {
     try {
       await updateCart(data);
       toast.success("Product added to cart");
+      keepLogin();
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);

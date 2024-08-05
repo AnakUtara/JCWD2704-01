@@ -8,7 +8,6 @@ import { useForm } from "react-hook-form";
 import { LoginInput } from "./input";
 import { ButtonSubmit } from "@/components/ui/button-submit";
 import useAuthStore from "@/stores/auth.store";
-import { useRouter } from "next/navigation";
 
 export const LoginForm = () => {
   const { login } = useAuthStore();
