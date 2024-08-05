@@ -100,7 +100,7 @@ const useAuthStore = (initState: AuthState = initAdmin) =>
           set(() => ({ user: jwtDecode(access_token) as TUser }));
         } else {
           deleteClientTokens();
-          set({ user: initState.user });
+          set(() => ({ user: initState.user }));
         }
       },
       logout: () => {

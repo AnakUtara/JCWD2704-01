@@ -5,5 +5,5 @@ export const NEXT_PUBLIC_BASE_API_URL = process.env.NEXT_PUBLIC_BASE_API_URL;
 export const cookiesOpt: Partial<ResponseCookie> = {
   sameSite: "strict",
   secure: true,
-  domain: process.env.COOKIE_DOMAIN,
+  domain: ".purwadhikabootcamp.com",
 };

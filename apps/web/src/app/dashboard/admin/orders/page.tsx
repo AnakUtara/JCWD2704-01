@@ -16,7 +16,6 @@ export default function Page({ searchParams }: { searchParams: OrderListProps["q
     <main className="w-full px-4">
       <h1 className="my-4 text-center text-2xl font-bold">Order List</h1>
       <OrderFillter />
-      <input type="number"></input>
       <Suspense fallback={<h1>Loading...</h1>}>
         <OrderList searchParams={searchParams}></OrderList>
       </Suspense>

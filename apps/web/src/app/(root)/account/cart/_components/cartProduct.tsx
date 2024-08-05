@@ -101,7 +101,7 @@ export function CartProduct({ cartProduct }: { cartProduct: TCart }) {
             </Link>
             <CardDescription className="relative text-xs">
               <span className={`block ${!cartProduct.store_stock.discount && "hidden"}`}>
-                {toIDR(cartProduct.store_stock.unit_price - cartProduct.store_stock.discount)}
+                {toIDR(calculateDiscount(cartProduct.store_stock.unit_price, cartProduct.store_stock.discount))}
               </span>
               <span className={`absolute -bottom-full block ${cartProduct.store_stock.discount && "line-through"}`}>
                 {toIDR(cartProduct.store_stock.unit_price)}
@@ -168,7 +168,7 @@ function InputQuantity({ quantity, store_stock_id, unit_price, weight, disable =
         >
           <Minus className="size-5" />
         </button>
-        <span className="size-5 tabular-nums flex items-center justify-center select-none">
+        <span className="flex size-5 select-none items-center justify-center tabular-nums">
           <span className="block leading-none tracking-tighter">{quantity}</span>
         </span>
         <button

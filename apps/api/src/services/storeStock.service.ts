@@ -60,7 +60,14 @@ export class StoreStockService {
     };
     let queries: Prisma.ProductFindManyArgs = {
       where,
-      include: { variants: { include: { store_stock: { include: { promo: true } }, images: { select: { name: true } } } } },
+      include: {
+        variants: {
+          include: {
+            store_stock: { where: { store: { address: { city_id: Number(city_id) } } }, include: { promo: true } },
+            images: { select: { name: true } },
+          },
+        },
+      },
     };
     if (filter)
       where.AND = { ...where, OR: [{ category: { name: { equals: String(filter) } } }, { sub_category: { name: { equals: String(filter) } } }] };
@@ -96,7 +103,12 @@ export class StoreStockService {
       include: {
         category: { include: { image: { select: { name: true } } } },
         sub_category: true,
-        variants: { include: { images: { select: { name: true } }, store_stock: { include: { promo: true } } } },
+        variants: {
+          include: {
+            images: { select: { name: true } },
+            store_stock: { where: { store: { address: { city_id: Number(city_id) } } }, include: { promo: true } },
+          },
+        },
       },
     });
     if (!data) throw new NotFoundError('Cannot find product');

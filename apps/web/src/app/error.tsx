@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   const router = useRouter();
-  const params = useSearchParams()
+  const params = useSearchParams();
   useEffect(() => {
     console.error(error);
   }, [error]);
@@ -19,7 +19,13 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
       <h2 className="max-w-[640px] text-2xl font-semibold">{error.message}</h2>
       <p>{JSON.stringify(error?.cause)}</p>
       <div className="flex gap-2">
-        <Button size={"lg"} variant={"outline"} type="button" className="text-lg" onClick={() => router.push(`/?city_id=${params.get('city_id')}`)}>
+        <Button
+          size={"lg"}
+          variant={"outline"}
+          type="button"
+          className="text-lg"
+          onClick={() => router.push(`/?city_id=${params?.get("city_id") || ""}`)}
+        >
           <Home className="mr-2" />
           Back To Home
         </Button>

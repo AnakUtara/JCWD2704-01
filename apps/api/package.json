@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register --files src/index.ts",
     "build": "tsc && tsc-alias",
-    "serve": "cross-env NODE_ENV=production node dist/index.js",
+    "serve": "cross-env NODE_ENV=production node dist/src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prisma": "npx prisma"
   },

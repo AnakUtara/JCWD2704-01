@@ -22,7 +22,7 @@ export default function ProductCard({ product }: Props) {
   const unitPrice = product?.variants[0]?.store_stock[0]?.unit_price;
   return (
     <Link href={`/product/${product.name.toLowerCase().replaceAll(" ", "-")}?city_id=${searchParams.get("city_id")}`}>
-      <Card key={product.id} className="flex size-full flex-col justify-between gap-2 overflow-hidden shadow flex-shrink-0">
+      <Card key={product.id} className="flex size-full flex-shrink-0 flex-col justify-between gap-2 overflow-hidden shadow">
         <div className="relative">
           <Image
             src={imageUrl.render(product.variants[0].images?.name)}
@@ -43,11 +43,13 @@ export default function ProductCard({ product }: Props) {
         <div className="flex min-h-[116px] flex-col gap-1 p-3">
           <h2 className="mb-0 text-lg font-bold">{product.name}</h2>
           <CardDescription className="flex gap-2">
-            {product.variants.map((variant) => (
-              <span key={variant.id} className="rounded-full bg-primary px-3 text-[10px] font-bold text-white">
-                {variant.name}
-              </span>
-            ))}
+            {product.variants.map((variant) =>
+              variant.store_stock.length ? (
+                <span key={variant.id} className="rounded-full bg-primary px-3 text-[10px] font-bold text-white">
+                  {variant.name}
+                </span>
+              ) : null,
+            )}
           </CardDescription>
           <CardContent className="p-0">
             <div className={cn(discount ? "text-xs font-normal text-muted-foreground line-through" : "text-sm font-bold")}>
