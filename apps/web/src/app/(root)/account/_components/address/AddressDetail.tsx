@@ -17,7 +17,7 @@ export const AccountAddressDetail = ({ cities }: { cities: CityType[] }) => {
       </div>
 
       <div className="absolute bottom-0 left-0 h-[42.5%] w-full rounded-t-2xl border-t bg-background p-4 xl:border-x">
-        <div className="h-full space-y-4 overflow-y-scroll">
+        <div className="h-full space-y-4 overflow-y-scroll px-2">
           <p className="text-lg font-bold">Shipping Address</p>
 
           <div className="flex flex-col gap-4 p-4">

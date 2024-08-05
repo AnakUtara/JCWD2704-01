@@ -16,7 +16,6 @@ import {
 } from '@/schemas/user.schema';
 import { CustomError } from '@/utils/error';
 import { verifyEmail, verifyEmailFP } from '@/templates';
-import { Prisma } from '@prisma/client';
 import { userDataImage } from '@/constants/image.constant';
 
 class UserService {
@@ -144,18 +143,38 @@ class UserService {
     }, userTransactionOption);
   }
 
+  async forgetCheckUserResetToken(req: Request) {
+    const reset_token = req.headers.authorization?.replace('Bearer ', '') || '';
+    const check = await prisma.user.findFirst({ where: { reset_token } });
+    if (!check) throw new CustomError('Invalid Token');
+  }
+
   async forgetPasswordVerification(req: Request) {
     const { email } = userValidationEmailSchema.parse(req.body);
     return await prisma.$transaction(async (tx) => {
       const user = await tx.user.findUnique({ where: { email } });
       if (!user) throw new CustomError('Cannot found your Email');
-      if (user.reset_token) throw new CustomError('Check your email to reset your password');
-      const resetToken = createToken({ id: user.id }, FP_SECRET_KEY, '1d');
-      await tx.user.update({ where: { id: user.id }, data: { reset_token: resetToken } });
-      await verifyEmailFP(
-        { full_name: user.full_name ? user.full_name : 'Farmers', token: resetToken, subject: 'Farm2Door - Verification Email' },
-        user.email,
-      );
+
+      if (!user.reset_token) {
+        const resetToken = createToken({ id: user.id }, FP_SECRET_KEY, '1d');
+        await tx.user.update({ where: { id: user.id }, data: { reset_token: resetToken } });
+        await verifyEmailFP(
+          { full_name: user.full_name ? user.full_name : 'Farmers', token: resetToken, subject: 'Farm2Door - Verification Email' },
+          user.email,
+        );
+      } else if (user.reset_token) {
+        const { id } = verify(user.reset_token, FP_SECRET_KEY) as { id: string };
+        if (!id) {
+          const resetToken = createToken({ id: user.id }, FP_SECRET_KEY, '1d');
+          await tx.user.update({ where: { id: user.id }, data: { reset_token: null } });
+          await verifyEmailFP(
+            { full_name: user.full_name ? user.full_name : 'Farmers', token: resetToken, subject: 'Farm2Door - Verification Email' },
+            user.email,
+          );
+        } else {
+          throw new CustomError('Check your email to reset your password');
+        }
+      }
     });
   }
 }

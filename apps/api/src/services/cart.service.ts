@@ -72,7 +72,11 @@ export class CartService {
       },
     });
 
-    const user = await prisma.user.findFirst({ where: { id: user_id }, omit: { password: true } });
+    const user = await prisma.user.findFirst({
+      where: { id: user_id },
+      omit: { password: true },
+      include: { avatar: { select: { name: true } }, addresses: { include: { city: true } }, promotions: true, cart: true },
+    });
     const accessToken = createToken(user, ACC_SECRET_KEY, '15m');
     return { accessToken };
   }

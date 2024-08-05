@@ -33,7 +33,7 @@ export const userAddressDeleteSubmit = async (router: AppRouterInstance, keepLog
   try {
     const response = await axiosInstanceCSR().delete("/addresses/user");
     toast.success(response.data.message, { richColors: false });
-    keepLogin()
+    keepLogin();
   } catch (error) {
     if (error instanceof AxiosError) {
       console.log(error.response?.data);

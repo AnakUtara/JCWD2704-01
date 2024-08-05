@@ -16,7 +16,6 @@ export class CartController extends EntityController {
   upsetCart = this.sendResponse({
     response: ({ res, data }) => {
       const { accessToken } = data;
-      console.log(accessToken)
       res.cookie('access_token', accessToken, cookiesOpt).send(messageResponse('Cart updated'));
     },
     service: cartService.upsertCart,

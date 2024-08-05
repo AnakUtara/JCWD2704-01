@@ -10,15 +10,18 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { TUser } from "@/models/user.model";
 
 export const AddressCityInput = ({
   form,
   cities,
   city: userCity,
+  user,
 }: {
   form: UseFormReturn<UserCreateAddressType>;
   cities: CityType[] | undefined;
   city?: string;
+  user: TUser;
 }) => {
   const ref = useRef<HTMLButtonElement>(null);
   return (
@@ -64,7 +67,16 @@ export const AddressCityInput = ({
                           ref.current?.click();
                         }}
                       >
-                        <Check className={cn("mr-2 h-4 w-4", city?.city_id.toString() === field.value ? "opacity-100" : "opacity-0")} />
+                        <Check
+                          className={cn(
+                            "mr-2 h-4 w-4",
+                            city?.city_id.toString() === field.value || city?.city_id === user.addresses?.[0]?.city_id
+                              ? true
+                              : false
+                                ? "opacity-100"
+                                : "opacity-0",
+                          )}
+                        />
                         {city?.city_name}
                       </CommandItem>
                     ))}

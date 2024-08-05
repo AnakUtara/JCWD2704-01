@@ -64,6 +64,15 @@ class UserController {
     }
   };
 
+  forgetCheckUserResetToken: Controller = async (req, res, next) => {
+    try {
+      await userService.forgetCheckUserResetToken(req);
+      res.status(200).send(messageResponse('success'));
+    } catch (error) {
+      next(error);
+    }
+  };
+
   forgetPassword: Controller = async (req, res, next) => {
     try {
       await userService.forgetPassword(req);

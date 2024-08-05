@@ -26,6 +26,7 @@ class UserRouter {
     this.router.post('/v2', userController.login); // Login
 
     // [X] Feature Forget Password User
+    this.router.get('/v3', userMiddleware.resetToken, userController.forgetCheckUserResetToken); // Check user reset_token
     this.router.patch('/v3/:token', userController.forgetPassword); // Forget password
     this.router.post('/v3', userController.forgetPasswordVerification); // Forget Password Email verification
   }

@@ -18,10 +18,22 @@ export const initStockSchema = z.object({
   reference: z.string().trim().optional(),
 });
 
-export const updateStockSchema = z.object({
-  unit_price: z.number().min(100, errors.price.message).positive(errors.pos.message).optional(),
-  quantity: z.number().optional(),
-  discount: z.number().nonnegative(errors.pos.message).optional(),
-  promo_id: z.string().trim().optional(),
-  reference: z.string().trim().optional(),
-});
+const quantityAndReferrence = z
+  .object({
+    quantity: z.number().optional(),
+    reference: z.string().trim().optional(),
+  })
+  .refine((data) => data.quantity || data.reference, {
+    message: "Quantity required",
+    path: ["quantity"],
+  });
+
+export const updateStockSchema = z
+  .object({
+    unit_price: z.number().min(100, errors.price.message).positive(errors.pos.message).optional(),
+    quantity: z.number().optional(),
+    discount: z.number().nonnegative(errors.pos.message).optional(),
+    promo_id: z.string().trim().optional(),
+    reference: z.string().trim().optional(),
+  })
+  .and(quantityAndReferrence);

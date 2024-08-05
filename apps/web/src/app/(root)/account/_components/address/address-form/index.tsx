@@ -44,7 +44,7 @@ export const AddressDetailForm = ({ cities }: { cities: CityType[] }) => {
           address={user.addresses}
         />
 
-        <AddressCityInput form={form} cities={cities} city={user.addresses[0]?.city.city_name} />
+        <AddressCityInput form={form} cities={cities} city={user.addresses[0]?.city.city_name} user={user} />
 
         <ButtonSubmit type="submit" isSubmitting={form.formState.isSubmitting} label="Save Location" className="w-full" />
       </form>

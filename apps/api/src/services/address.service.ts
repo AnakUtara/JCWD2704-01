@@ -26,9 +26,16 @@ class AddressService {
       ...(city_id && { city_id: Number(city_id) }),
     });
     return await prisma.$transaction(async (tx) => {
+      console.log(req.user?.addresses?.[0]?.city_id);
       const city = await tx.city.findFirst({ where: { city_id: validate.city_id } });
       if (!city?.city_id) throw new CustomError(`Cannot find City: ${city_id}`);
-      await tx.address.upsert(addressUpsertArgs({ city_id: city.city_id, user_id: req.user?.id!, validate }));
+      await tx.address.upsert(
+        addressUpsertArgs({
+          city_id: validate.city_id ? city.city_id : (req.user?.addresses?.[0]?.city_id as number),
+          user_id: req.user?.id!,
+          validate,
+        }),
+      );
       const user = await tx.user.findFirst(userAccessArgs.first(`${req.user?.id}`));
       if (!user) throw new CustomError('Need to login');
       const { password: _password, ...data } = user;
@@ -52,7 +59,7 @@ class AddressService {
 
   async get(req: Request) {
     if (!req.user) throw new CustomError('not authorized');
-    return await prisma.address.findMany({ where: { id: req.user.address?.id } });
+    return await prisma.address.findMany({ where: { id: req.user.addresses?.[0]?.id } });
   }
 }
 
